@@ -234,4 +234,24 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+### Eclipse ###
+# Eclipse project files
+# Eclipse configuration files
+
+.settings/
+bin/
+.localhistory/
+.metadata
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.recommenders
+
+# Maven Eclipse plugin (m2e) specific files
+*.launch
+
 # End of https://www.toptal.com/developers/gitignore/api/git,java,macos,maven,windows,intellij
