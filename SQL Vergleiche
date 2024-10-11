@@ -10,5 +10,5 @@ CREATE TABLE Reading(
 Reading_UUID int NOT NULL AUTO_INCREMENT,
 Comment varchar(100),
 DateOfReading DateTime, 
-KindOfMeter ENUM('HEIZUNG','STROM','WASSER','UNBEKANNT') NOT NULL,
+KindOfMeter ENUM('HEIZUNG','STROM','WASSER','UNBEKANNT') NOT NULL
 )
