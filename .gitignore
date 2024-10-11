@@ -254,4 +254,7 @@ local.properties
 # Maven Eclipse plugin (m2e) specific files
 *.launch
 
+# Property File
+.properties
+
 # End of https://www.toptal.com/developers/gitignore/api/git,java,macos,maven,windows,intellij
