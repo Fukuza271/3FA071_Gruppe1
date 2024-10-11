@@ -50,14 +50,18 @@ public class DatabaseConnection implements IDatabaseConnection {
             statement.execute("""
                     CREATE OR REPLACE TABLE readings
                     (
-                        id          UUID            NOT NULL DEFAULT (UUID()),
-                        customer_id UUID            NOT NULL,
-                        date        DATE            NOT NULL,
-                        meter_ID    VARCHAR(100)    NOT NULL,
-                        value       DOUBLE UNSIGNED NOT NULL,
+                        id          UUID                                          NOT NULL DEFAULT (UUID()),
+                        customer_id UUID,
+                        date        DATE                                          NOT NULL,
+                        meter_ID    VARCHAR(100)                                  NOT NULL,
+                        value       DOUBLE UNSIGNED                               NOT NULL,
+                        meter_type  ENUM ('HEIZUNG','STROM','WASSER','UNBEKANNT') NOT NULL,
                         comment     VARCHAR(100),
                         PRIMARY KEY (id),
-                        FOREIGN KEY (customer_id) REFERENCES customers (id)
+                        CONSTRAINT
+                            FOREIGN KEY (customer_id) REFERENCES customers (id)
+                                ON UPDATE CASCADE
+                                ON DELETE SET NULL
                     );
                     """);
         } catch (SQLException e) {
@@ -67,12 +71,26 @@ public class DatabaseConnection implements IDatabaseConnection {
 
     @Override
     public void truncateAllTables() {
-
+        try {
+            Statement statement = this.connection.createStatement();
+            statement.execute("SET FOREIGN_KEY_CHECKS = 0;");
+            statement.execute("TRUNCATE TABLE customers;");
+            statement.execute("TRUNCATE TABLE readings;");
+            statement.execute("SET FOREIGN_KEY_CHECKS = 1;");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void removeAllTables() {
-
+        try {
+            Statement statement = this.connection.createStatement();
+            statement.execute("DROP TABLE IF EXISTS readings;");
+            statement.execute("DROP TABLE IF EXISTS customers;");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

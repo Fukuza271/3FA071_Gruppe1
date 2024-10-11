@@ -8,6 +8,7 @@ public class Test {
         DatabaseConnection connection = new DatabaseConnection();
         connection.openConnection(properties);
         connection.createAllTables();
-
+        connection.truncateAllTables();
+        connection.removeAllTables();
     }
 }
