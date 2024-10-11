@@ -1,6 +1,3 @@
-import Konstanten.Constants;
-import database.DatabaseConnection;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,6 +8,7 @@ public class Property {
     public static java.util.Properties readProperties() {
         // Systemnutzer auslesen
         String systemnutzer = System.getProperty("user.name");
+
         // Home-Verzeichnis des Nutzers
         String homeDir = System.getProperty("user.dir");
         String fileName = "database.properties";
@@ -19,6 +17,7 @@ public class Property {
         try {
             FileInputStream input = new FileInputStream(filePath);
             properties.load(input);
+
             // Werte basierend auf dem Systemnutzer laden
             String dbUrl = properties.getProperty("systemnutzer.db.url");
             String dbUser = properties.getProperty("systemnutzer.db.user");
@@ -30,6 +29,7 @@ public class Property {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return properties;
     }
 }
