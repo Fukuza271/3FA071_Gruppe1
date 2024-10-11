@@ -1,0 +1,7 @@
+CREATE TABLE Customer(
+Customer_UUID int NOT NULL AUTO_INCREMENT PRIMARY KEYcustomer,
+FirstName varchar(50) NOT NULL,
+LastName varchar(50) NOT NULL,
+BirthDay DateTime,
+Gender ENUM('D','M','U','W') NOT NULL
+)
