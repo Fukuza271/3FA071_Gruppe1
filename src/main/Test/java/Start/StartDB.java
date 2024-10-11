@@ -1,9 +1,15 @@
+package Start;
+
 import database.DatabaseConnection;
+import database.Property;
+import org.junit.Test;
 
 import java.util.Properties;
 
-public class Test {
-    public static void main(String[] args) {
+public class StartDB {
+
+    @Test
+    public void testDb() {
         Properties properties = Property.readProperties();
         DatabaseConnection connection = new DatabaseConnection();
         connection.openConnection(properties);
