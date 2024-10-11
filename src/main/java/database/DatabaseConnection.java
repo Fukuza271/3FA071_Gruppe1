@@ -9,7 +9,6 @@ public class DatabaseConnection implements IDatabaseConnection {
 
     private Connection connection = null;
 
-
     @Override
     public IDatabaseConnection openConnection(Properties properties) {
         try {
@@ -22,7 +21,8 @@ public class DatabaseConnection implements IDatabaseConnection {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+
+        return this;
     }
 
     @Override
