@@ -1,10 +1,7 @@
 package database;
 
-import Konstanten.Constants;
 import interfaces.IDatabaseConnection;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.*;
 import java.util.Properties;
 
@@ -15,11 +12,11 @@ public class DatabaseConnection implements IDatabaseConnection {
 
     @Override
     public IDatabaseConnection openConnection(Properties properties) {
-        String systemnutzer = System.getProperty("user.name");
         try {
-            String dbUrl = properties.getProperty(systemnutzer + ".db.url");
-            String dbUser = properties.getProperty(systemnutzer + ".db.user");
-            String dbPassword = properties.getProperty(systemnutzer + ".db.pw");
+            String systemUser = System.getProperty("user.name");
+            String dbUrl = properties.getProperty(systemUser + ".db.url");
+            String dbUser = properties.getProperty(systemUser + ".db.user");
+            String dbPassword = properties.getProperty(systemUser + ".db.pw");
 
             this.connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
         } catch (SQLException e) {
