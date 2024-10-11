@@ -33,6 +33,8 @@ public class DatabaseConnection implements IDatabaseConnection {
 
         try {
             Statement statement = this.connection.createStatement();
+            statement.execute("DROP TABLE IF EXISTS readings;");
+            statement.execute("DROP TABLE IF EXISTS customers;");
             statement.execute("""
                     CREATE OR REPLACE TABLE customers
                     (
@@ -42,6 +44,20 @@ public class DatabaseConnection implements IDatabaseConnection {
                         lastname  VARCHAR(50)               NOT NULL,
                         birthdate DATE,
                         PRIMARY KEY (id)
+                    );
+                    """);
+
+            statement.execute("""
+                    CREATE OR REPLACE TABLE readings
+                    (
+                        id          UUID            NOT NULL DEFAULT (UUID()),
+                        customer_id UUID            NOT NULL,
+                        date        DATE            NOT NULL,
+                        meter_ID    VARCHAR(100)    NOT NULL,
+                        value       DOUBLE UNSIGNED NOT NULL,
+                        comment     VARCHAR(100),
+                        PRIMARY KEY (id),
+                        FOREIGN KEY (customer_id) REFERENCES customers (id)
                     );
                     """);
         } catch (SQLException e) {
