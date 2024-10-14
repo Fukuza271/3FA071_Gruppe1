@@ -3,7 +3,13 @@ package database.daos;
 import database.DatabaseConnection;
 import database.Property;
 import database.entities.Customer;
+import interfaces.ICustomer;
 import interfaces.IDao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,7 +28,27 @@ public class CustomerDao implements IDao<Customer> {
 
     @Override
     public List<Customer> findAll() {
-        return List.of();
+        List<Customer> results = new ArrayList<>();
+
+        try {
+            Statement statement = this.databaseConnection.connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM customers;");
+
+            while (rs.next()) {
+                Customer customer = new Customer(
+                        UUID.fromString(rs.getString("id")),
+                        ICustomer.Gender.valueOf(rs.getString("gender")),
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        rs.getDate("birthdate").toLocalDate());
+
+                results.add(customer);
+            }
+        } catch (SQLException e) {
+            return results;
+        }
+
+        return results;
     }
 
     @Override

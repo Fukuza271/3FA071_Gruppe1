@@ -69,4 +69,9 @@ public class Customer implements ICustomer {
     public void setId(UUID id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return this.gender.name() + ", " +  this.firstName + ", " + this.lastName + ", " + this.birthdate.toString();
+    }
 }
