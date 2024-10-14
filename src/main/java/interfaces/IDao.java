@@ -7,7 +7,7 @@ import java.util.UUID;
 public interface IDao<T> {
     public T findById(UUID id);
     public List<T> findAll() throws SQLException;
-    public void insert(T entity);
-    public void update(T entity);
-    public void deleteById(UUID id);
+    public boolean insert(T entity);
+    public boolean update(T entity);
+    public boolean deleteById(UUID id);
 }
