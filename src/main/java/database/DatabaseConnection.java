@@ -7,19 +7,21 @@ import java.util.Properties;
 
 public class DatabaseConnection implements IDatabaseConnection {
 
-    private Connection connection = null;
+    public Connection connection = null;
 
     @Override
     public IDatabaseConnection openConnection(Properties properties) {
-        try {
-            String systemUser = System.getProperty("user.name");
-            String dbUrl = properties.getProperty(systemUser + ".db.url");
-            String dbUser = properties.getProperty(systemUser + ".db.user");
-            String dbPassword = properties.getProperty(systemUser + ".db.pw");
+        if (this.connection == null) {
+            try {
+                String systemUser = System.getProperty("user.name");
+                String dbUrl = properties.getProperty(systemUser + ".db.url");
+                String dbUser = properties.getProperty(systemUser + ".db.user");
+                String dbPassword = properties.getProperty(systemUser + ".db.pw");
 
-            this.connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+                this.connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         return this;
