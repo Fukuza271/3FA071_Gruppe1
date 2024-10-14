@@ -255,3 +255,6 @@ local.properties
 *.launch
 
 # End of https://www.toptal.com/developers/gitignore/api/git,java,macos,maven,windows,intellij
+
+#Test Root Source
+*.iml
