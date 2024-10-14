@@ -5,6 +5,7 @@ import database.Property;
 import interfaces.IDatabaseConnection;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
 import java.sql.Connection;
@@ -18,9 +19,7 @@ public class DatabaseConnectionTest {
     @Test
     public void testOpenConnection() throws SQLException {
         IDatabaseConnection connection = new DatabaseConnection();
-        Connection mockConnection = Mockito.mock(Connection.class);
-        Mockito.when(DriverManager.getConnection(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn(mockConnection);
-        IDatabaseConnection databaseConnection = connection.openConnection(Property.readProperties());
-        Assert.assertNotNull(databaseConnection);
+        IDatabaseConnection result = connection.openConnection(Property.readProperties());
+        Assert.assertNotNull(result);
     }
 }
