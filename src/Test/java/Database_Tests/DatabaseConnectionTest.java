@@ -25,10 +25,6 @@ public class DatabaseConnectionTest {
         connection = new DatabaseConnection();
         IDatabaseConnection result = connection.openConnection(Property.readProperties());
         Assertions.assertNotNull(result);
-    }
-
-    @AfterAll
-    public void closeConnectionTest(){
         connection.closeConnection();
     }
 }
