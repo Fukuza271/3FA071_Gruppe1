@@ -3,8 +3,6 @@ package Database_Tests;
 import database.DatabaseConnection;
 import database.Property;
 import interfaces.IDatabaseConnection;
-import org.junit.Assert;
-import org.junit.Test;
 
 import java.sql.SQLException;
 import java.sql.Statement;

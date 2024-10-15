@@ -3,9 +3,9 @@ package Database_Tests;
 import database.DatabaseConnection;
 import database.Property;
 import interfaces.IDatabaseConnection;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
@@ -24,10 +24,10 @@ public class DatabaseConnectionTest {
     public void testOpenConnection() throws SQLException {
         connection = new DatabaseConnection();
         IDatabaseConnection result = connection.openConnection(Property.readProperties());
-        Assert.assertNotNull(result);
+        Assertions.assertNotNull(result);
     }
 
-    @After
+    @AfterAll
     public void closeConnectionTest(){
         connection.closeConnection();
     }
