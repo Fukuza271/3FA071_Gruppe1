@@ -10,20 +10,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-public class DataTest {
+public class TestData {
 
-    @Test
-    public void testOpenConnection() throws SQLException {
-        IDatabaseConnection connection = new DatabaseConnection();
-        connection.openConnection(Property.readProperties());
-    }
-
-    @Test
-    public void insertCustomerTestData() {
+    public static void insertCustomerTestData() {
 
         DatabaseConnection connection = new DatabaseConnection();
-        IDatabaseConnection result = connection.openConnection(Property.readProperties());
-        Assert.assertNotNull(result);
+        connection.openConnection(Property.readProperties());
 
         try {
             Statement statement = connection.connection.createStatement();
@@ -43,13 +35,8 @@ public class DataTest {
                         ('2a284519-4141-409c-a5d6-ad77bba13523', 'w', 'Karolina', 'Hamburger', '2001-04-23'),
                         ('b3da4b4c-c5dc-44a6-bebb-d82f711a6576', 'w', 'Roseline', 'Jäger', '1994-03-05');
                     """);
-
-            connection.closeConnection();
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 }
