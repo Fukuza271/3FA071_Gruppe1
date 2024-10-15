@@ -93,7 +93,7 @@ public class CustomerDao implements IDao<Customer> {
 
             if (statement.executeUpdate() == 0) {
                 return false;
-            };
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
