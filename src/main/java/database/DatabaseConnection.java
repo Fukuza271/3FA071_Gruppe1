@@ -7,18 +7,22 @@ import java.util.Properties;
 
 public class DatabaseConnection implements IDatabaseConnection {
 
-    public Connection connection = null;
+    private static Connection connection = null;
+
+    public Connection getConnection() {
+        return connection;
+    }
 
     @Override
     public IDatabaseConnection openConnection(Properties properties) {
-        if (this.connection == null) {
+        if (connection == null) {
             try {
                 String systemUser = System.getProperty("user.name");
                 String dbUrl = properties.getProperty(systemUser + ".db.url");
                 String dbUser = properties.getProperty(systemUser + ".db.user");
                 String dbPassword = properties.getProperty(systemUser + ".db.pw");
 
-                this.connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+                connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -29,12 +33,8 @@ public class DatabaseConnection implements IDatabaseConnection {
 
     @Override
     public void createAllTables() {
-        if (this.connection == null) {
-            throw new RuntimeException("Database Connection is null");
-        }
-
         try {
-            Statement statement = this.connection.createStatement();
+            Statement statement = connection.createStatement();
             statement.execute("DROP TABLE IF EXISTS readings;");
             statement.execute("DROP TABLE IF EXISTS customers;");
             statement.execute("""
@@ -60,7 +60,7 @@ public class DatabaseConnection implements IDatabaseConnection {
                         meter_type  ENUM ('HEIZUNG','STROM','WASSER','UNBEKANNT') NOT NULL,
                         comment     VARCHAR(100),
                         PRIMARY KEY (id),
-                        CONSTRAINT
+                        CONSTRAINT FK_CustomerReading
                             FOREIGN KEY (customer_id) REFERENCES customers (id)
                                 ON UPDATE CASCADE
                                 ON DELETE SET NULL
@@ -74,11 +74,14 @@ public class DatabaseConnection implements IDatabaseConnection {
     @Override
     public void truncateAllTables() {
         try {
-            Statement statement = this.connection.createStatement();
-            statement.execute("SET FOREIGN_KEY_CHECKS = 0;");
-            statement.execute("TRUNCATE TABLE customers;");
+            Statement statement = connection.createStatement();
+            statement.execute("ALTER TABLE readings DROP CONSTRAINT FK_CustomerReading;");
             statement.execute("TRUNCATE TABLE readings;");
-            statement.execute("SET FOREIGN_KEY_CHECKS = 1;");
+            statement.execute("TRUNCATE TABLE customers;");
+            statement.execute("""
+                    ALTER TABLE readings
+                        ADD CONSTRAINT FK_CustomerReading FOREIGN KEY (customer_id) REFERENCES customers (id);
+                    """);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -87,7 +90,7 @@ public class DatabaseConnection implements IDatabaseConnection {
     @Override
     public void removeAllTables() {
         try {
-            Statement statement = this.connection.createStatement();
+            Statement statement = connection.createStatement();
             statement.execute("DROP TABLE IF EXISTS readings;");
             statement.execute("DROP TABLE IF EXISTS customers;");
         } catch (SQLException e) {
@@ -97,10 +100,18 @@ public class DatabaseConnection implements IDatabaseConnection {
 
     @Override
     public void closeConnection() {
-        try {
-            this.connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
+    }
+
+    public static void main(String[] args) {
+        IDatabaseConnection connection = new DatabaseConnection().openConnection(Property.readProperties());
+        connection.createAllTables();
+        connection.truncateAllTables();
     }
 }

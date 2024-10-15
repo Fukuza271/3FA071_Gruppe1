@@ -1,7 +1,6 @@
 package interfaces;
 
-import org.mariadb.jdbc.Connection;
-
+import java.sql.Connection;
 import java.util.Properties;
 
 public interface IDatabaseConnection {
@@ -15,4 +14,7 @@ public interface IDatabaseConnection {
     public void removeAllTables();
 
     public void closeConnection();
+
+    //Todo: Fragen ob wir das hier hinzufügen dürfen
+    public Connection getConnection();
 }
