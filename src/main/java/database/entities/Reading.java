@@ -1,20 +1,13 @@
 package database.entities;
 
-import database.DatabaseConnection;
-import database.Property;
+import database.daos.CustomerDao;
 import interfaces.ICustomer;
 import interfaces.IReading;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.UUID;
 
 public class Reading implements IReading {
-
-    private final DatabaseConnection databaseConnection;
-
     private UUID id;
     private UUID customer_id;
     private LocalDate date;
@@ -24,10 +17,7 @@ public class Reading implements IReading {
     private String comment;
     private boolean substitute;
 
-    public Reading(UUID id, UUID customer_id, LocalDate date, String meter_ID, Double value, KindOfMeter meter_type,String comment){
-        this.databaseConnection = new DatabaseConnection();
-        this.databaseConnection.openConnection(Property.readProperties());
-
+    public Reading(UUID id, UUID customer_id, LocalDate date, String meter_ID, Double value, KindOfMeter meter_type, String comment) {
         this.id = id;
         this.customer_id = customer_id;
         this.date = date;
@@ -44,19 +34,7 @@ public class Reading implements IReading {
 
     @Override
     public ICustomer getCustomer() {
-        Customer c = null;
-        try {
-            PreparedStatement statement = this.databaseConnection.connection.prepareStatement("SELECT id, gender, firstname, lastname, birthdate FROM customers WHERE id = " + this.customer_id);
-            ResultSet rs = statement.executeQuery();
-
-            if(rs.first()){
-                c =(Customer) rs.getObject(0);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-        }
-        return c;
+        return new CustomerDao().findById(this.customer_id);
     }
 
     @Override
@@ -121,7 +99,7 @@ public class Reading implements IReading {
 
     @Override
     public void setSubstitute(Boolean substitute) {
-        this.substitute=substitute;
+        this.substitute = substitute;
     }
 
     @Override
