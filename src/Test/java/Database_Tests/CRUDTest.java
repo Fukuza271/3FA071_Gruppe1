@@ -57,6 +57,13 @@ public class CRUDTest {
         Assertions.assertNull(customerDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3")));
     }
 
+    @Test
+    public void findAllTest() {
+        CustomerDao custDao = new CustomerDao();
+        System.out.println("Listsize: " + custDao.findAll().size());
+        Assertions.assertEquals(custDao.findAll().size(), 10);
+    }
+
     @AfterAll
     public static void closeConnection() {
         IDatabaseConnection connection = new DatabaseConnection();
