@@ -57,6 +57,13 @@ public class CRUDTest {
 
     }
 
+    @Test
+    public void findAllTest() {
+        CustomerDao custDao = new CustomerDao();
+        System.out.println("Listsize: " + custDao.findAll().size());
+        Assertions.assertEquals(custDao.findAll().size(), 10);
+    }
+
     @AfterAll
     public static void closeConnection() {
         IDatabaseConnection connection = new DatabaseConnection();
