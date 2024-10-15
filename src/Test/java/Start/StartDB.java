@@ -2,7 +2,7 @@ package Start;
 
 import database.DatabaseConnection;
 import database.Property;
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Test;
 import java.util.Properties;
 
 public class StartDB {
