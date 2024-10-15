@@ -15,7 +15,7 @@ public class TestData {
         connection.openConnection(Property.readProperties());
 
         try {
-            Statement statement = connection.connection.createStatement();
+            Statement statement = connection.getConnection().createStatement();
 
             connection.createAllTables();
 
