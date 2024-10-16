@@ -53,8 +53,8 @@ public class CRUDTest {
     @Test
     public void deleteTest() {
         CustomerDao customerDao = new CustomerDao();
-        Customer customer = customerDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"));
-
+        customerDao.deleteById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"));
+        Assertions.assertNull(customerDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3")));
     }
 
     @Test
