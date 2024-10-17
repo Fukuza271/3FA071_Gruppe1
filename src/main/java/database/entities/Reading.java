@@ -17,12 +17,12 @@ public class Reading implements IReading {
     private String comment;
     private boolean substitute;
 
-    public Reading(UUID id, UUID customer_id, LocalDate date, String meter_ID, Double value, KindOfMeter meter_type, String comment) {
+    public Reading(UUID id, UUID customer_id, LocalDate date, String meter_ID, Double meter_count, KindOfMeter meter_type, String comment) {
         this.id = id;
         this.customer_id = customer_id;
         this.dateOfReading = date;
         this.meter_ID = meter_ID;
-        this.meterCount = value;
+        this.meterCount = meter_count;
         this.meter_type = meter_type;
         this.comment = comment;
     }
