@@ -8,7 +8,7 @@ import org.junit.jupiter.api.*;
 import java.util.Properties;
 
 @Order(3)
-public class PropertyTest {
+public class PropertyTest extends BasicTests {
 
     @BeforeAll
     public static void setUp() {

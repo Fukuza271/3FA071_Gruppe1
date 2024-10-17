@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Order(1)
-public class CRUDTest {
+public class CRUDTest extends BasicTests{
 
     @BeforeEach
     public void setUp() {
