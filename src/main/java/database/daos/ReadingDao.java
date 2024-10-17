@@ -1,80 +1,39 @@
 package database.daos;
 
-import database.DatabaseConnection;
-import database.Property;
 import database.entities.Reading;
-import interfaces.IDao;
-import interfaces.IDatabaseConnection;
 import interfaces.IReading;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ReadingDao implements IDao<Reading> {
-    private final IDatabaseConnection databaseConnection;
-
-    public ReadingDao() {
-        this.databaseConnection = new DatabaseConnection().openConnection(Property.readProperties());
-    }
-
+public class ReadingDao extends DataAccessObject<Reading> {
     @Override
-    public Reading findById(UUID id){
-
-        try {
-            PreparedStatement statement = this.getPreparedStatement("""
-                    SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
-                    FROM readings
-                    WHERE id = ?;
-                    """);
-
-            statement.setString(1, id.toString());
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.first()) {
-                return createReadingEntity(rs);
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-
-        return null;
+    public Reading findById(UUID id) {
+        return this.findById("""
+                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
+                FROM readings
+                WHERE id = ?;
+                """, id, this::createReadingEntity);
     }
 
     @Override
     public List<Reading> findAll() {
-        List<Reading> results = new ArrayList<>();
-
-        try {
-            PreparedStatement statement = this.getPreparedStatement("""
-                    SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
-                    FROM reading;
-                    """);
-
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()) {
-                Reading reading = this.createReadingEntity(rs);
-                results.add(reading);
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-
-        return results;
+        return this.findAll("""
+                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
+                FROM reading;
+                """, this::createReadingEntity);
     }
 
     @Override
     public boolean insert(Reading entity) {
-        try {
-            PreparedStatement statement = this.getPreparedStatement("""
-                    INSERT INTO reading (id, customer_id, date, meter_ID, meter_count, meter_type, comment)
-                    VALUES (?, ?, ?, ?, ?, ?, ?);
-                    """);
-
+        return this.insert("""
+                INSERT INTO reading (id, customer_id, date, meter_ID, meter_count, meter_type, comment)
+                VALUES (?, ?, ?, ?, ?, ?, ?);
+                """, (PreparedStatement statement) -> {
             statement.setString(1, entity.getId().toString());
             statement.setString(2, entity.getCustomer().getId().toString());
             statement.setDate(3, Date.valueOf(entity.getDateOfReading()));
@@ -82,14 +41,34 @@ public class ReadingDao implements IDao<Reading> {
             statement.setDouble(5, entity.getMeterCount());
             statement.setString(6, entity.getKindOfMeter().toString());
             statement.setString(7, entity.getComment());
+        });
+    }
 
-            statement.execute();
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
+    @Override
+    public boolean update(Reading entity) {
+        return this.update("""
+                UPDATE customers
+                SET customer_id    = ?,
+                    date = ?,
+                    meter_ID  = ?,
+                    meter_count = ?
+                    meter_type = ?
+                    comment = ?
+                WHERE id = ?;
+                """, (PreparedStatement statement) -> {
+            statement.setString(7, entity.getId().toString());
+            statement.setString(1, entity.getCustomer().getId().toString());
+            statement.setDate(2, Date.valueOf(entity.getDateOfReading()));
+            statement.setString(3, entity.getMeterId());
+            statement.setDouble(4, entity.getMeterCount());
+            statement.setString(5, entity.getKindOfMeter().toString());
+            statement.setString(6, entity.getComment());
+        });
+    }
 
-        return true;
+    @Override
+    public boolean deleteById(UUID id) {
+        return this.deleteById("DELETE FROM reading WHERE id = ?", id);
     }
 
     private Reading createReadingEntity(ResultSet rs) throws SQLException {
@@ -99,58 +78,9 @@ public class ReadingDao implements IDao<Reading> {
                 rs.getDate("date").toLocalDate(),
                 rs.getString("meter_ID"),
                 rs.getDouble("meter_count"),
-                IReading.KindOfMeter.valueOf(rs.getString(",meter_type")),
-                rs.getString("comment"));
-    }
-
-    @Override
-    public boolean update(Reading entity) {
-        try {
-            PreparedStatement statement = this.getPreparedStatement("""
-                    UPDATE customers
-                    SET customer_id    = ?,
-                        date = ?,
-                        meter_ID  = ?,
-                        meter_count = ?
-                        meter_type = ?
-                        comment = ?
-                    WHERE id = ?;
-                    """);
-
-            statement.setString(7, entity.getId().toString());
-            statement.setString(1, entity.getCustomer().getId().toString());
-            statement.setDate(2, Date.valueOf(entity.getDateOfReading()));
-            statement.setString(3, entity.getMeterId());
-            statement.setDouble(4, entity.getMeterCount());
-            statement.setString(5, entity.getKindOfMeter().toString());
-            statement.setString(6, entity.getComment());
-
-            return statement.executeUpdate() != 0;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-
-    }
-
-    @Override
-    public boolean deleteById(UUID id) {
-        try {
-            PreparedStatement statement = this.getPreparedStatement("DELETE FROM reading WHERE id = ?");
-
-            statement.setString(1, id.toString());
-            statement.execute();
-
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-
-        return true;
-    }
-
-    private PreparedStatement getPreparedStatement(String sql) throws SQLException {
-        return this.databaseConnection.getConnection().prepareStatement(sql);
+                IReading.KindOfMeter.valueOf(rs.getString("meter_type")),
+                rs.getString("comment")
+        );
     }
 }
 

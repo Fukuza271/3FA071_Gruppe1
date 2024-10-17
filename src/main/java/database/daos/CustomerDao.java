@@ -1,147 +1,76 @@
 package database.daos;
 
-import database.DatabaseConnection;
-import database.Property;
 import database.entities.Customer;
 import interfaces.ICustomer;
-import interfaces.IDao;
-import interfaces.IDatabaseConnection;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class CustomerDao implements IDao<Customer> {
-    private final IDatabaseConnection databaseConnection;
-
-    public CustomerDao() {
-        this.databaseConnection = new DatabaseConnection().openConnection(Property.readProperties());
-    }
-
+public class CustomerDao extends DataAccessObject<Customer> {
     @Override
     public Customer findById(UUID id) {
-        try {
-            PreparedStatement statement = this.getPreparedStatement("""
-                    SELECT id, gender, firstName, lastName, birthdate
-                    FROM customers
-                    WHERE id = ?;
-                    """);
-
-            statement.setString(1, id.toString());
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.first()) {
-                return createCustomerEntity(rs);
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-
-        return null;
+        return this.findById("""
+                SELECT id, gender, firstName, lastName, birthdate
+                FROM customers
+                WHERE id = ?;
+                """, id, this::createCustomerEntity);
     }
 
     @Override
     public List<Customer> findAll() {
-        List<Customer> results = new ArrayList<>();
-
-        try {
-            PreparedStatement statement = this.getPreparedStatement("""
-                    SELECT id, gender, firstName, lastName, birthdate
-                    FROM customers;
-                    """);
-
-            ResultSet rs = statement.executeQuery();
-
-            while (rs.next()) {
-                Customer customer = this.createCustomerEntity(rs);
-                results.add(customer);
-            }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-
-        return results;
+        return this.findAll("""
+                SELECT id, gender, firstName, lastName, birthdate
+                FROM customers;
+                """, this::createCustomerEntity);
     }
 
     @Override
     public boolean insert(Customer entity) {
-        try {
-            PreparedStatement statement = this.getPreparedStatement("""
+        return this.insert("""
                     INSERT INTO customers (id, gender, firstname, lastname, birthdate)
                     VALUES (?, ?, ?, ?, ?);
-                    """);
-
+                """, (PreparedStatement statement) -> {
             statement.setString(1, entity.getId().toString());
             statement.setString(2, entity.getGender().toString());
             statement.setString(3, entity.getFirstName());
             statement.setString(4, entity.getLastName());
             statement.setDate(5, Date.valueOf(entity.getBirthDate()));
-
-            statement.execute();
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-
-        return true;
+        });
     }
 
     @Override
     public boolean update(Customer entity) {
-        try {
-            PreparedStatement statement = this.getPreparedStatement("""
-                    UPDATE customers
-                    SET gender    = ?,
-                        firstname = ?,
-                        lastname  = ?,
-                        birthdate = ?
-                    WHERE id = ?;
-                    """);
-
+        return this.update("""
+                UPDATE customers
+                SET gender    = ?,
+                    firstname = ?,
+                    lastname  = ?,
+                    birthdate = ?
+                WHERE id = ?;
+                """, (PreparedStatement statement) -> {
             statement.setString(5, entity.getId().toString());
             statement.setString(1, entity.getGender().toString());
             statement.setString(2, entity.getFirstName());
             statement.setString(3, entity.getLastName());
             statement.setDate(4, Date.valueOf(entity.getBirthDate()));
-
-            return statement.executeUpdate() != 0;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-
+        });
     }
 
     @Override
     public boolean deleteById(UUID id) {
-        try {
-            PreparedStatement statement = this.getPreparedStatement("DELETE FROM customers WHERE id = ?");
-
-            statement.setString(1, id.toString());
-            statement.execute();
-
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-
-        return true;
+        return this.deleteById("DELETE FROM customers WHERE id = ?", id);
     }
 
     private Customer createCustomerEntity(ResultSet rs) throws SQLException {
         return new Customer(
                 UUID.fromString(rs.getString("id")),
                 ICustomer.Gender.valueOf(rs.getString("gender")),
-                rs.getString("firstName"),
-                rs.getString("lastName"),
-                rs.getDate("birthdate").toLocalDate());
-    }
-
-    private PreparedStatement getPreparedStatement(String sql) throws SQLException {
-        return this.databaseConnection.getConnection().prepareStatement(sql);
+                rs.getString("firstName"), rs.getString("lastName"),
+                rs.getDate("birthdate").toLocalDate()
+        );
     }
 }
