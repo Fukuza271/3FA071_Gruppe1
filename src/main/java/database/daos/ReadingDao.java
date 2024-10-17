@@ -21,8 +21,8 @@ public class ReadingDao extends DataAccessObject<Reading> {
     }
 
     @Override
-    public List<Reading> findAll() {
-        return this.findAll("""
+    public List<Reading> get() {
+        return this.get("""
                 SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
                 FROM reading;
                 """, this::createReadingEntity);
@@ -69,6 +69,15 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public boolean deleteById(UUID id) {
         return this.deleteById("DELETE FROM reading WHERE id = ?", id);
+    }
+
+    @Override
+    List<Reading> where(String column, String operator, String value) {
+        return this.get(String.format("""
+                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
+                FROM reading
+                WHERE %s %s '%s';
+                """, column, operator, value), this::createReadingEntity);
     }
 
     private Reading createReadingEntity(ResultSet rs) throws SQLException {
