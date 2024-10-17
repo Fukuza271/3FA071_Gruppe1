@@ -62,8 +62,15 @@ public class CRUDTest extends BasicTests{
 
     @Test
     public void findAllCustomerTest() {
-        System.out.println("Listsize: " + customerDao.findAll().size());
-        Assertions.assertEquals(customerDao.findAll().size(), 10);
+        System.out.println("Listsize: " + customerDao.get().size());
+        Assertions.assertEquals(customerDao.get().size(), 10);
+    }
+
+    @Test
+    public void whereCustomerTest() {
+        List<Customer> customer = customerDao.where("lastName", "=", "Jäger");
+        Assertions.assertEquals(customer.getFirst().getLastName(), "Jäger");
+        Assertions.assertEquals(customer.size(), 1);
     }
 
     // Reading Dao Tests
@@ -106,7 +113,14 @@ public class CRUDTest extends BasicTests{
 
     @Test
     public void findAllReadingTest() {
-        List<Reading> readings = readingDao.findAll();
+        List<Reading> readings = readingDao.get();
         Assertions.assertEquals(readings.size(), 10);
+    }
+
+    @Test
+    public void whereReadingTest() {
+        List<Customer> customer = customerDao.where("", "=", "");
+        Assertions.assertEquals(customer.getFirst().getLastName(), "");
+        Assertions.assertEquals(customer.size(), 1);
     }
 }
