@@ -19,8 +19,6 @@ import java.util.Properties;
 
 public class DatabaseConnectionTest extends BasicTests{
 
-    IDatabaseConnection connection;
-
     @Test
     public void testOpenConnection() throws SQLException {
         connection = new DatabaseConnection();
@@ -30,43 +28,24 @@ public class DatabaseConnectionTest extends BasicTests{
 
     @Test
     public void truncateAllTablesTest() {
-        DatabaseConnection dbCon = new DatabaseConnection();
-        CustomerDao custDao = new CustomerDao();
 
         TestData.insertCustomerTestData();
-        System.out.println("Listsize: " + custDao.findAll().size());
-        Assertions.assertEquals(custDao.findAll().size(), 10);
+        System.out.println("Listsize: " + customerDao.findAll().size());
+        Assertions.assertEquals(customerDao.findAll().size(), 10);
 
-        dbCon.truncateAllTables();
-        System.out.println("Listsize: " + custDao.findAll().size());
-        Assertions.assertEquals(custDao.findAll().size(), 0);
+        connection.truncateAllTables();
+        System.out.println("Listsize: " + customerDao.findAll().size());
+        Assertions.assertEquals(customerDao.findAll().size(), 0);
     }
-
-
 
     @Test
     public void removeAllTablesTest() {
-        DatabaseConnection dbCon = new DatabaseConnection();
-        CustomerDao custDao = new CustomerDao();
-
         try {
             Statement statement = connection.getConnection().createStatement();
-
             statement.execute("DROP TABLE IF EXISTS readings;");
             statement.execute("DROP TABLE IF EXISTS customers;");
-
-
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-
-
-//    @AfterAll
-//    public static void cleanUp(){
-//        IDatabaseConnection connection = new DatabaseConnection();
-//        connection.closeConnection();
-//    }
 }
