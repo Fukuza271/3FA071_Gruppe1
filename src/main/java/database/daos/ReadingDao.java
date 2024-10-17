@@ -6,7 +6,6 @@ import database.entities.Reading;
 import interfaces.IDao;
 import interfaces.IDatabaseConnection;
 import interfaces.IReading;
-
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +26,7 @@ public class ReadingDao implements IDao<Reading> {
 
         try {
             PreparedStatement statement = this.getPreparedStatement("""
-                    SELECT id, customer_id, date, meter_ID, value, meter_type, comment
+                    SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
                     FROM readings
                     WHERE id = ?;
                     """);
@@ -51,7 +50,7 @@ public class ReadingDao implements IDao<Reading> {
 
         try {
             PreparedStatement statement = this.getPreparedStatement("""
-                    SELECT id, customer_id, date, meter_ID, value, meter_type, comment
+                    SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
                     FROM reading;
                     """);
 
@@ -72,7 +71,7 @@ public class ReadingDao implements IDao<Reading> {
     public boolean insert(Reading entity) {
         try {
             PreparedStatement statement = this.getPreparedStatement("""
-                    INSERT INTO reading (id, customer_id, date, meter_ID, value, meter_type, comment)
+                    INSERT INTO reading (id, customer_id, date, meter_ID, meter_count, meter_type, comment)
                     VALUES (?, ?, ?, ?, ?, ?, ?);
                     """);
 
@@ -99,7 +98,7 @@ public class ReadingDao implements IDao<Reading> {
                 UUID.fromString(rs.getString("customer_id")),
                 rs.getDate("date").toLocalDate(),
                 rs.getString("meter_ID"),
-                rs.getDouble("value"),
+                rs.getDouble("meter_count"),
                 IReading.KindOfMeter.valueOf(rs.getString(",meter_type")),
                 rs.getString("comment"));
     }
@@ -112,7 +111,7 @@ public class ReadingDao implements IDao<Reading> {
                     SET customer_id    = ?,
                         date = ?,
                         meter_ID  = ?,
-                        value = ?
+                        meter_count = ?
                         meter_type = ?
                         comment = ?
                     WHERE id = ?;

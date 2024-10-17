@@ -56,7 +56,7 @@ public class DatabaseConnection implements IDatabaseConnection {
                         customer_id UUID,
                         date        DATE                                          NOT NULL,
                         meter_ID    VARCHAR(100)                                  NOT NULL,
-                        value       DOUBLE UNSIGNED                               NOT NULL,
+                        meter_count DOUBLE UNSIGNED                               NOT NULL,
                         meter_type  ENUM ('HEIZUNG','STROM','WASSER','UNBEKANNT') NOT NULL,
                         comment     VARCHAR(100),
                         PRIMARY KEY (id),
