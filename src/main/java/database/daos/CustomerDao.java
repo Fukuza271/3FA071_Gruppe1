@@ -74,12 +74,18 @@ public class CustomerDao extends DataAccessObject<Customer> {
                 """, column, operator, value), this::createCustomerEntity);
     }
 
-    private Customer createCustomerEntity(ResultSet rs) throws SQLException {
-        return new Customer(
-                UUID.fromString(rs.getString("id")),
-                ICustomer.Gender.valueOf(rs.getString("gender")),
-                rs.getString("firstName"), rs.getString("lastName"),
-                rs.getDate("birthdate").toLocalDate()
-        );
+    private Customer createCustomerEntity(ResultSet rs) {
+        Customer customer = null;
+        try {
+            customer = new Customer(
+                    UUID.fromString(rs.getString("id")),
+                    ICustomer.Gender.valueOf(rs.getString("gender")),
+                    rs.getString("firstName"), rs.getString("lastName"),
+                    rs.getDate("birthdate").toLocalDate()
+            );
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return customer;
     }
 }

@@ -80,16 +80,22 @@ public class ReadingDao extends DataAccessObject<Reading> {
                 """, column, operator, value), this::createReadingEntity);
     }
 
-    private Reading createReadingEntity(ResultSet rs) throws SQLException {
-        return new Reading(
-                UUID.fromString(rs.getString("id")),
-                UUID.fromString(rs.getString("customer_id")),
-                rs.getDate("date").toLocalDate(),
-                rs.getString("meter_ID"),
-                rs.getDouble("meter_count"),
-                IReading.KindOfMeter.valueOf(rs.getString("meter_type")),
-                rs.getString("comment")
-        );
+    private Reading createReadingEntity(ResultSet rs) {
+        Reading reading = null;
+        try {
+            reading = new Reading(
+                    UUID.fromString(rs.getString("id")),
+                    UUID.fromString(rs.getString("customer_id")),
+                    rs.getDate("date").toLocalDate(),
+                    rs.getString("meter_ID"),
+                    rs.getDouble("meter_count"),
+                    IReading.KindOfMeter.valueOf(rs.getString("meter_type")),
+                    rs.getString("comment")
+            );
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return reading;
     }
 }
 
