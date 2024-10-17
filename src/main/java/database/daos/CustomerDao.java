@@ -21,8 +21,8 @@ public class CustomerDao extends DataAccessObject<Customer> {
     }
 
     @Override
-    public List<Customer> findAll() {
-        return this.findAll("""
+    public List<Customer> get() {
+        return this.get("""
                 SELECT id, gender, firstName, lastName, birthdate
                 FROM customers;
                 """, this::createCustomerEntity);
@@ -65,18 +65,21 @@ public class CustomerDao extends DataAccessObject<Customer> {
         return this.deleteById("DELETE FROM customers WHERE id = ?", id);
     }
 
-    private Customer createCustomerEntity(ResultSet rs) {
-        Customer customer = null;
-        try {
-            customer = new Customer(
-                    UUID.fromString(rs.getString("id")),
-                    ICustomer.Gender.valueOf(rs.getString("gender")),
-                    rs.getString("firstName"), rs.getString("lastName"),
-                    rs.getDate("birthdate").toLocalDate()
-            );
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return customer;
+    @Override
+    public List<Customer> where(String column, String operator, String value) {
+        return this.get(String.format("""
+                SELECT id, gender, firstName, lastName, birthdate
+                FROM customers
+                WHERE %s %s '%s';
+                """, column, operator, value), this::createCustomerEntity);
+    }
+
+    private Customer createCustomerEntity(ResultSet rs) throws SQLException {
+        return new Customer(
+                UUID.fromString(rs.getString("id")),
+                ICustomer.Gender.valueOf(rs.getString("gender")),
+                rs.getString("firstName"), rs.getString("lastName"),
+                rs.getDate("birthdate").toLocalDate()
+        );
     }
 }

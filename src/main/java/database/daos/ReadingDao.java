@@ -21,8 +21,8 @@ public class ReadingDao extends DataAccessObject<Reading> {
     }
 
     @Override
-    public List<Reading> findAll() {
-        return this.findAll("""
+    public List<Reading> get() {
+        return this.get("""
                 SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
                 FROM reading;
                 """, this::createReadingEntity);
@@ -71,22 +71,25 @@ public class ReadingDao extends DataAccessObject<Reading> {
         return this.deleteById("DELETE FROM reading WHERE id = ?", id);
     }
 
-    private Reading createReadingEntity(ResultSet rs) {
-        Reading reading = null;
-        try {
-            reading = new Reading(
-                    UUID.fromString(rs.getString("id")),
-                    UUID.fromString(rs.getString("customer_id")),
-                    rs.getDate("date").toLocalDate(),
-                    rs.getString("meter_ID"),
-                    rs.getDouble("meter_count"),
-                    IReading.KindOfMeter.valueOf(rs.getString("meter_type")),
-                    rs.getString("comment")
-            );
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        return reading;
+    @Override
+    List<Reading> where(String column, String operator, String value) {
+        return this.get(String.format("""
+                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
+                FROM reading
+                WHERE %s %s '%s';
+                """, column, operator, value), this::createReadingEntity);
+    }
+
+    private Reading createReadingEntity(ResultSet rs) throws SQLException {
+        return new Reading(
+                UUID.fromString(rs.getString("id")),
+                UUID.fromString(rs.getString("customer_id")),
+                rs.getDate("date").toLocalDate(),
+                rs.getString("meter_ID"),
+                rs.getDouble("meter_count"),
+                IReading.KindOfMeter.valueOf(rs.getString("meter_type")),
+                rs.getString("comment")
+        );
     }
 }
 

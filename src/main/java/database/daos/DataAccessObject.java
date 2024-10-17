@@ -33,13 +33,15 @@ public abstract class DataAccessObject<T> {
 
     abstract T findById(UUID id);
 
-    abstract List<T> findAll();
+    abstract List<T> get();
 
     abstract boolean insert(T entity);
 
     abstract boolean update(T entity);
 
     abstract boolean deleteById(UUID id);
+
+    abstract List<T> where(String column, String operator, String value);
 
     protected boolean insert(String sql, AddParamsToStatement addParams) {
         try {
@@ -84,7 +86,7 @@ public abstract class DataAccessObject<T> {
         return null;
     }
 
-    protected List<T> findAll(String sql, CreateEntity<T> createEntity) {
+    protected List<T> get(String sql, CreateEntity<T> createEntity) {
         List<T> results = new ArrayList<>();
 
         try {
