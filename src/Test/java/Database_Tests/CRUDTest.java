@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+@Order(1)
 public class CRUDTest {
 
     @BeforeEach
@@ -120,9 +121,9 @@ public class CRUDTest {
         Assertions.assertEquals(readings.size(), 10);
     }
 
-    @AfterAll
+/*    @AfterAll
     public static void closeConnection() {
         IDatabaseConnection connection = new DatabaseConnection();
         connection.closeConnection();
-    }
+    }*/
 }

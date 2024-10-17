@@ -1,12 +1,13 @@
 package Database_Tests;
 
+import database.DatabaseConnection;
 import database.Property;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import interfaces.IDatabaseConnection;
+import org.junit.jupiter.api.*;
 
 import java.util.Properties;
 
+@Order(3)
 public class PropertyTest {
 
     @BeforeAll
@@ -20,5 +21,11 @@ public class PropertyTest {
         Assertions.assertEquals(properties.getProperty("TestUser.db.url"), "jdbc:mariadb://localhost:3306/HausFix");
         Assertions.assertEquals(properties.getProperty("TestUser.db.user"), "root");
         Assertions.assertEquals(properties.getProperty("TestUser.db.pw"), "root");
+    }
+
+    @AfterAll
+    public static void end() {
+        IDatabaseConnection connection = new DatabaseConnection();
+        connection.closeConnection();
     }
 }
