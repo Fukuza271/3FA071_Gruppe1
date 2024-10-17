@@ -17,7 +17,7 @@ import java.sql.Statement;
 import java.util.Properties;
 
 
-public class DatabaseConnectionTest {
+public class DatabaseConnectionTest extends BasicTests{
 
     IDatabaseConnection connection;
 
@@ -26,11 +26,7 @@ public class DatabaseConnectionTest {
         connection = new DatabaseConnection();
         IDatabaseConnection result = connection.openConnection(Property.readProperties());
         Assertions.assertNotNull(result);
-        connection.closeConnection();
     }
-
-
-
 
     @Test
     public void truncateAllTablesTest() {
@@ -44,7 +40,33 @@ public class DatabaseConnectionTest {
         dbCon.truncateAllTables();
         System.out.println("Listsize: " + custDao.findAll().size());
         Assertions.assertEquals(custDao.findAll().size(), 0);
-
-
     }
+
+
+
+    @Test
+    public void removeAllTablesTest() {
+        DatabaseConnection dbCon = new DatabaseConnection();
+        CustomerDao custDao = new CustomerDao();
+
+        try {
+            Statement statement = connection.getConnection().createStatement();
+
+            statement.execute("DROP TABLE IF EXISTS readings;");
+            statement.execute("DROP TABLE IF EXISTS customers;");
+
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+//    @AfterAll
+//    public static void cleanUp(){
+//        IDatabaseConnection connection = new DatabaseConnection();
+//        connection.closeConnection();
+//    }
 }
