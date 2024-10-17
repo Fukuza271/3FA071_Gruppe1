@@ -10,9 +10,9 @@ import java.util.UUID;
 public class Reading implements IReading {
     private UUID id;
     private UUID customer_id;
-    private LocalDate date;
+    private LocalDate dateOfReading;
     private String meter_ID;
-    private Double value;
+    private Double meterCount;
     private KindOfMeter meter_type;
     private String comment;
     private boolean substitute;
@@ -20,9 +20,9 @@ public class Reading implements IReading {
     public Reading(UUID id, UUID customer_id, LocalDate date, String meter_ID, Double value, KindOfMeter meter_type, String comment) {
         this.id = id;
         this.customer_id = customer_id;
-        this.date = date;
+        this.dateOfReading = date;
         this.meter_ID = meter_ID;
-        this.value = value;
+        this.meterCount = value;
         this.meter_type = meter_type;
         this.comment = comment;
     }
@@ -39,7 +39,7 @@ public class Reading implements IReading {
 
     @Override
     public LocalDate getDateOfReading() {
-        return this.date;
+        return this.dateOfReading;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class Reading implements IReading {
 
     @Override
     public Double getMeterCount() {
-        return this.value;
+        return this.meterCount;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class Reading implements IReading {
 
     @Override
     public void setDateOfReading(LocalDate dateOfReading) {
-        this.date = dateOfReading;
+        this.dateOfReading = dateOfReading;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class Reading implements IReading {
 
     @Override
     public void setMeterCount(Double meterCount) {
-        this.value = meterCount;
+        this.meterCount = meterCount;
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
 
-public class PropertyTest {
+public class PropertyTest extends BasicTests {
 
     @BeforeAll
     public static void setUp() {

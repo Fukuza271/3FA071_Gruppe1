@@ -3,11 +3,12 @@ package Database_Tests;
 import database.DatabaseConnection;
 import database.Property;
 import interfaces.IDatabaseConnection;
+import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class TestData {
+public class TestData extends BasicTests {
 
     public static void insertCustomerTestData() {
 
@@ -36,4 +37,23 @@ public class TestData {
             throw new RuntimeException(e);
         }
     }
+
+//    @Test
+//    public void insertReadingTestData() {
+//
+//        DatabaseConnection connection = new DatabaseConnection();
+//        connection.openConnection(Property.readProperties());
+//
+//        try {
+//            Statement statement = connection.getConnection().createStatement();
+//            connection.openConnection(Property.readProperties());
+//
+//            statement.execute("""
+//                        INSERT INTO readings() VALUES
+//                        ('')
+//                    """);
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//  }
 }

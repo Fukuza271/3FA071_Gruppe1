@@ -14,7 +14,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public Reading findById(UUID id) {
         return this.findById("""
-                SELECT id, customer_id, date, meter_ID, value, meter_type, comment
+                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
                 FROM readings
                 WHERE id = ?;
                 """, id, this::createReadingEntity);
@@ -23,7 +23,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public List<Reading> findAll() {
         return this.findAll("""
-                SELECT id, customer_id, date, meter_ID, value, meter_type, comment
+                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
                 FROM reading;
                 """, this::createReadingEntity);
     }
@@ -31,7 +31,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public boolean insert(Reading entity) {
         return this.insert("""
-                INSERT INTO reading (id, customer_id, date, meter_ID, value, meter_type, comment)
+                INSERT INTO reading (id, customer_id, date, meter_ID, meter_count, meter_type, comment)
                 VALUES (?, ?, ?, ?, ?, ?, ?);
                 """, (PreparedStatement statement) -> {
             statement.setString(1, entity.getId().toString());
@@ -51,7 +51,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
                 SET customer_id    = ?,
                     date = ?,
                     meter_ID  = ?,
-                    value = ?
+                    meter_count = ?
                     meter_type = ?
                     comment = ?
                 WHERE id = ?;
@@ -77,7 +77,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
                 UUID.fromString(rs.getString("customer_id")),
                 rs.getDate("date").toLocalDate(),
                 rs.getString("meter_ID"),
-                rs.getDouble("value"),
+                rs.getDouble("meter_count"),
                 IReading.KindOfMeter.valueOf(rs.getString("meter_type")),
                 rs.getString("comment")
         );
