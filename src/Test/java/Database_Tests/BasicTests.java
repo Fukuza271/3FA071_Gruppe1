@@ -12,10 +12,10 @@ public abstract class BasicTests {
     static CustomerDao customerDao = new CustomerDao();
     static ReadingDao readingDao = new ReadingDao();
 
-    @AfterAll
-    public static void closeConnectionTest() {
-        connection.closeConnection();
-
-        System.out.println("Connection closed!");
-    }
+//    @AfterAll
+//    public static void closeConnectionTest() {
+//        connection.closeConnection();
+//
+//        System.out.println("Connection closed!");
+//    }
 }
