@@ -20,7 +20,7 @@ import java.util.Properties;
 public class DatabaseConnectionTest extends BasicTests{
 
     @Test
-    public void testOpenConnection() throws SQLException {
+    public void testOpenConnection() {
         connection = new DatabaseConnection();
         IDatabaseConnection result = connection.openConnection(Property.readProperties());
         Assertions.assertNotNull(result);

@@ -1,9 +1,12 @@
 package database;
 
+import database.daos.CustomerDao;
+import database.entities.Customer;
 import interfaces.IDatabaseConnection;
 
 import java.sql.*;
 import java.util.Properties;
+import java.util.UUID;
 
 public class DatabaseConnection implements IDatabaseConnection {
 
@@ -24,7 +27,7 @@ public class DatabaseConnection implements IDatabaseConnection {
 
                 connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                System.err.println(e.getMessage());
             }
         }
 
@@ -67,7 +70,7 @@ public class DatabaseConnection implements IDatabaseConnection {
                     );
                     """);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -83,7 +86,7 @@ public class DatabaseConnection implements IDatabaseConnection {
                         ADD CONSTRAINT FK_CustomerReading FOREIGN KEY (customer_id) REFERENCES customers (id);
                     """);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -94,7 +97,7 @@ public class DatabaseConnection implements IDatabaseConnection {
             statement.execute("DROP TABLE IF EXISTS readings;");
             statement.execute("DROP TABLE IF EXISTS customers;");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -104,14 +107,8 @@ public class DatabaseConnection implements IDatabaseConnection {
             try {
                 connection.close();
             } catch (SQLException e) {
-                throw new RuntimeException(e);
+                System.err.println(e.getMessage());
             }
         }
-    }
-
-    public static void main(String[] args) {
-        IDatabaseConnection connection = new DatabaseConnection().openConnection(Property.readProperties());
-        connection.createAllTables();
-        connection.truncateAllTables();
     }
 }

@@ -20,8 +20,15 @@ public abstract class DataAccessObject<T> {
         this.databaseConnection = new DatabaseConnection().openConnection(Property.readProperties());
     }
 
-    private PreparedStatement getPreparedStatement(String sql) throws SQLException {
-        return this.databaseConnection.getConnection().prepareStatement(sql);
+    private PreparedStatement getPreparedStatement(String sql) {
+        PreparedStatement statement = null;
+        try {
+            statement = this.databaseConnection.getConnection().prepareStatement(sql);
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return statement;
     }
 
     abstract T findById(UUID id);

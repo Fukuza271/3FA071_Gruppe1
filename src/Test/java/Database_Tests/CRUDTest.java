@@ -77,7 +77,7 @@ public class CRUDTest extends BasicTests{
     }
 
     @Test
-    public void insertUpdateTest() {
+    public void updateReadingTest() {
         Reading reading = readingDao.findById(UUID.fromString(""));
         reading.setSubstitute(true);
         readingDao.update(reading);
@@ -91,7 +91,7 @@ public class CRUDTest extends BasicTests{
     }
 
     @Test
-    public void updateReadingTest() {
+    public void insertReadingTest() {
         Reading reading = new Reading(
                 UUID.fromString(""),
                 UUID.fromString(""),
