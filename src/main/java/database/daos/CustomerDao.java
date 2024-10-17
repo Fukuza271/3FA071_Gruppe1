@@ -1,11 +1,7 @@
 package database.daos;
 
-import database.DatabaseConnection;
-import database.Property;
 import database.entities.Customer;
 import interfaces.ICustomer;
-import interfaces.IDao;
-import interfaces.IDatabaseConnection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,13 +11,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class CustomerDao implements IDao<Customer> {
-    private final IDatabaseConnection databaseConnection;
-
-    public CustomerDao() {
-        this.databaseConnection = new DatabaseConnection().openConnection(Property.readProperties());
-    }
-
+public class CustomerDao extends DataAccessObject<Customer> {
     @Override
     public Customer findById(UUID id) {
         try {
@@ -139,9 +129,5 @@ public class CustomerDao implements IDao<Customer> {
                 rs.getString("firstName"),
                 rs.getString("lastName"),
                 rs.getDate("birthdate").toLocalDate());
-    }
-
-    private PreparedStatement getPreparedStatement(String sql) throws SQLException {
-        return this.databaseConnection.getConnection().prepareStatement(sql);
     }
 }

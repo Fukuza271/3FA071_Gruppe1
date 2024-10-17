@@ -1,10 +1,6 @@
 package database.daos;
 
-import database.DatabaseConnection;
-import database.Property;
 import database.entities.Reading;
-import interfaces.IDao;
-import interfaces.IDatabaseConnection;
 import interfaces.IReading;
 
 import java.sql.Date;
@@ -15,15 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ReadingDao implements IDao<Reading> {
-    private final IDatabaseConnection databaseConnection;
-
-    public ReadingDao() {
-        this.databaseConnection = new DatabaseConnection().openConnection(Property.readProperties());
-    }
-
+public class ReadingDao extends DataAccessObject<Reading> {
     @Override
-    public Reading findById(UUID id){
+    public Reading findById(UUID id) {
 
         try {
             PreparedStatement statement = this.getPreparedStatement("""
@@ -93,17 +83,6 @@ public class ReadingDao implements IDao<Reading> {
         return true;
     }
 
-    private Reading createReadingEntity(ResultSet rs) throws SQLException {
-        return new Reading(
-                UUID.fromString(rs.getString("id")),
-                UUID.fromString(rs.getString("customer_id")),
-                rs.getDate("date").toLocalDate(),
-                rs.getString("meter_ID"),
-                rs.getDouble("value"),
-                IReading.KindOfMeter.valueOf(rs.getString(",meter_type")),
-                rs.getString("comment"));
-    }
-
     @Override
     public boolean update(Reading entity) {
         try {
@@ -150,8 +129,15 @@ public class ReadingDao implements IDao<Reading> {
         return true;
     }
 
-    private PreparedStatement getPreparedStatement(String sql) throws SQLException {
-        return this.databaseConnection.getConnection().prepareStatement(sql);
+    private Reading createReadingEntity(ResultSet rs) throws SQLException {
+        return new Reading(
+                UUID.fromString(rs.getString("id")),
+                UUID.fromString(rs.getString("customer_id")),
+                rs.getDate("date").toLocalDate(),
+                rs.getString("meter_ID"),
+                rs.getDouble("value"),
+                IReading.KindOfMeter.valueOf(rs.getString("meter_type")),
+                rs.getString("comment"));
     }
 }
 
