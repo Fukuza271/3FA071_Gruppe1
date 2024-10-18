@@ -1,12 +1,18 @@
 package Database_Tests;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import database.DatabaseConnection;
 import database.Property;
 import interfaces.IDatabaseConnection;
 import org.junit.jupiter.api.Test;
 
+import java.io.*;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class TestData extends BasicTests {
 
@@ -38,22 +44,35 @@ public class TestData extends BasicTests {
         }
     }
 
-//    @Test
-//    public void insertReadingTestData() {
-//
-//        DatabaseConnection connection = new DatabaseConnection();
-//        connection.openConnection(Property.readProperties());
-//
-//        try {
-//            Statement statement = connection.getConnection().createStatement();
-//            connection.openConnection(Property.readProperties());
-//
-//            statement.execute("""
-//                        INSERT INTO readings() VALUES
-//                        ('')
-//                    """);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//  }
+    @Test
+    public void inserCsv() {
+        String dirToCsv =  System.getProperty("user.dir") + File.separator + "src" + File.separator + "Test" + File.separator + "resources" + File.separator;
+        try {
+            CSVReader reader = new CSVReader(new FileReader(dirToCsv + "heizung.csv"));
+            String temp[];
+            while ((temp = reader.readNext()) != null) {
+                String[] data = temp[0].split(";");
+                System.out.println("");
+            }
+        } catch (RuntimeException | IOException  | CsvValidationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<List<String>> readCSV(String fileName) {
+
+        String dirToCsv =  System.getProperty("user.dir") + File.separator + "src" + File.separator + "Test" + File.separator + "resources" + File.separator;
+        List<List<String>> result = new ArrayList<>();;
+        try {
+            CSVReader reader = new CSVReader(new FileReader(dirToCsv + fileName));
+            String[] temp;
+            while ((temp = (reader.readNext())) != null) {
+                List<String> splitResult = Arrays.asList(temp[0].split(";"));
+                result.add(splitResult);
+            }
+        } catch (RuntimeException | IOException | CsvValidationException e) {
+            System.err.println(e.getMessage());
+        }
+        return result;
+    }
 }
