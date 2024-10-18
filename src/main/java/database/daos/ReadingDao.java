@@ -21,7 +21,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
     }
 
     @Override
-    public List<Reading> get() {
+    public List<Reading> findAll() {
         return this.get("""
                 SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
                 FROM reading;

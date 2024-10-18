@@ -33,7 +33,7 @@ public abstract class DataAccessObject<T> {
 
     abstract T findById(UUID id);
 
-    abstract List<T> get();
+    abstract List<T> findAll();
 
     abstract boolean insert(T entity);
 
