@@ -5,6 +5,7 @@ import database.Property;
 import database.daos.CustomerDao;
 import interfaces.IDatabaseConnection;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.mockito.MockedStatic;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-
+@Order(1)
 public class DatabaseConnectionTest extends BasicTests{
 
     @Test

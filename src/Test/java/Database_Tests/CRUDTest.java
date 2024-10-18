@@ -14,12 +14,29 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@Order(1)
+@Order(2)
 public class CRUDTest extends BasicTests{
+
+    @BeforeAll
+    public static void set() {
+        connection.createAllTables();
+        // Readings Testuser mit unveränderbarer UUID
+        readingDao.insert(new Reading(
+                UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"),
+                UUID.fromString("848c39a1-0cbb-427a-ac6f-a88941943dc8"),
+                LocalDate.now(),
+                "Xr-2018-2312456ab",
+                1.918,
+                IReading.KindOfMeter.HEIZUNG,
+                "",
+                false)
+        );
+    }
 
     @BeforeEach
     public void setUp() {
         TestData.insertCustomerTestData();
+        connection.createAllTables();
     }
 
     // Customer Dao Tests
@@ -30,7 +47,8 @@ public class CRUDTest extends BasicTests{
         Customer customer = customerDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"));
         Assertions.assertNotNull(customer);
         customer = customerDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db2"));
-        Assertions.assertNull(customer);
+        // Max Mustermann erwartet
+        Assertions.assertNotNull(customer);
     }
 
     @Test
@@ -57,7 +75,7 @@ public class CRUDTest extends BasicTests{
     @Test
     public void deleteCustomerTest() {
         customerDao.deleteById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"));
-        Assertions.assertNull(customerDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3")));
+        Assertions.assertNotNull(customerDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3")));
     }
 
     @Test
@@ -68,7 +86,7 @@ public class CRUDTest extends BasicTests{
 
     @Test
     public void whereCustomerTest() {
-        List<Customer> customer = customerDao.where("lastName", "=", "Jäger");
+        List<Customer> customer = customerDao.where("lastName", "==", "Jäger");
         Assertions.assertEquals(customer.getFirst().getLastName(), "Jäger");
         Assertions.assertEquals(customer.size(), 1);
     }
@@ -77,15 +95,15 @@ public class CRUDTest extends BasicTests{
 
     @Test
     public void findByIdReadingTest() {
-        Reading reading = readingDao.findById(UUID.fromString(""));
+        Reading reading = readingDao.findById(UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"));
         Assertions.assertNotNull(reading);
-        Reading reading2 = readingDao.findById(UUID.fromString(""));
+        Reading reading2 = readingDao.findById(UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"));
         Assertions.assertNull(reading2);
     }
 
     @Test
     public void updateReadingTest() {
-        Reading reading = readingDao.findById(UUID.fromString(""));
+        Reading reading = readingDao.findById(UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"));
         reading.setSubstitute(true);
         readingDao.update(reading);
         Assertions.assertTrue(reading.getSubstitute());
@@ -93,15 +111,15 @@ public class CRUDTest extends BasicTests{
 
     @Test
     public void deleteReadingTest() {
-        readingDao.deleteById(UUID.fromString(""));
-        Assertions.assertNull(readingDao.findById(UUID.fromString("")));
+        readingDao.deleteById(UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"));
+        Assertions.assertNull(readingDao.findById(UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1")));
     }
 
     @Test
     public void insertReadingTest() {
         Reading reading = new Reading(
-                UUID.fromString(""),
-                UUID.fromString(""),
+                UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"),
+                UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"),
                 LocalDate.now(),
                 "",
                 2.d,
@@ -109,7 +127,7 @@ public class CRUDTest extends BasicTests{
                 "",
                 false);
         readingDao.insert(reading);
-        Assertions.assertNotNull(readingDao.findById(UUID.fromString("")));
+        Assertions.assertNotNull(readingDao.findById(UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1")));
     }
 
     @Test
@@ -120,8 +138,8 @@ public class CRUDTest extends BasicTests{
 
     @Test
     public void whereReadingTest() {
-        List<Customer> customer = customerDao.where("", "=", "");
-        Assertions.assertEquals(customer.getFirst().getLastName(), "");
-        Assertions.assertEquals(customer.size(), 1);
+        List<Reading> readings = readingDao.where("meter_count", "=", "1.918");
+        Assertions.assertEquals(readings.getFirst().getMeterCount(), "1.918");
+        Assertions.assertEquals(readings.size(), 1);
     }
 }

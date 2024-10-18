@@ -31,8 +31,8 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public boolean insert(Reading entity) {
         return this.insert("""
-                INSERT INTO readings (id, customer_id, date, meter_ID, meter_count, meter_type, comment)
-                VALUES (?, ?, ?, ?, ?, ?, ?);
+                INSERT INTO readings (id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);
                 """, (PreparedStatement statement) -> {
             statement.setString(1, entity.getId().toString());
             statement.setString(2, entity.getCustomer().getId().toString());
@@ -41,6 +41,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
             statement.setDouble(5, entity.getMeterCount());
             statement.setString(6, entity.getKindOfMeter().toString());
             statement.setString(7, entity.getComment());
+            statement.setString(8, entity.getSubstitute().toString());
         });
     }
 
@@ -54,6 +55,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
                     meter_count = ?
                     meter_type = ?
                     comment = ?
+                    substitute = ?
                 WHERE id = ?;
                 """, (PreparedStatement statement) -> {
             statement.setString(7, entity.getId().toString());
@@ -63,6 +65,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
             statement.setDouble(4, entity.getMeterCount());
             statement.setString(5, entity.getKindOfMeter().toString());
             statement.setString(6, entity.getComment());
+            statement.setString(8, entity.getSubstitute().toString());
         });
     }
 
@@ -72,10 +75,10 @@ public class ReadingDao extends DataAccessObject<Reading> {
     }
 
     @Override
-    List<Reading> where(String column, String operator, String value) {
+    public List<Reading> where(String column, String operator, String value) {
         return this.get(String.format("""
-                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
-                FROM reading
+                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute
+                FROM readings
                 WHERE %s %s '%s';
                 """, column, operator, value), this::createReadingEntity);
     }

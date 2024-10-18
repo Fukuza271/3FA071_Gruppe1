@@ -56,7 +56,6 @@ public class TestData extends BasicTests {
         }
     }
 
-    @Test
     public void insertReadingsCsv() {
         List<List<String>> csvHeizungLines = readCSV("heizung.csv", ';');
         UUID id = null;
