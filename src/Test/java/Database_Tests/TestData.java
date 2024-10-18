@@ -7,16 +7,20 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import database.DatabaseConnection;
 import database.Property;
+import database.daos.CustomerDao;
+import database.entities.Customer;
+import interfaces.ICustomer;
 import interfaces.IDatabaseConnection;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class TestData extends BasicTests {
 
@@ -63,12 +67,35 @@ public class TestData extends BasicTests {
         }
     }
 
-    public List<List<String>> readCSV(String fileName, char seperator) {
+    public void insertCustomerData() {
+        readCSV("kunden_utf8.csv", ',').forEach(row -> {
+            if (row.getFirst().equals("UUID")) {
+                return;
+            }
+
+            UUID id = UUID.fromString(row.getFirst());
+            ICustomer.Gender gender = switch (row.get(1)) {
+                case "Frau" -> ICustomer.Gender.W;
+                case "Herr" -> ICustomer.Gender.M;
+                default -> ICustomer.Gender.U;
+            };
+            String firstName = row.get(2);
+            String lastName = row.get(3);
+            LocalDate birthdate = row.get(4).isEmpty() ? null : LocalDate.parse(row.get(4), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+
+            Customer customer = new Customer(id, gender, firstName, lastName, birthdate);
+
+            CustomerDao dao = new CustomerDao();
+            dao.insert(customer);
+        });
+    }
+
+    public List<List<String>> readCSV(String fileName, char separator) {
 
         String dirToCsv = System.getProperty("user.dir") + File.separator + "src" + File.separator + "Test" + File.separator + "resources" + File.separator;
         List<List<String>> result = new ArrayList<>();
         try {
-            CSVReader reader = new CSVReaderBuilder(new FileReader(dirToCsv + fileName)).withCSVParser(new CSVParserBuilder().withSeparator(seperator).build()).build();
+            CSVReader reader = new CSVReaderBuilder(new FileReader(dirToCsv + fileName)).withCSVParser(new CSVParserBuilder().withSeparator(separator).build()).build();
             String[] splitResult;
             while ((splitResult = (reader.readNext())) != null) {
                 result.add(Arrays.asList(splitResult));

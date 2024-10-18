@@ -31,14 +31,22 @@ public class CustomerDao extends DataAccessObject<Customer> {
     @Override
     public boolean insert(Customer entity) {
         return this.insert("""
-                    INSERT INTO customers (id, gender, firstname, lastname, birthdate)
-                    VALUES (?, ?, ?, ?, ?);
+                INSERT INTO customers (id, gender, firstname, lastname, birthdate)
+                VALUES (?, ?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE gender    = ?,
+                                        firstname = ?,
+                                        lastname  = ?,
+                                        birthdate = ?;
                 """, (PreparedStatement statement) -> {
             statement.setString(1, entity.getId().toString());
             statement.setString(2, entity.getGender().toString());
             statement.setString(3, entity.getFirstName());
             statement.setString(4, entity.getLastName());
-            statement.setDate(5, Date.valueOf(entity.getBirthDate()));
+            statement.setDate(5, entity.getBirthDate() == null ? null : Date.valueOf(entity.getBirthDate()));
+            statement.setString(6, entity.getGender().toString());
+            statement.setString(7, entity.getFirstName());
+            statement.setString(8, entity.getLastName());
+            statement.setDate(9, entity.getBirthDate() == null ? null : Date.valueOf(entity.getBirthDate()));
         });
     }
 
