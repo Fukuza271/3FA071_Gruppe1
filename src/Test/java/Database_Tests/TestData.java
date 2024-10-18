@@ -1,6 +1,9 @@
 package Database_Tests;
 
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import database.DatabaseConnection;
 import database.Property;
@@ -13,6 +16,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class TestData extends BasicTests {
 
@@ -45,30 +49,29 @@ public class TestData extends BasicTests {
     }
 
     @Test
-    public void inserCsv() {
-        String dirToCsv =  System.getProperty("user.dir") + File.separator + "src" + File.separator + "Test" + File.separator + "resources" + File.separator;
-        try {
-            CSVReader reader = new CSVReader(new FileReader(dirToCsv + "heizung.csv"));
-            String temp[];
-            while ((temp = reader.readNext()) != null) {
-                String[] data = temp[0].split(";");
-                System.out.println("");
+    public void insertCsv() {
+        List<List<String>> csvHeizungLines = readCSV("heizung.csv", ';');
+        UUID kundenID;
+        for (int i = 0; i < csvHeizungLines.size(); ++i) {
+            List<String> innerList = csvHeizungLines.get(i);
+            for (int j = 0; j < innerList.size(); ++j) {
+                if (innerList.get(j).equals("Kunde")) {
+                    kundenID = UUID.fromString(innerList.get(j + 1));
+                    int k;
+                }
             }
-        } catch (RuntimeException | IOException  | CsvValidationException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    public List<List<String>> readCSV(String fileName) {
+    public List<List<String>> readCSV(String fileName, char seperator) {
 
-        String dirToCsv =  System.getProperty("user.dir") + File.separator + "src" + File.separator + "Test" + File.separator + "resources" + File.separator;
-        List<List<String>> result = new ArrayList<>();;
+        String dirToCsv = System.getProperty("user.dir") + File.separator + "src" + File.separator + "Test" + File.separator + "resources" + File.separator;
+        List<List<String>> result = new ArrayList<>();
         try {
-            CSVReader reader = new CSVReader(new FileReader(dirToCsv + fileName));
-            String[] temp;
-            while ((temp = (reader.readNext())) != null) {
-                List<String> splitResult = Arrays.asList(temp[0].split(";"));
-                result.add(splitResult);
+            CSVReader reader = new CSVReaderBuilder(new FileReader(dirToCsv + fileName)).withCSVParser(new CSVParserBuilder().withSeparator(seperator).build()).build();
+            String[] splitResult;
+            while ((splitResult = (reader.readNext())) != null) {
+                result.add(Arrays.asList(splitResult));
             }
         } catch (RuntimeException | IOException | CsvValidationException e) {
             System.err.println(e.getMessage());
