@@ -106,7 +106,8 @@ public class CRUDTest extends BasicTests{
                 "",
                 2.d,
                 IReading.KindOfMeter.HEIZUNG,
-                "");
+                "",
+                false);
         readingDao.insert(reading);
         Assertions.assertNotNull(readingDao.findById(UUID.fromString("")));
     }

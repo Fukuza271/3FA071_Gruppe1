@@ -62,6 +62,7 @@ public class DatabaseConnection implements IDatabaseConnection {
                         meter_count DOUBLE UNSIGNED                               NOT NULL,
                         meter_type  ENUM ('HEIZUNG','STROM','WASSER','UNBEKANNT') NOT NULL,
                         comment     VARCHAR(100),
+                        substitute  BOOLEAN,
                         PRIMARY KEY (id),
                         CONSTRAINT FK_CustomerReading
                             FOREIGN KEY (customer_id) REFERENCES customers (id)

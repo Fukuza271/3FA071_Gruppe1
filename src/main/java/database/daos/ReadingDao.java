@@ -31,7 +31,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public boolean insert(Reading entity) {
         return this.insert("""
-                INSERT INTO reading (id, customer_id, date, meter_ID, meter_count, meter_type, comment)
+                INSERT INTO readings (id, customer_id, date, meter_ID, meter_count, meter_type, comment)
                 VALUES (?, ?, ?, ?, ?, ?, ?);
                 """, (PreparedStatement statement) -> {
             statement.setString(1, entity.getId().toString());
@@ -90,7 +90,8 @@ public class ReadingDao extends DataAccessObject<Reading> {
                     rs.getString("meter_ID"),
                     rs.getDouble("meter_count"),
                     IReading.KindOfMeter.valueOf(rs.getString("meter_type")),
-                    rs.getString("comment")
+                    rs.getString("comment"),
+                    rs.getBoolean("substitute")
             );
         } catch (SQLException e) {
             System.err.println(e.getMessage());

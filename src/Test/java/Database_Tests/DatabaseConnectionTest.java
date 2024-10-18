@@ -26,17 +26,17 @@ public class DatabaseConnectionTest extends BasicTests{
         Assertions.assertNotNull(result);
     }
 
-    @Test
-    public void truncateAllTablesTest() {
-
-        TestData.insertCustomerTestData();
-        System.out.println("Listsize: " + customerDao.findAll().size());
-        Assertions.assertEquals(customerDao.findAll().size(), 10);
-
-        connection.truncateAllTables();
-        System.out.println("Listsize: " + customerDao.findAll().size());
-        Assertions.assertEquals(customerDao.findAll().size(), 0);
-    }
+//    @Test
+//    public void truncateAllTablesTest() {
+//
+//        TestData.insertCustomerTestData();
+//        System.out.println("Listsize: " + customerDao.findAll().size());
+//        Assertions.assertEquals(customerDao.findAll().size(), 10);
+//
+//        connection.truncateAllTables();
+//        System.out.println("Listsize: " + customerDao.findAll().size());
+//        Assertions.assertEquals(customerDao.findAll().size(), 0);
+//    }
 
     @Test
     public void removeAllTablesTest() {

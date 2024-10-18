@@ -7,10 +7,12 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import database.DatabaseConnection;
 import database.Property;
+import database.entities.Reading;
 import database.daos.CustomerDao;
 import database.entities.Customer;
 import interfaces.ICustomer;
 import interfaces.IDatabaseConnection;
+import interfaces.IReading;
 import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +20,8 @@ import java.io.*;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -53,16 +57,47 @@ public class TestData extends BasicTests {
     }
 
     @Test
-    public void insertCsv() {
+    public void insertReadingsCsv() {
         List<List<String>> csvHeizungLines = readCSV("heizung.csv", ';');
-        UUID kundenID;
-        for (int i = 0; i < csvHeizungLines.size(); ++i) {
-            List<String> innerList = csvHeizungLines.get(i);
-            for (int j = 0; j < innerList.size(); ++j) {
-                if (innerList.get(j).equals("Kunde")) {
-                    kundenID = UUID.fromString(innerList.get(j + 1));
-                    int k;
-                }
+        UUID id = null;
+        UUID customer_id = null;
+        LocalDate dateOfReading = null;
+        String meter_ID = null;
+        double meterCount = 0;
+        IReading.KindOfMeter meter_type = IReading.KindOfMeter.HEIZUNG;
+        String comment = null;
+        boolean substitute = false;
+        boolean dataStarted = false;
+        Random random = new Random();
+        for (List<String> innerList : csvHeizungLines) {
+            if (innerList.contains("Kunde")) {
+                int index = innerList.indexOf("Kunde");
+                customer_id = UUID.fromString(innerList.get(index + 1));
+            }
+            if (innerList.contains("Zählernummer")) {
+                int index = innerList.indexOf("Zählernummer");
+                meter_ID = innerList.get(index + 1);
+            }
+            if (!innerList.isEmpty() && innerList.get(0).matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
+                dataStarted = true;
+            }
+            if (dataStarted) {
+                id = UUID.randomUUID();
+                dateOfReading = LocalDate.parse(innerList.get(0), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+                meterCount = Double.parseDouble(innerList.get(1).replace(',', '.'));
+                comment = innerList.get(2);
+                substitute = random.nextBoolean();
+
+                readingDao.insert(new Reading(
+                        id,
+                        customer_id,
+                        dateOfReading,
+                        meter_ID,
+                        meterCount,
+                        meter_type,
+                        comment,
+                        substitute
+                ));
             }
         }
     }
