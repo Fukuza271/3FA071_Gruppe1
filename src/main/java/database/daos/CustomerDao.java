@@ -21,7 +21,7 @@ public class CustomerDao extends DataAccessObject<Customer> {
     }
 
     @Override
-    public List<Customer> get() {
+    public List<Customer> findAll() {
         return this.get("""
                 SELECT id, gender, firstName, lastName, birthdate
                 FROM customers;
