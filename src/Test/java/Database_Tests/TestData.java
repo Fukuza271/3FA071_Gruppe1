@@ -55,19 +55,17 @@ public class TestData extends BasicTests {
             throw new RuntimeException(e);
         }
     }
-
-    public void insertReadingsCsv() {
+    public static void insertReadingsCsv() {
         List<List<String>> csvHeizungLines = readCSV("heizung.csv", ';');
-        UUID id = null;
+        UUID id;
         UUID customer_id = null;
-        LocalDate dateOfReading = null;
+        LocalDate dateOfReading;
         String meter_ID = null;
-        double meterCount = 0;
+        double meterCount;
         IReading.KindOfMeter meter_type = IReading.KindOfMeter.HEIZUNG;
-        String comment = null;
+        String comment;
         boolean substitute = false;
         boolean dataStarted = false;
-        Random random = new Random();
         for (List<String> innerList : csvHeizungLines) {
             if (innerList.contains("Kunde")) {
                 int index = innerList.indexOf("Kunde");
@@ -85,8 +83,15 @@ public class TestData extends BasicTests {
                 dateOfReading = LocalDate.parse(innerList.get(0), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
                 meterCount = Double.parseDouble(innerList.get(1).replace(',', '.'));
                 comment = innerList.get(2);
-                substitute = random.nextBoolean();
-
+                if (comment.contains("Zählertausch")) {
+                    String[] commentString = comment.split(" ");
+                    for (String s : commentString) {
+                        if (s.matches("Xr-\\*")) {
+                            substitute = true;
+                            break;
+                        }
+                    }
+                }
                 readingDao.insert(new Reading(
                         id,
                         customer_id,
@@ -101,7 +106,7 @@ public class TestData extends BasicTests {
         }
     }
 
-    public void insertCustomerData() {
+    public static void insertCustomerData() {
         readCSV("kunden_utf8.csv", ',').forEach(row -> {
             if (row.getFirst().equals("UUID")) {
                 return;
@@ -124,7 +129,7 @@ public class TestData extends BasicTests {
         });
     }
 
-    public List<List<String>> readCSV(String fileName, char separator) {
+    public static List<List<String>> readCSV(String fileName, char separator) {
 
         String dirToCsv = System.getProperty("user.dir") + File.separator + "src" + File.separator + "Test" + File.separator + "resources" + File.separator;
         List<List<String>> result = new ArrayList<>();

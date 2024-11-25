@@ -41,7 +41,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
             statement.setDouble(5, entity.getMeterCount());
             statement.setString(6, entity.getKindOfMeter().toString());
             statement.setString(7, entity.getComment());
-            statement.setString(8, entity.getSubstitute().toString());
+            statement.setBoolean(8, entity.getSubstitute());
         });
     }
 
@@ -65,7 +65,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
             statement.setDouble(4, entity.getMeterCount());
             statement.setString(5, entity.getKindOfMeter().toString());
             statement.setString(6, entity.getComment());
-            statement.setString(8, entity.getSubstitute().toString());
+            statement.setBoolean(8, entity.getSubstitute());
         });
     }
 

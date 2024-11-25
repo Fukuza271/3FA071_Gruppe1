@@ -35,8 +35,9 @@ public class CRUDTest extends BasicTests{
 
     @BeforeEach
     public void setUp() {
-        TestData.insertCustomerTestData();
         connection.createAllTables();
+        TestData.insertReadingsCsv();
+        TestData.insertCustomerTestData();
     }
 
     // Customer Dao Tests
