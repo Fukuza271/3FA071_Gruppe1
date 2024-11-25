@@ -1,12 +1,8 @@
 package Database_Tests;
 
-import database.DatabaseConnection;
-import database.daos.CustomerDao;
-import database.daos.ReadingDao;
 import database.entities.Customer;
 import database.entities.Reading;
 import interfaces.ICustomer;
-import interfaces.IDatabaseConnection;
 import interfaces.IReading;
 import org.junit.jupiter.api.*;
 
@@ -15,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Order(2)
-public class CRUDTest extends BasicTests{
+public class CRUDTest extends BasicTests {
 
     @BeforeAll
     public static void set() {
@@ -35,8 +31,16 @@ public class CRUDTest extends BasicTests{
 
     @BeforeEach
     public void setUp() {
-        TestData.insertCustomerTestData();
         connection.createAllTables();
+        TestData.insertCustomerData();
+        TestData.insertHeizungReadingData();
+        TestData.insertStromReadingData();
+        TestData.insertWasserReadingData();
+    }
+
+    @Test
+    public void testTest() {
+
     }
 
     // Customer Dao Tests
@@ -86,7 +90,7 @@ public class CRUDTest extends BasicTests{
 
     @Test
     public void whereCustomerTest() {
-        List<Customer> customer = customerDao.where("lastName", "==", "Jäger");
+        List<Customer> customer = customerDao.where("lastName", "=", "Jäger");
         Assertions.assertEquals(customer.getFirst().getLastName(), "Jäger");
         Assertions.assertEquals(customer.size(), 1);
     }
@@ -95,7 +99,7 @@ public class CRUDTest extends BasicTests{
 
     @Test
     public void findByIdReadingTest() {
-        Reading reading = readingDao.findById(UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"));
+        Reading reading = readingDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"));
         Assertions.assertNotNull(reading);
         Reading reading2 = readingDao.findById(UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"));
         Assertions.assertNull(reading2);

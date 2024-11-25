@@ -1,6 +1,5 @@
 package Database_Tests;
 
-import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -11,20 +10,14 @@ import database.entities.Reading;
 import database.daos.CustomerDao;
 import database.entities.Customer;
 import interfaces.ICustomer;
-import interfaces.IDatabaseConnection;
 import interfaces.IReading;
-import org.checkerframework.checker.units.qual.C;
-import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.*;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
 
 public class TestData extends BasicTests {
 
@@ -56,52 +49,56 @@ public class TestData extends BasicTests {
         }
     }
 
-    public void insertReadingsCsv() {
-        List<List<String>> csvHeizungLines = readCSV("heizung.csv", ';');
-        UUID id = null;
-        UUID customer_id = null;
-        LocalDate dateOfReading = null;
-        String meter_ID = null;
-        double meterCount = 0;
-        IReading.KindOfMeter meter_type = IReading.KindOfMeter.HEIZUNG;
-        String comment = null;
-        boolean substitute = false;
-        boolean dataStarted = false;
-        Random random = new Random();
-        for (List<String> innerList : csvHeizungLines) {
-            if (innerList.contains("Kunde")) {
-                int index = innerList.indexOf("Kunde");
-                customer_id = UUID.fromString(innerList.get(index + 1));
-            }
-            if (innerList.contains("Zählernummer")) {
-                int index = innerList.indexOf("Zählernummer");
-                meter_ID = innerList.get(index + 1);
-            }
-            if (!innerList.isEmpty() && innerList.get(0).matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
-                dataStarted = true;
-            }
-            if (dataStarted) {
-                id = UUID.randomUUID();
-                dateOfReading = LocalDate.parse(innerList.get(0), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-                meterCount = Double.parseDouble(innerList.get(1).replace(',', '.'));
-                comment = innerList.get(2);
-                substitute = random.nextBoolean();
+    public static void insertHeizungReadingData() {
+        insertReadingData(IReading.KindOfMeter.HEIZUNG, readCSV("heizung.csv", ';'));
+    }
 
-                readingDao.insert(new Reading(
-                        id,
-                        customer_id,
-                        dateOfReading,
-                        meter_ID,
-                        meterCount,
-                        meter_type,
-                        comment,
-                        substitute
-                ));
+    public static void insertWasserReadingData() {
+        insertReadingData(IReading.KindOfMeter.WASSER, readCSV("wasser.csv", ';'));
+    }
+
+    public static void insertStromReadingData() {
+        insertReadingData(IReading.KindOfMeter.STROM, readCSV("strom.csv", ';'));
+    }
+
+    private static void insertReadingData(IReading.KindOfMeter type, List<List<String>> data) {
+        UUID customerId = null;
+        String meterId = null;
+
+        for (List<String> innerList : data) {
+            if (innerList.contains("Kunde")) {
+                customerId = UUID.fromString(innerList.get(1));
+                continue;
             }
+
+            if (innerList.contains("Zählernummer")) {
+                meterId = innerList.get(1);
+                continue;
+            }
+
+            if (innerList.isEmpty() || innerList.contains("Datum") || innerList.getFirst().isEmpty()) {
+                continue;
+            }
+
+            LocalDate date = LocalDate.parse(innerList.get(0), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+            double meterCount = Double.parseDouble(innerList.get(1).replace(',', '.'));
+            String comment = innerList.get(2);
+            boolean substitute = comment.contains("Zählertausch");
+
+            readingDao.insert(new Reading(
+                    UUID.randomUUID(),
+                    customerId,
+                    date,
+                    meterId,
+                    meterCount,
+                    type,
+                    comment,
+                    substitute
+            ));
         }
     }
 
-    public void insertCustomerData() {
+    public static void insertCustomerData() {
         readCSV("kunden_utf8.csv", ',').forEach(row -> {
             if (row.getFirst().equals("UUID")) {
                 return;
@@ -124,7 +121,7 @@ public class TestData extends BasicTests {
         });
     }
 
-    public List<List<String>> readCSV(String fileName, char separator) {
+    private static List<List<String>> readCSV(String fileName, char separator) {
 
         String dirToCsv = System.getProperty("user.dir") + File.separator + "src" + File.separator + "Test" + File.separator + "resources" + File.separator;
         List<List<String>> result = new ArrayList<>();
