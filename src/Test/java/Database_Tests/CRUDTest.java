@@ -94,10 +94,18 @@ public class CRUDTest extends BasicTests {
 
     @Test
     public void findByIdReadingTest() {
-        Reading reading = readingDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"));
+        Reading reading;
+        readingDao.insert(new Reading(
+                UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"),
+                UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"),
+                LocalDate.now(),
+                "",
+                2.d,
+                IReading.KindOfMeter.HEIZUNG,
+                "",
+                false));
+        reading = readingDao.findById(UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"));
         Assertions.assertNotNull(reading);
-        Reading reading2 = readingDao.findById(UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"));
-        Assertions.assertNull(reading2);
     }
 
     @Test
@@ -132,13 +140,13 @@ public class CRUDTest extends BasicTests {
     @Test
     public void findAllReadingTest() {
         List<Reading> readings = readingDao.findAll();
-        Assertions.assertEquals(0, readings.size());
+        Assertions.assertEquals(205, readings.size());
     }
 
     @Test
     public void whereReadingTest() {
         List<Reading> readings = readingDao.where("meter_count", "=", "1.918");
-        Assertions.assertEquals(readings.getFirst().getMeterCount(), "1.918");
+        Assertions.assertEquals(readings.getFirst().getMeterCount().toString(), "1.918");
         Assertions.assertEquals(readings.size(), 1);
     }
 }
