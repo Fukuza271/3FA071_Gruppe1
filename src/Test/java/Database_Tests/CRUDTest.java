@@ -38,11 +38,6 @@ public class CRUDTest extends BasicTests {
         TestData.insertWasserReadingData();
     }
 
-    @Test
-    public void testTest() {
-
-    }
-
     // Customer Dao Tests
 
     @Test
