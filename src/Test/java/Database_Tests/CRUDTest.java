@@ -80,7 +80,7 @@ public class CRUDTest extends BasicTests {
     @Test
     public void findAllCustomerTest() {
         System.out.println("Listsize: " + customerDao.findAll().size());
-        Assertions.assertEquals(customerDao.findAll().size(), 10);
+        Assertions.assertEquals(customerDao.findAll().size(), 1001);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class CRUDTest extends BasicTests {
 
     @Test
     public void updateReadingTest() {
-        Reading reading = readingDao.findById(UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"));
+        Reading reading = readingDao.findAll().getFirst();
         reading.setSubstitute(true);
         readingDao.update(reading);
         Assertions.assertTrue(reading.getSubstitute());

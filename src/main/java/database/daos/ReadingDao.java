@@ -14,7 +14,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public Reading findById(UUID id) {
         return this.findById("""
-                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
+                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute
                 FROM readings
                 WHERE id = ?;
                 """, id, this::createReadingEntity);
@@ -23,8 +23,8 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public List<Reading> findAll() {
         return this.get("""
-                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment
-                FROM reading;
+                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute
+                FROM readings;
                 """, this::createReadingEntity);
     }
 

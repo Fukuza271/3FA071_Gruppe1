@@ -95,11 +95,13 @@ public class CustomerDao extends DataAccessObject<Customer> {
     private Customer createCustomerEntity(ResultSet rs) {
         Customer customer = null;
         try {
+            Date birthdate = rs.getDate("birthdate");
+
             customer = new Customer(
                     UUID.fromString(rs.getString("id")),
                     ICustomer.Gender.valueOf(rs.getString("gender")),
                     rs.getString("firstName"), rs.getString("lastName"),
-                    rs.getDate("birthdate").toLocalDate()
+                    (birthdate != null) ? birthdate.toLocalDate() : null
             );
         } catch (SQLException e) {
             System.err.println(e.getMessage());
