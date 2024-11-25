@@ -41,12 +41,8 @@ public class DatabaseConnectionTest extends BasicTests{
 
     @Test
     public void removeAllTablesTest() {
-        try {
-            Statement statement = connection.getConnection().createStatement();
-            statement.execute("DROP TABLE IF EXISTS readings;");
-            statement.execute("DROP TABLE IF EXISTS customers;");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        connection.createAllTables();
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        databaseConnection.removeAllTables();
     }
 }
