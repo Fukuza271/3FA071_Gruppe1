@@ -76,6 +76,8 @@ public class ReadingDao extends DataAccessObject<Reading> {
 
     @Override
     public List<Reading> where(String column, String operator, String value) {
+
+        //hier noch prepared statement einfügen statt String.format
         return this.get(String.format("""
                 SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute
                 FROM readings
