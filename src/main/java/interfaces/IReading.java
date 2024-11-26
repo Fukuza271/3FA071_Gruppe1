@@ -4,38 +4,38 @@ import java.time.LocalDate;
 
 public interface IReading extends IId {
 
-   enum KindOfMeter {
-      HEIZUNG, STROM, UNBEKANNT, WASSER;
-   }
+    enum KindOfMeter {
+        HEIZUNG, STROM, UNBEKANNT, WASSER;
+    }
 
-   String getComment();
+    String getComment();
 
-   ICustomer getCustomer();
+    ICustomer getCustomer();
 
-   LocalDate getDateOfReading();
+    LocalDate getDateOfReading();
 
-   KindOfMeter getKindOfMeter();
+    KindOfMeter getKindOfMeter();
 
-   Double getMeterCount();
+    Double getMeterCount();
 
-   String getMeterId();
+    String getMeterId();
 
-   Boolean getSubstitute();
+    Boolean getSubstitute();
 
-   String printDateOfReading();
+    String printDateOfReading();
 
-   void setComment(String comment);
+    void setComment(String comment);
 
-   void setCustomer(ICustomer customer);
+    void setCustomer(ICustomer customer);
 
-   void setDateOfReading(LocalDate dateOfReading);
+    void setDateOfReading(LocalDate dateOfReading);
 
-   void setKindOfMeter(KindOfMeter kindOfMeter);
+    void setKindOfMeter(KindOfMeter kindOfMeter);
 
-   void setMeterCount(Double meterCount);
+    void setMeterCount(Double meterCount);
 
-   void setMeterId(String meterId);
+    void setMeterId(String meterId);
 
-   void setSubstitute(Boolean substitute);
+    void setSubstitute(Boolean substitute);
 
 }

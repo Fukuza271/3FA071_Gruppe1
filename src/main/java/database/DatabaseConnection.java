@@ -1,12 +1,12 @@
 package database;
 
-import database.daos.CustomerDao;
-import database.entities.Customer;
 import interfaces.IDatabaseConnection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
-import java.util.UUID;
 
 public class DatabaseConnection implements IDatabaseConnection {
 

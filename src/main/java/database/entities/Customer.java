@@ -72,6 +72,6 @@ public class Customer implements ICustomer {
 
     @Override
     public String toString() {
-        return this.gender.name() + ", " +  this.firstName + ", " + this.lastName + ", " + (this.birthdate == null ? "" : this.birthdate.toString());
+        return this.gender.name() + ", " + this.firstName + ", " + this.lastName + ", " + (this.birthdate == null ? "" : this.birthdate.toString());
     }
 }

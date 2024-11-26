@@ -14,12 +14,12 @@ import java.util.UUID;
 public class CustomerDao extends DataAccessObject<Customer> {
     @Override
     public Customer findById(UUID id) {
-        if(this.findById("""
+        if (this.findById("""
                 SELECT id, gender, firstName, lastName, birthdate
                 FROM customers
                 WHERE id = ?;
-                """,id,this::createCustomerEntity)==null){
-            Customer c = new Customer(id, ICustomer.Gender.U,"Max","Mustermann", LocalDate.of(1970,1,1));
+                """, id, this::createCustomerEntity) == null) {
+            Customer c = new Customer(id, ICustomer.Gender.U, "Max", "Mustermann", LocalDate.of(1970, 1, 1));
             insert(c);
         }
         return this.findById("""

@@ -3,8 +3,8 @@ package database.daos;
 import database.DatabaseConnection;
 import database.Property;
 import interfaces.AddParamsToStatement;
-import interfaces.IDatabaseConnection;
 import interfaces.CreateEntity;
+import interfaces.IDatabaseConnection;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,8 +24,7 @@ public abstract class DataAccessObject<T> {
         PreparedStatement statement = null;
         try {
             statement = this.databaseConnection.getConnection().prepareStatement(sql);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
         return statement;
