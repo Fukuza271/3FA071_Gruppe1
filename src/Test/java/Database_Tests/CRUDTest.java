@@ -1,5 +1,6 @@
 package Database_Tests;
 
+import database.ExampleDataProvider;
 import database.entities.Customer;
 import database.entities.Reading;
 import interfaces.ICustomer;
@@ -32,10 +33,10 @@ public class CRUDTest extends BasicTests {
     @BeforeEach
     public void setUp() {
         connection.createAllTables();
-        TestData.insertCustomerData();
-        TestData.insertHeizungReadingData();
-        TestData.insertStromReadingData();
-        TestData.insertWasserReadingData();
+        ExampleDataProvider.shared.insertCustomerData();
+        ExampleDataProvider.shared.insertHeizungReadingData();
+        ExampleDataProvider.shared.insertStromReadingData();
+        ExampleDataProvider.shared.insertWasserReadingData();
     }
 
     // Customer Dao Tests

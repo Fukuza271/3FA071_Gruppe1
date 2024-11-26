@@ -2,23 +2,13 @@ package Database_Tests;
 
 import database.DatabaseConnection;
 import database.Property;
-import database.daos.CustomerDao;
 import interfaces.IDatabaseConnection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Properties;
 
 @Order(1)
-public class DatabaseConnectionTest extends BasicTests{
+public class DatabaseConnectionTest extends BasicTests {
 
     @Test
     public void testOpenConnection() {
