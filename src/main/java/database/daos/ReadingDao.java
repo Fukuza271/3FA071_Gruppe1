@@ -71,7 +71,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
 
     @Override
     public boolean deleteById(UUID id) {
-        return this.deleteById("DELETE FROM reading WHERE id = ?", id);
+        return this.deleteById("DELETE FROM readings WHERE id = ?", id);
     }
 
     @Override
