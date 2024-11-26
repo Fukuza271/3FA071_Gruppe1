@@ -19,9 +19,13 @@ public class Property {
             FileInputStream input = new FileInputStream(filePath);
             properties.load(input);
             // Werte basierend auf dem Systemnutzer laden
+
+            //anscheinend unnötig weil dann eh die Propertydatei benutzt wird
             String dbUrl = properties.getProperty(systemnutzer + ".db.url");
             String dbUser = properties.getProperty(systemnutzer + ".db.user");
             String dbPassword = properties.getProperty(systemnutzer + ".db.pw");
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
