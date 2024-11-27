@@ -1,10 +1,7 @@
 package database.daos;
 
-import database.DatabaseConnection;
-import database.Property;
 import database.entities.Customer;
 import interfaces.ICustomer;
-import interfaces.IDatabaseConnection;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -12,8 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class CustomerDao extends DataAccessObject<Customer> {
-
-    private IDatabaseConnection databaseConnection;
 
     String sqlSelectCustomer = "SELECT id, gender, firstName, lastName, birthdate FROM customers ";
 

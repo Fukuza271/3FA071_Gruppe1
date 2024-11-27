@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class ReadingDao extends DataAccessObject<Reading> {
+
+    String sqlCustomerReadingsData = "id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute FROM readings";
+
     @Override
     public Reading findById(UUID id) {
         return this.findById("""
-                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute
-                FROM readings
+                SELECT """ + sqlCustomerReadingsData + """
                 WHERE id = ?;
                 """, id, this::createReadingEntity);
     }
@@ -23,8 +25,8 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public List<Reading> findAll() {
         return this.get("""
-                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute
-                FROM readings;
+                SELECT """ + sqlCustomerReadingsData + """
+                ;
                 """, this::createReadingEntity);
     }
 

@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ExampleDataProvider {
 
@@ -63,6 +65,18 @@ public class ExampleDataProvider {
             double meterCount = Double.parseDouble(innerList.get(1).replace(',', '.'));
             String comment = innerList.get(2);
             boolean substitute = comment.contains("Zählertausch");
+
+            if (substitute) {
+                Pattern pattern = Pattern.compile("(?<=^Zählertausch:\sneue\sNummer\s).+(?=$)");
+                Matcher matcher = pattern.matcher("Zählertausch: neue Nummer Xr-2021-2312434xz");
+                boolean matchFound = matcher.find();
+
+//                System.out.println(matchFound);
+//                System.out.println(matcher.group());
+
+                meterId = matcher.group();
+                meterId.replaceAll("\\s+","");
+            }
 
             (new ReadingDao()).insert(new Reading(UUID.randomUUID(), customerId, date, meterId, meterCount, type, comment, substitute));
         }
