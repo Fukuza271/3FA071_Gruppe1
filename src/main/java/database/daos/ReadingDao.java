@@ -50,24 +50,24 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public boolean update(Reading entity) {
         return this.update("""
-                UPDATE customers
-                SET customer_id    = ?,
+                UPDATE readings
+                SET customer_id = ?,
                     date = ?,
                     meter_ID  = ?,
-                    meter_count = ?
-                    meter_type = ?
-                    comment = ?
+                    meter_count = ?,
+                    meter_type = ?,
+                    comment = ?,
                     substitute = ?
                 WHERE id = ?;
                 """, (PreparedStatement statement) -> {
-            statement.setString(7, entity.getId().toString());
+            statement.setString(8, entity.getId().toString());
             statement.setString(1, entity.getCustomer().getId().toString());
             statement.setDate(2, Date.valueOf(entity.getDateOfReading()));
             statement.setString(3, entity.getMeterId());
             statement.setDouble(4, entity.getMeterCount());
             statement.setString(5, entity.getKindOfMeter().toString());
             statement.setString(6, entity.getComment());
-            statement.setBoolean(8, entity.getSubstitute());
+            statement.setBoolean(7, entity.getSubstitute());
         });
     }
 

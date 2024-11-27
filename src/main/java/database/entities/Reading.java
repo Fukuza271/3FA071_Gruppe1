@@ -1,5 +1,8 @@
 package database.entities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import database.daos.CustomerDao;
 import interfaces.ICustomer;
 import interfaces.IReading;
@@ -8,16 +11,40 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Reading implements IReading {
+    @JsonProperty("uuid")
     private UUID id;
+
+    @JsonProperty("customer")
     private UUID customer_id;
+
+    @JsonProperty("dateOfReading")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateOfReading;
+
+    @JsonProperty("meterId")
     private String meter_ID;
+
+    @JsonProperty("metercount")
     private Double meterCount;
+
+    @JsonProperty("kindOfMeter")
     private KindOfMeter meter_type;
+
+    @JsonProperty("comment")
     private String comment;
+
+    @JsonProperty("substitute")
     private boolean substitute;
 
-    public Reading(UUID id, UUID customer_id, LocalDate date, String meter_ID, Double meter_count, KindOfMeter meter_type, String comment, boolean substitute) {
+    @JsonCreator
+    public Reading(@JsonProperty("uuid") UUID id,
+                   @JsonProperty("customer") UUID customer_id,
+                   @JsonProperty("dateOfReading") LocalDate date,
+                   @JsonProperty("meterId") String meter_ID,
+                   @JsonProperty("metercount") Double meter_count,
+                   @JsonProperty("kind") KindOfMeter meter_type,
+                   @JsonProperty("comment") String comment,
+                   @JsonProperty("substitute") boolean substitute) {
         this.id = id;
         this.customer_id = customer_id;
         this.dateOfReading = date;
