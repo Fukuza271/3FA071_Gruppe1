@@ -3,23 +3,18 @@ package database.daos;
 import database.entities.Customer;
 import interfaces.ICustomer;
 
-import java.sql.*;
-import java.time.LocalDate;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
 public class CustomerDao extends DataAccessObject<Customer> {
-
     String sqlSelectCustomer = "SELECT id, gender, firstName, lastName, birthdate FROM customers ";
 
     @Override
     public Customer findById(UUID id) {
-        if (this.findById(sqlSelectCustomer + """
-                WHERE id = ?;
-                """, id, this::createCustomerEntity) == null) {
-            Customer c = new Customer(id, ICustomer.Gender.U, "Max", "Mustermann", LocalDate.of(1970, 1, 1));
-            insert(c);
-        }
         return this.findById(sqlSelectCustomer + """
                 WHERE id = ?;
                 """, id, this::createCustomerEntity);
