@@ -1,6 +1,5 @@
 package database.entities;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import database.daos.CustomerDao;
@@ -11,40 +10,25 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Reading implements IReading {
-    @JsonProperty("uuid")
     private UUID id;
-
-    @JsonProperty("customer")
     private UUID customer_id;
-
-    @JsonProperty("dateOfReading")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateOfReading;
-
-    @JsonProperty("meterId")
     private String meter_ID;
-
-    @JsonProperty("metercount")
     private Double meterCount;
-
-    @JsonProperty("kindOfMeter")
     private KindOfMeter meter_type;
-
-    @JsonProperty("comment")
     private String comment;
-
-    @JsonProperty("substitute")
     private boolean substitute;
 
-    @JsonCreator
-    public Reading(@JsonProperty("uuid") UUID id,
-                   @JsonProperty("customer") UUID customer_id,
-                   @JsonProperty("dateOfReading") LocalDate date,
-                   @JsonProperty("meterId") String meter_ID,
-                   @JsonProperty("metercount") Double meter_count,
-                   @JsonProperty("kind") KindOfMeter meter_type,
-                   @JsonProperty("comment") String comment,
-                   @JsonProperty("substitute") boolean substitute) {
+    public Reading(
+            @JsonProperty("id") UUID id,
+            @JsonProperty("customer") UUID customer_id,
+            @JsonProperty("dateOfReading") @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") LocalDate date,
+            @JsonProperty("meterId") String meter_ID,
+            @JsonProperty("meterCount") Double meter_count,
+            @JsonProperty("kindOfMeter") KindOfMeter meter_type,
+            @JsonProperty("comment") String comment,
+            @JsonProperty("substitute") boolean substitute
+    ) {
         this.id = id;
         this.customer_id = customer_id;
         this.dateOfReading = date;

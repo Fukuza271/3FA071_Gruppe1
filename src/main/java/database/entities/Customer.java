@@ -1,10 +1,14 @@
 package database.entities;
 
+import com.fasterxml.jackson.annotation.*;
+import database.daos.ReadingDao;
 import interfaces.ICustomer;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
+@JsonTypeName(value = "customer")
 public class Customer implements ICustomer {
     private UUID id;
     private ICustomer.Gender gender;
@@ -12,8 +16,15 @@ public class Customer implements ICustomer {
     private String lastName;
     private LocalDate birthdate;
 
-    public Customer(UUID id, ICustomer.Gender gender, String firstName, String lastName, LocalDate birthdate) {
-        this.id = id;
+    @JsonCreator
+    public Customer(
+            @JsonProperty("id") UUID id,
+            @JsonProperty("gender") ICustomer.Gender gender,
+            @JsonProperty("firstName") String firstName,
+            @JsonProperty("lastName") String lastName,
+            @JsonProperty("birthDate") @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") LocalDate birthdate
+    ) {
+        this.id = id != null ? id : UUID.randomUUID();
         this.gender = gender;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -73,5 +84,10 @@ public class Customer implements ICustomer {
     @Override
     public String toString() {
         return this.gender.name() + ", " + this.firstName + ", " + this.lastName + ", " + (this.birthdate == null ? "" : this.birthdate.toString());
+    }
+
+    @JsonIgnore
+    public List<Reading> getReadings() {
+        return (new ReadingDao()).where("customer_id", "=", this.id.toString());
     }
 }
