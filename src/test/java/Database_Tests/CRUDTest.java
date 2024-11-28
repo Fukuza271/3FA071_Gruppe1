@@ -14,12 +14,6 @@ import java.util.UUID;
 @Order(2)
 public class CRUDTest extends BasicTests {
 
-//    @BeforeAll
-//    public static void set() {
-//        connection.createAllTables();
-//
-//    }
-
     @BeforeEach
     public void setUp() {
         connection.createAllTables();
