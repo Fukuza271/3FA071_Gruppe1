@@ -12,12 +12,12 @@ import java.util.UUID;
 
 public class ReadingDao extends DataAccessObject<Reading> {
 
-    String sqlCustomerReadingsData = "id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute FROM readings";
+    String sqlCustomerReadingsData = " id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute FROM readings ";
 
     @Override
     public Reading findById(UUID id) {
         return this.findById("""
-                SELECT """ + sqlCustomerReadingsData + """
+                SELECT""" + sqlCustomerReadingsData + """
                 WHERE id = ?;
                 """, id, this::createReadingEntity);
     }
@@ -25,7 +25,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public List<Reading> findAll() {
         return this.get("""
-                SELECT """ + sqlCustomerReadingsData + """
+                SELECT""" + sqlCustomerReadingsData + """
                 ;
                 """, this::createReadingEntity);
     }
@@ -81,8 +81,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
 
         //hier noch prepared statement einfügen statt String.format
         return this.get(String.format("""
-                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute
-                FROM readings
+                SELECT""" + sqlCustomerReadingsData + """
                 WHERE %s %s '%s';
                 """, column, operator, value), this::createReadingEntity);
     }

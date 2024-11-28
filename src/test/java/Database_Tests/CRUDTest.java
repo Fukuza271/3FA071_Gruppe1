@@ -14,25 +14,16 @@ import java.util.UUID;
 @Order(2)
 public class CRUDTest extends BasicTests {
 
-    @BeforeAll
-    public static void set() {
-        connection.createAllTables();
-        // Readings Testuser mit unveränderbarer UUID
-        readingDao.insert(new Reading(
-                UUID.fromString("c7525a6a-31fb-4baf-8ff5-e6d31fa3c1e1"),
-                UUID.fromString("848c39a1-0cbb-427a-ac6f-a88941943dc8"),
-                LocalDate.now(),
-                "Xr-2018-2312456ab",
-                1.918,
-                IReading.KindOfMeter.HEIZUNG,
-                "",
-                false)
-        );
-    }
+//    @BeforeAll
+//    public static void set() {
+//        connection.createAllTables();
+//
+//    }
 
     @BeforeEach
     public void setUp() {
         connection.createAllTables();
+
         ExampleDataProvider.shared.insertCustomerData();
         ExampleDataProvider.shared.insertHeizungReadingData();
         ExampleDataProvider.shared.insertStromReadingData();
