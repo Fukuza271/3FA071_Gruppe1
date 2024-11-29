@@ -19,11 +19,6 @@ public abstract class DatabaseTest {
         readingDao = new ReadingDao();
     }
 
-    @AfterAll
-    public static void afterAll() {
-        connection.closeConnection();
-    }
-
     @BeforeEach
     public void setup() {
         connection.createAllTables();
