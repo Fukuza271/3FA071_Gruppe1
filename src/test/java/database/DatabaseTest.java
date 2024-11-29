@@ -14,6 +14,7 @@ public abstract class DatabaseTest {
 
     @BeforeAll
     public static void beforeAll() {
+        connection = (new DatabaseConnection()).openConnection(Property.readTestProperties());
         customerDao = new CustomerDao();
         readingDao = new ReadingDao();
     }
@@ -25,7 +26,6 @@ public abstract class DatabaseTest {
 
     @BeforeEach
     public void setup() {
-        connection = (new DatabaseConnection()).openConnection(Property.readTestProperties());
         connection.createAllTables();
     }
 }
