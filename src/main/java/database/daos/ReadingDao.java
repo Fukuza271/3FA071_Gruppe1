@@ -1,5 +1,6 @@
 package database.daos;
 
+import database.Condition;
 import database.entities.Reading;
 import interfaces.IReading;
 import jakarta.ws.rs.core.Response;
@@ -8,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,37 +80,25 @@ public class ReadingDao extends DataAccessObject<Reading> {
     }
 
     @Override
-    public List<Reading> where(List<List<String>> argList) {
+    public List<Reading> where(List<Condition> argList) {
 
-        //hier noch prepared statement einfügen statt String.format
         StringBuilder builder = new StringBuilder();
-        boolean firstElement = true;
+        List<String> valueList = new ArrayList<>();
         String baseSql = """
                 SELECT""" + sqlCustomerReadingsData + """
                 WHERE\s
                 """;
-        for (List<String> innerList : argList) {
-            if (!firstElement) {
-                builder.append(" AND ");
-            }
-            builder.append(innerList.get(0)).
+        for (Condition condition : argList) {
+            builder.append(condition.getColumn()).
                     append(" ").
-                    append(innerList.get(1)).
+                    append(condition.getOperator()).
                     append(" ?");
-            firstElement = false;
+            builder.append(" ").append(condition.getLogicalOperator()).append(" ");
+            valueList.add(condition.getValue());
         }
         builder.append(";");
-        String sql = builder.toString();
-        PreparedStatement statement = this.getPreparedStatement(sql);
-        int index = 1;
-        try {
-            for (List<String> innerList : argList) {
-                statement.setObject(index++, innerList.get(2));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return this.get(null, this::createReadingEntity);
+        String sql = baseSql + builder;
+        return this.get(sql, this::createReadingEntity, valueList);
     }
 
     private Reading createReadingEntity(ResultSet rs) {
@@ -128,17 +118,6 @@ public class ReadingDao extends DataAccessObject<Reading> {
             System.err.println(e.getMessage());
         }
         return reading;
-    }
-
-    public List<Reading> where(String column, String operator, String value) {
-
-        //hier noch prepared statement einfügen statt String.format
-        return this.get(String.format("""
-                SELECT id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute
-                FROM readings
-                SELECT""" + sqlCustomerReadingsData + """
-                WHERE %s %s '%s';
-                """, column, operator, value), this::createReadingEntity);
     }
 }
 

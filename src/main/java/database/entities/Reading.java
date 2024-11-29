@@ -1,5 +1,6 @@
 package database.entities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import database.daos.CustomerDao;
@@ -19,6 +20,7 @@ public class Reading implements IReading {
     private String comment;
     private boolean substitute;
 
+    @JsonCreator
     public Reading(
             @JsonProperty("id") UUID id,
             @JsonProperty("customer") UUID customer_id,

@@ -1,5 +1,6 @@
 package database.daos;
 
+import database.Condition;
 import database.entities.Customer;
 import database.entities.Reading;
 import interfaces.ICustomer;
@@ -8,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,20 +77,27 @@ public class CustomerDao extends DataAccessObject<Customer> {
     }
 
     @Override
-    public List<Customer> where(String column, String operator, String value) {
-        return this.get(String.format("""
-                SELECT id, gender, firstName, lastName, birthdate
-                FROM customers
-                WHERE %s %s '%s';
-                """, column, operator, value), this::createCustomerEntity);
+    public List<Customer> where(List<Condition> argList) {
+
+        StringBuilder builder = new StringBuilder();
+        List<String> valueList = new ArrayList<>();
+        String baseSql = """
+                SELECT""" + sqlSelectCustomer + """
+                WHERE\s
+                """;
+        for (Condition condition : argList) {
+            builder.append(condition.getColumn()).
+                    append(" ").
+                    append(condition.getOperator()).
+                    append(" ?");
+            builder.append(" ").append(condition.getLogicalOperator()).append(" ");
+            valueList.add(condition.getValue());
+        }
+        builder.append(";");
+        String sql = baseSql + builder;
+        return this.get(sql, this::createCustomerEntity, valueList);
     }
 
-
-    // Nur für Compiler Zwecke. Ist noch keine fertige Methode
-    @Override
-    public List<Reading> where(List<List<String>> argList) {
-        return List.of();
-    }
 
     private Customer createCustomerEntity(ResultSet rs) {
         Customer customer = null;

@@ -1,7 +1,9 @@
 package database.daos;
 
+import database.Condition;
 import database.DatabaseConnection;
 import database.Property;
+import database.entities.Customer;
 import database.entities.Reading;
 import interfaces.AddParamsToStatement;
 import interfaces.CreateEntity;
@@ -40,8 +42,6 @@ public abstract class DataAccessObject<T> {
     abstract boolean update(T entity);
 
     abstract boolean deleteById(UUID id);
-
-    abstract List<T> where(String column, String operator, String value);
 
     protected boolean insert(String sql, AddParamsToStatement addParams) {
         try {
@@ -105,14 +105,15 @@ public abstract class DataAccessObject<T> {
         return results;
     }
 
-    protected List<T> get(String sql, CreateEntity<T> createEntity, PreparedStatement arguments) {
+    protected List<T> get(String sql, CreateEntity<T> createEntity, List<String> arguments) {
         List<T> results = new ArrayList<>();
 
         try {
             PreparedStatement statement = this.getPreparedStatement(sql);
 
-            for (List<String> innerList : argList) {
-                statement.setObject(index++, innerList.get(2));
+            int index = 1;
+            for (String innerList : arguments) {
+                statement.setObject(index++, innerList);
             }
 
             ResultSet rs = statement.executeQuery();
@@ -143,5 +144,6 @@ public abstract class DataAccessObject<T> {
         return true;
     }
 
-    public abstract List<Reading> where(List<List<String>> argList);
+    public abstract List<T> where(List<Condition> argList);
+    
 }

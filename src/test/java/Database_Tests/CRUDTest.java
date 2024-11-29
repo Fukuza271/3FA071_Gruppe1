@@ -1,10 +1,12 @@
 package Database_Tests;
 
+import database.Condition;
 import database.ExampleDataProvider;
 import database.entities.Customer;
 import database.entities.Reading;
 import interfaces.ICustomer;
 import interfaces.IReading;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
@@ -78,7 +80,9 @@ public class CRUDTest extends BasicTests {
 
     @Test
     public void whereCustomerTest() {
-        List<Customer> customer = customerDao.where("lastName", "=", "Jäger");
+        List<Condition> conditions = new ArrayList<>();
+        conditions.add(new Condition("lastName", "=", "Jäger", null));
+        List<Customer> customer = customerDao.where(conditions);
         Assertions.assertEquals(customer.getFirst().getLastName(), "Jäger");
         Assertions.assertEquals(customer.size(), 1);
     }
@@ -138,18 +142,9 @@ public class CRUDTest extends BasicTests {
 
     @Test
     public void whereReadingTest() {
-        List<List<String>> outerList = new ArrayList<>();
-        List<String> sqlArgs = new ArrayList<>();
-        List<String> sqlArgs2 = new ArrayList<>();
-        sqlArgs.add("meter_count");
-        sqlArgs.add("=");
-        sqlArgs.add("1.918");
-        sqlArgs2.add("meter_count");
-        sqlArgs2.add("<");
-        sqlArgs2.add("22737");
-        outerList.add(sqlArgs);
-        outerList.add(sqlArgs2);
-        List<Reading> readings = readingDao.where(outerList);
+        List<Condition> conditions = new ArrayList<>();
+        conditions.add(new Condition("meter_count", "=", "1.918", null));
+        List<Reading> readings = readingDao.where(conditions);
         for (Reading list : readings) {
             System.out.println(list);
         }
