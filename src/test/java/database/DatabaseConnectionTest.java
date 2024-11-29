@@ -1,14 +1,11 @@
-package Database_Tests;
+package database;
 
-import database.DatabaseConnection;
-import database.Property;
 import interfaces.IDatabaseConnection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
-@Order(1)
-public class DatabaseConnectionTest extends BasicTests {
+public class DatabaseConnectionTest extends DatabaseTest {
 
     @Test
     public void testOpenConnection() {

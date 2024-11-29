@@ -27,6 +27,7 @@ public abstract class DataAccessObject<T> {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+
         return statement;
     }
 

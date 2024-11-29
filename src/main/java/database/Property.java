@@ -7,20 +7,26 @@ import java.util.Properties;
 
 public class Property {
 
-    public static java.util.Properties readProperties() {
-        // Systemnutzer auslesen
-        String systemnutzer = System.getProperty("user.name");
-        // Home-Verzeichnis des Nutzers
+    public static Properties readProperties() {
+
+        return getProperties(false);
+    }
+
+    public static Properties readTestProperties() {
+        return getProperties(true);
+    }
+
+    private static Properties getProperties(boolean useTestProperties) {
         String homeDir = System.getProperty("user.dir");
         String fileName = "database.properties";
-        String filePath = homeDir + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + fileName;
+        String filePath = String.format("%s%ssrc%s%s%sresources%s%s", homeDir, File.separator, File.separator, useTestProperties ? "test" : "main", File.separator, File.separator, fileName);
         Properties properties = new Properties();
         try {
             FileInputStream input = new FileInputStream(filePath);
             properties.load(input);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         return properties;
