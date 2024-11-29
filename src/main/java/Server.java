@@ -20,13 +20,8 @@ public class Server {
 
         final String pack = "rest";
         URI url = URI.create("http://localhost:8080/");
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
         final ResourceConfig rc = new ResourceConfig().packages(pack).
-                register(KindOfMeterParamConverter.class).
-                register(new JacksonJaxbJsonProvider(mapper, JacksonJaxbJsonProvider.DEFAULT_ANNOTATIONS));
-        rc.property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
-        rc.property(ServerProperties.BV_DISABLE_VALIDATE_ON_EXECUTABLE_OVERRIDE_CHECK, true);
+                register(rest.KindOfMeterParamConverterProvider.class);
         server = JdkHttpServerFactory.createHttpServer(url, rc);
     }
 
