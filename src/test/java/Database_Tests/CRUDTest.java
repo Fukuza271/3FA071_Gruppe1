@@ -8,6 +8,7 @@ import interfaces.IReading;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -137,7 +138,21 @@ public class CRUDTest extends BasicTests {
 
     @Test
     public void whereReadingTest() {
-        List<Reading> readings = readingDao.where("meter_count", "=", "1.918");
+        List<List<String>> outerList = new ArrayList<>();
+        List<String> sqlArgs = new ArrayList<>();
+        List<String> sqlArgs2 = new ArrayList<>();
+        sqlArgs.add("meter_count");
+        sqlArgs.add("=");
+        sqlArgs.add("1.918");
+        sqlArgs2.add("meter_count");
+        sqlArgs2.add("<");
+        sqlArgs2.add("22737");
+        outerList.add(sqlArgs);
+        outerList.add(sqlArgs2);
+        List<Reading> readings = readingDao.where(outerList);
+        for (Reading list : readings) {
+            System.out.println(list);
+        }
         Assertions.assertEquals(readings.getFirst().getMeterCount().toString(), "1.918");
         Assertions.assertEquals(readings.size(), 1);
     }

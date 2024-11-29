@@ -2,6 +2,7 @@ package database.daos;
 
 import database.DatabaseConnection;
 import database.Property;
+import database.entities.Reading;
 import interfaces.AddParamsToStatement;
 import interfaces.CreateEntity;
 import interfaces.IDatabaseConnection;
@@ -20,7 +21,7 @@ public abstract class DataAccessObject<T> {
         this.databaseConnection = new DatabaseConnection().openConnection(Property.readProperties());
     }
 
-    private PreparedStatement getPreparedStatement(String sql) {
+    protected PreparedStatement getPreparedStatement(String sql) {
         PreparedStatement statement = null;
         try {
             statement = this.databaseConnection.getConnection().prepareStatement(sql);
@@ -104,6 +105,29 @@ public abstract class DataAccessObject<T> {
         return results;
     }
 
+    protected List<T> get(String sql, CreateEntity<T> createEntity, PreparedStatement arguments) {
+        List<T> results = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = this.getPreparedStatement(sql);
+
+            for (List<String> innerList : argList) {
+                statement.setObject(index++, innerList.get(2));
+            }
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                T entity = createEntity.execute(rs);
+                results.add(entity);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return results;
+    }
+
     protected boolean deleteById(String sql, UUID id) {
         try {
             PreparedStatement statement = this.getPreparedStatement(sql);
@@ -118,4 +142,6 @@ public abstract class DataAccessObject<T> {
 
         return true;
     }
+
+    public abstract List<Reading> where(List<List<String>> argList);
 }

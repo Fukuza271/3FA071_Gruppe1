@@ -1,6 +1,7 @@
 package database.daos;
 
 import database.entities.Customer;
+import database.entities.Reading;
 import interfaces.ICustomer;
 
 import java.sql.Date;
@@ -80,6 +81,13 @@ public class CustomerDao extends DataAccessObject<Customer> {
                 FROM customers
                 WHERE %s %s '%s';
                 """, column, operator, value), this::createCustomerEntity);
+    }
+
+
+    // Nur für Compiler Zwecke. Ist noch keine fertige Methode
+    @Override
+    public List<Reading> where(List<List<String>> argList) {
+        return List.of();
     }
 
     private Customer createCustomerEntity(ResultSet rs) {
