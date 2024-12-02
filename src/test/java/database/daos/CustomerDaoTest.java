@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,12 +71,15 @@ public class CustomerDaoTest extends DatabaseTest {
     }
 
     @Test
-    public void whereTest() {
-        Customer customer = createCustomer();
-        createCustomer();
-
-        List<Customer> customers = customerDao.where("id", "=", customer.getId().toString());
-        Assertions.assertEquals(customers.getFirst().getId().toString(), customer.getId().toString());
-        Assertions.assertEquals(customers.size(), 1);
+    public void whereCustomerTest() {
+        List<Condition> conditions = new ArrayList<>();
+        Customer customer = new Customer(UUID.randomUUID(), ICustomer.Gender.M, "Schnieder", "Schnieder", LocalDate.now());
+        Customer customer2 = new Customer(UUID.randomUUID(), ICustomer.Gender.M, "Günter", "Günter", LocalDate.now());
+        customerDao.insert(customer);
+        customerDao.insert(customer2);
+        conditions.add(new Condition("lastname", "=", "Schnieder", "OR"));
+        conditions.add(new Condition("lastname", "=", "Günter", null));
+        List<Customer> readings = customerDao.where(conditions);
+        Assertions.assertEquals(2, readings.size());
     }
 }

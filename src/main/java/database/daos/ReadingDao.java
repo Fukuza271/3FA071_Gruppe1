@@ -1,12 +1,15 @@
 package database.daos;
 
+import database.Condition;
 import database.entities.Reading;
 import interfaces.IReading;
+import jakarta.ws.rs.core.Response;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,13 +80,25 @@ public class ReadingDao extends DataAccessObject<Reading> {
     }
 
     @Override
-    public List<Reading> where(String column, String operator, String value) {
+    public List<Reading> where(List<Condition> argList) {
 
-        //hier noch prepared statement einfügen statt String.format
-        return this.get(String.format("""
+        StringBuilder builder = new StringBuilder();
+        List<String> valueList = new ArrayList<>();
+        String baseSql = """
                 SELECT""" + sqlCustomerReadingsData + """
-                WHERE %s %s '%s';
-                """, column, operator, value), this::createReadingEntity);
+                WHERE\s
+                """;
+        for (Condition condition : argList) {
+            builder.append(condition.getColumn()).
+                    append(" ").
+                    append(condition.getOperator()).
+                    append(" ?");
+            builder.append(" ").append(condition.getLogicalOperator()).append(" ");
+            valueList.add(condition.getValue());
+        }
+        builder.append(";");
+        String sql = baseSql + builder;
+        return this.get(sql, this::createReadingEntity, valueList);
     }
 
     private Reading createReadingEntity(ResultSet rs) {

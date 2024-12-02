@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,11 +80,40 @@ public class ReadingDaoTest extends DatabaseTest {
 
     @Test
     public void whereReadingTest() {
-        Reading reading = createReading();
-        createReading();
-
-        List<Reading> readings = readingDao.where("id", "=", reading.getId().toString());
-        Assertions.assertEquals(readings.getFirst().getId().toString(), reading.getId().toString());
-        Assertions.assertEquals(readings.size(), 1);
+        List<Condition> conditions = new ArrayList<>();
+        UUID uuid = UUID.randomUUID();
+        Customer customer = new Customer(uuid, ICustomer.Gender.M, "Schnieder", "Schnieder", LocalDate.now());
+        customerDao.insert(customer);
+        Reading reading = new Reading(UUID.randomUUID(),
+                uuid,
+                LocalDate.now(),
+                "",
+                1.918,
+                IReading.KindOfMeter.WASSER,
+                "",
+                false);
+        Reading reading2 = new Reading(UUID.randomUUID(),
+                uuid,
+                LocalDate.now(),
+                "",
+                0.918,
+                IReading.KindOfMeter.WASSER,
+                "",
+                false);
+        Reading reading3 = new Reading(UUID.randomUUID(),
+                uuid,
+                LocalDate.now(),
+                "",
+                1.919,
+                IReading.KindOfMeter.WASSER,
+                "",
+                false);
+        readingDao.insert(reading);
+        readingDao.insert(reading2);
+        readingDao.insert(reading3);
+        conditions.add(new Condition("meter_count", "=", "1.918", "OR"));
+        conditions.add(new Condition("meter_count", "<", "1.918", null));
+        List<Reading> readings = readingDao.where(conditions);
+        Assertions.assertEquals(2, readings.size());
     }
 }
