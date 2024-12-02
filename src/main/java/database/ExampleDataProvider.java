@@ -69,14 +69,12 @@ public class ExampleDataProvider {
 
             if (substitute) {
                 Pattern pattern = Pattern.compile("(?<=^Zählertausch:\sneue\sNummer\s).+(?=$)");
-                Matcher matcher = pattern.matcher("Zählertausch: neue Nummer Xr-2021-2312434xz");
-                boolean matchFound = matcher.find();
+                Matcher matcher = pattern.matcher(comment);
 
-//                System.out.println(matchFound);
-//                System.out.println(matcher.group());
-
-                meterId = matcher.group();
-                meterId.replaceAll("\\s+","");
+                if (matcher.find()) {
+                    meterId = matcher.group();
+                    meterId.replaceAll("\\s+", "");
+                }
             }
 
             (new ReadingDao()).insert(new Reading(UUID.randomUUID(), customerId, date, meterId, meterCount, type, comment, substitute));
