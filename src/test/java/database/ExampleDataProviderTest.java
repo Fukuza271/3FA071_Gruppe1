@@ -25,12 +25,9 @@ public class ExampleDataProviderTest extends DatabaseTest {
 
         insertTestCustomer();
 
-        readingDao.insert(new Reading(UUID.randomUUID(),
-                UUID.fromString(testCustomerUUID), LocalDate.now(),
-                "H-2010-2312456ab", 5.965, IReading.KindOfMeter.HEIZUNG,
-                "TestReading", false));
+        ExampleDataProvider.shared.insertHeizungReadingData();
 
-        Assertions.assertEquals(1, readingDao.findAll().size());
+        Assertions.assertEquals(75, readingDao.findAll().size());
     }
 
     @Test
@@ -39,12 +36,9 @@ public class ExampleDataProviderTest extends DatabaseTest {
 
         insertTestCustomer();
 
-        readingDao.insert(new Reading(UUID.randomUUID(),
-                UUID.fromString(testCustomerUUID), LocalDate.now(),
-                "S-2011-2312456cd", 16573.d, IReading.KindOfMeter.HEIZUNG,
-                "TestReading", false));
+        ExampleDataProvider.shared.insertWasserReadingData();
 
-        Assertions.assertEquals(1, readingDao.findAll().size());
+        Assertions.assertEquals(66, readingDao.findAll().size());
     }
 
     @Test
@@ -53,12 +47,9 @@ public class ExampleDataProviderTest extends DatabaseTest {
 
         insertTestCustomer();
 
-        readingDao.insert(new Reading(UUID.randomUUID(),
-                UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"), LocalDate.now(),
-                "W-2012-2312456ef", 710.d, IReading.KindOfMeter.HEIZUNG,
-                "TestReading", false));
+        ExampleDataProvider.shared.insertStromReadingData();
 
-        Assertions.assertEquals(1, readingDao.findAll().size());
+        Assertions.assertEquals(64, readingDao.findAll().size());
     }
 
     @Test
