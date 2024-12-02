@@ -9,6 +9,7 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,36 +21,54 @@ public class CustomerResourceTest {
 
     String testCustomerUUID = "ec617965-88b4-4721-8158-ee36c38e4db3";
     CustomerDao dao = new CustomerDao();
+    WebTarget target;
 
     @BeforeEach
+    public void setUp() {
+        this.target = ClientBuilder.newClient().target("http://localhost:8080");
 
-
-   @Test
-   public void storeTest() {
-
+        //id, gender, firstname, lastname, birthdate
+        Customer testCustomer = new Customer(UUID.fromString(testCustomerUUID), ICustomer.Gender.M, "Pumukel", "Kobold", LocalDate.of(1962, 02, 21));
+        dao.insert(testCustomer);
     }
+
+    @Test
+    public void indexTest() {
+     //   Assertions.assertEquals();
+    }
+
 
     @Test
     public void showTest() {
 
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:8080");
         Response response = target.path("customers").path(testCustomerUUID).request(MediaType.
                 APPLICATION_JSON).get();
 
-        System.out.println(response.readEntity(String.class));
+        Assertions.assertEquals("""
+        {"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"}""", response.readEntity(String.class));
 
     }
 
     @Test
     public void destroyTest() {
 
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:8080");
         Response response = target.path("customers").path(testCustomerUUID).request(MediaType.
+                APPLICATION_JSON).get();
+
+        Assertions.assertEquals("""
+        {"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"}""", response.readEntity(String.class));
+
+
+        response = target.path("customers").path(testCustomerUUID).request(MediaType.
                 APPLICATION_JSON).delete();
 
-        System.out.println(response.readEntity(String.class));
+        Assertions.assertNull(response.readEntity(String.class));
+
+    }
+
+
+    @Test
+    public void storeTest() {
 
     }
 
