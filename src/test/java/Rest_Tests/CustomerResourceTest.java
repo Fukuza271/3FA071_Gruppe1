@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +30,11 @@ public class CustomerResourceTest {
         //id, gender, firstname, lastname, birthdate
         Customer testCustomer = new Customer(UUID.fromString(testCustomerUUID), ICustomer.Gender.M, "Pumukel", "Kobold", LocalDate.of(1962, 02, 21));
         dao.insert(testCustomer);
+    }
+
+    @BeforeAll
+    public static void setupOnce() {
+
     }
 
     @Test
