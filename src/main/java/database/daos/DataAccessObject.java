@@ -106,18 +106,15 @@ public abstract class DataAccessObject<T> {
     }
 
     protected List<T> get(String sql, CreateEntity<T> createEntity, List<String> arguments) {
-        List<T> results = new ArrayList<>();
 
+        List<T> results = new ArrayList<>();
         try {
             PreparedStatement statement = this.getPreparedStatement(sql);
-
             int index = 1;
             for (String innerList : arguments) {
                 statement.setObject(index++, innerList);
             }
-
             ResultSet rs = statement.executeQuery();
-
             while (rs.next()) {
                 T entity = createEntity.execute(rs);
                 results.add(entity);

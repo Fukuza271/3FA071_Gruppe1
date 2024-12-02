@@ -8,7 +8,6 @@ import jakarta.ws.rs.ext.Provider;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-@Provider
 public class KindOfMeterParamConverter implements ParamConverter<IReading.KindOfMeter> {
 
 

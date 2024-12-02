@@ -3,6 +3,7 @@ package database.entities;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import database.daos.CustomerDao;
 import interfaces.ICustomer;
 import interfaces.IReading;
@@ -10,6 +11,7 @@ import interfaces.IReading;
 import java.time.LocalDate;
 import java.util.UUID;
 
+@JsonTypeName(value = "reading")
 public class Reading implements IReading {
     private UUID id;
     private UUID customer_id;

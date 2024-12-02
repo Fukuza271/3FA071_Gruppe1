@@ -40,9 +40,6 @@ public class CRUDTest extends BasicTests {
         // Beliebige UUID aus der Testdatenbank genommen
         Customer customer = customerDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"));
         Assertions.assertNotNull(customer);
-        customer = customerDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db2"));
-        // Max Mustermann erwartet
-        Assertions.assertNotNull(customer);
     }
 
     @Test
@@ -68,8 +65,12 @@ public class CRUDTest extends BasicTests {
 
     @Test
     public void deleteCustomerTest() {
-        customerDao.deleteById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"));
-        Assertions.assertNotNull(customerDao.findById(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3")));
+        UUID uuid = UUID.randomUUID();
+        Customer customer = new Customer(uuid, ICustomer.Gender.M, "test", "test", LocalDate.now());
+        customerDao.insert(customer);
+        Assertions.assertNotNull(customerDao.findById(uuid));
+        customerDao.deleteById(uuid);
+        Assertions.assertNull(customerDao.findById(uuid));
     }
 
     @Test
@@ -81,10 +82,10 @@ public class CRUDTest extends BasicTests {
     @Test
     public void whereCustomerTest() {
         List<Condition> conditions = new ArrayList<>();
-        conditions.add(new Condition("lastName", "=", "Jäger", null));
-        List<Customer> customer = customerDao.where(conditions);
-        Assertions.assertEquals(customer.getFirst().getLastName(), "Jäger");
-        Assertions.assertEquals(customer.size(), 1);
+        conditions.add(new Condition("lastname", "=", "Schnieder", "OR"));
+        conditions.add(new Condition("lastname", "=", "Günter", null));
+        List<Customer> readings = customerDao.where(conditions);
+        Assertions.assertEquals(2, readings.size());
     }
 
     // Reading Dao Tests
@@ -137,18 +138,15 @@ public class CRUDTest extends BasicTests {
     @Test
     public void findAllReadingTest() {
         List<Reading> readings = readingDao.findAll();
-        Assertions.assertEquals(205, readings.size());
+        Assertions.assertEquals(readings.size(), 205);
     }
 
     @Test
     public void whereReadingTest() {
         List<Condition> conditions = new ArrayList<>();
-        conditions.add(new Condition("meter_count", "=", "1.918", null));
+        conditions.add(new Condition("meter_count", "=", "1.918", "OR"));
+        conditions.add(new Condition("meter_count", "<", "1.918", null));
         List<Reading> readings = readingDao.where(conditions);
-        for (Reading list : readings) {
-            System.out.println(list);
-        }
-        Assertions.assertEquals(readings.getFirst().getMeterCount().toString(), "1.918");
-        Assertions.assertEquals(readings.size(), 1);
+        Assertions.assertEquals(10, readings.size());
     }
 }

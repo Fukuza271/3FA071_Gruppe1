@@ -82,7 +82,7 @@ public class CustomerDao extends DataAccessObject<Customer> {
         StringBuilder builder = new StringBuilder();
         List<String> valueList = new ArrayList<>();
         String baseSql = """
-                SELECT""" + sqlSelectCustomer + """
+                """ + sqlSelectCustomer + """
                 WHERE\s
                 """;
         for (Condition condition : argList) {
