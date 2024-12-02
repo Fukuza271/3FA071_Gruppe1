@@ -1,6 +1,5 @@
 package Rest_Tests;
 
-import Database_Tests.BasicTests;
 import database.daos.CustomerDao;
 import database.entities.Customer;
 import interfaces.ICustomer;

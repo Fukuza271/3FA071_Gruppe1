@@ -13,7 +13,16 @@ public class KindOfMeterParamConverterProvider implements ParamConverterProvider
     @Override
     public <T> ParamConverter<T> getConverter(Class<T> aClass, Type type, Annotation[] annotations) {
         if (aClass.equals(IReading.KindOfMeter.class)) {
-            return (ParamConverter<T>) new KindOfMeterParamConverter();
+            return new ParamConverter<T>() {
+                @Override
+                public T fromString(String value) {
+                    return value != null ? aClass.cast(IReading.KindOfMeter.valueOf(value)) : null;
+                }
+                @Override
+                public String toString(T value) {
+                    return value != null ? value.toString() : null;
+                }
+            };
         }
         return null;
     }

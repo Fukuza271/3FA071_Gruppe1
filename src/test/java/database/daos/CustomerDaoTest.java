@@ -1,5 +1,6 @@
 package database.daos;
 
+import database.Condition;
 import database.DatabaseTest;
 import database.entities.Customer;
 import interfaces.ICustomer;
