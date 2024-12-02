@@ -1,7 +1,7 @@
 package database;
 
-import interfaces.IDatabaseConnection;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
 

@@ -3,7 +3,6 @@ package database;
 import database.daos.CustomerDao;
 import database.daos.ReadingDao;
 import interfaces.IDatabaseConnection;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 

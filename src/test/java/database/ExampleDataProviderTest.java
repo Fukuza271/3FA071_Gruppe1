@@ -1,9 +1,7 @@
 package database;
 
 import database.entities.Customer;
-import database.entities.Reading;
 import interfaces.ICustomer;
-import interfaces.IReading;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -59,6 +57,13 @@ public class ExampleDataProviderTest extends DatabaseTest {
         ExampleDataProvider.shared.insertCustomerData();
 
         Assertions.assertEquals(1001, customerDao.findAll().size());
+    }
+
+    @Test
+    public void errors() {
+        System.setProperty("user.name", "TestUser");
+
+        ExampleDataProvider.shared.insertCustomerData();
     }
 
 }

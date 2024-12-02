@@ -1,5 +1,6 @@
-package database;
+package database.daos;
 
+import database.DatabaseTest;
 import database.entities.Customer;
 import database.entities.Reading;
 import interfaces.ICustomer;
