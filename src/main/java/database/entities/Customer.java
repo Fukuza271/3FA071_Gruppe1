@@ -1,10 +1,12 @@
 package database.entities;
 
 import com.fasterxml.jackson.annotation.*;
+import database.Condition;
 import database.daos.ReadingDao;
 import interfaces.ICustomer;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -88,6 +90,8 @@ public class Customer implements ICustomer {
 
     @JsonIgnore
     public List<Reading> getReadings() {
-        return (new ReadingDao()).where("customer_id", "=", this.id.toString());
+        List<Condition> conditions = new ArrayList<>();
+        conditions.add(new Condition("customer_id", "=", this.id.toString(), null));
+        return (new ReadingDao()).where(conditions);
     }
 }
