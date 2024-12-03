@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class RestTest {
 
-    WebTarget target;
+    protected static WebTarget target;
     protected static CustomerDao customerDao;
     protected static ReadingDao readingDao;
 
@@ -33,14 +33,14 @@ public class RestTest {
         this.target = ClientBuilder.newClient().target("http://localhost:8080");
     }
 
-    private Customer createCustomer() {
+    protected Customer createCustomer() {
         Customer customer = new Customer(UUID.fromString(customerUUID), ICustomer.Gender.M, "Pumukel", "Kobold", LocalDate.of(1962, 02, 21));
         customerDao.insert(customer);
 
         return customer;
     }
 
-    private Reading createReading() {
+    protected Reading createReading() {
         Reading reading = new Reading(UUID.randomUUID(), UUID.fromString(customerUUID), LocalDate.now(), "Xr-Test-Meter", 200d, IReading.KindOfMeter.HEIZUNG, "", false);
         readingDao.insert(reading);
 
