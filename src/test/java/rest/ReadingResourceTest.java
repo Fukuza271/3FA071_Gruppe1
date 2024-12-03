@@ -1,4 +1,4 @@
-package Rest_Tests;
+package rest;
 
 public class ReadingResourceTest {
 }
