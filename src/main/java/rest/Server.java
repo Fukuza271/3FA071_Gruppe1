@@ -20,7 +20,6 @@ public class Server {
         final ResourceConfig rc = new ResourceConfig().packages(pack);
         rc.register(rest.KindOfMeterParamConverterProvider.class);
         rc.register(rest.LocalDateParamConverterProvider.class);
-        System.out.println("Registered classes: " + rc.getClasses());
         rc.property(ServerProperties.PROVIDER_PACKAGES, "rest");
         server = JdkHttpServerFactory.createHttpServer(url, rc);
     }
