@@ -127,4 +127,18 @@ public class Reading implements IReading {
     public void setId(UUID id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof Reading reading) &&
+               reading.getId().equals(this.getId()) &&
+               reading.getDateOfReading().equals(this.getDateOfReading()) &&
+               reading.getMeterId().equals(this.getMeterId()) &&
+               reading.getKindOfMeter().equals(this.getKindOfMeter()) &&
+               reading.getMeterCount().equals(this.getMeterCount()) &&
+               reading.getSubstitute().equals(this.getSubstitute()) &&
+               reading.getComment().equals(this.getComment()) &&
+               ((reading.getCustomer() == null && this.getCustomer() == null) || (reading.getCustomer() != null && this.getCustomer() != null && reading.getCustomer().equals(this.getCustomer())));
+
+    }
 }

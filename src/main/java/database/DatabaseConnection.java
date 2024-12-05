@@ -107,6 +107,7 @@ public class DatabaseConnection implements IDatabaseConnection {
         if (connection != null) {
             try {
                 connection.close();
+                connection = null;
             } catch (SQLException e) {
                 System.err.println(e.getMessage());
             }

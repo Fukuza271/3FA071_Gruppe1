@@ -94,4 +94,14 @@ public class Customer implements ICustomer {
         conditions.add(new Condition("customer_id", "=", this.id.toString(), null));
         return (new ReadingDao()).where(conditions);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof Customer customer) &&
+               customer.getId().equals(this.getId()) &&
+               customer.getFirstName().equals(this.getFirstName()) &&
+               customer.getLastName().equals(this.getLastName()) &&
+               customer.getGender().equals(this.getGender()) &&
+               ((customer.getBirthDate() == null && this.getBirthDate() == null) || (customer.getBirthDate() != null && this.getBirthDate() != null && customer.getBirthDate().equals(this.getBirthDate())));
+    }
 }
