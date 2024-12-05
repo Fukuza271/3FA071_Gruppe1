@@ -21,6 +21,7 @@ public class RestTest {
     protected static ReadingDao readingDao;
 
     String customerUUID = "ec617965-88b4-4721-8158-ee36c38e4db3";
+    String readingUUID;
 
     @BeforeAll
     public static void beforeAll() {
@@ -30,7 +31,7 @@ public class RestTest {
 
     @BeforeEach
     public void setUp() {
-        this.target = ClientBuilder.newClient().target("http://localhost:8080");
+        this.target = ClientBuilder.newClient().target("http://localhost:8081");
     }
 
     private Customer createCustomer() {
@@ -41,7 +42,8 @@ public class RestTest {
     }
 
     private Reading createReading() {
-        Reading reading = new Reading(UUID.randomUUID(), UUID.fromString(customerUUID), LocalDate.now(), "Xr-Test-Meter", 200d, IReading.KindOfMeter.HEIZUNG, "", false);
+        readingUUID = UUID.randomUUID().toString();
+        Reading reading = new Reading(UUID.fromString(readingUUID), UUID.fromString(customerUUID), LocalDate.now(), "Xr-Test-Meter", 200d, IReading.KindOfMeter.HEIZUNG, "", false);
         readingDao.insert(reading);
 
         return reading;
