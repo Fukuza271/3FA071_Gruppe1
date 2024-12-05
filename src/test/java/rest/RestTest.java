@@ -37,6 +37,11 @@ public class RestTest extends JerseyTest {
         readingDao = new ReadingDao();
     }
 
+    @BeforeEach
+    public void beforeEach() {
+        connection.createAllTables();
+    }
+
     protected Customer createCustomer() {
         Customer customer = new Customer(UUID.fromString(customerUUID), ICustomer.Gender.M, "Pumukel", "Kobold", LocalDate.of(1962, 02, 21));
         customerDao.insert(customer);
