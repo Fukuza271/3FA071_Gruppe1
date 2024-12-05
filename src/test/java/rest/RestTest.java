@@ -28,12 +28,17 @@ public class RestTest extends JerseyTest {
     protected static IDatabaseConnection connection;
 
     String customerUUID = "ec617965-88b4-4721-8158-ee36c38e4db3";
+    String readingUUID;
 
     @BeforeAll
     public static void beforeAll() {
-        connection = (new DatabaseConnection()).openConnection(Property.readTestProperties());
         customerDao = new CustomerDao();
         readingDao = new ReadingDao();
+    }
+
+    @BeforeEach
+    public void beforeEach() {
+        connection.createAllTables();
     }
 
     protected Customer createCustomer() {
@@ -43,8 +48,9 @@ public class RestTest extends JerseyTest {
         return customer;
     }
 
-    protected Reading createReading() {
-        Reading reading = new Reading(UUID.randomUUID(), UUID.fromString(customerUUID), LocalDate.now(), "Xr-Test-Meter", 200d, IReading.KindOfMeter.HEIZUNG, "", false);
+    private Reading createReading() {
+        readingUUID = UUID.randomUUID().toString();
+        Reading reading = new Reading(UUID.fromString(readingUUID), UUID.fromString(customerUUID), LocalDate.now(), "Xr-Test-Meter", 200d, IReading.KindOfMeter.HEIZUNG, "", false);
         readingDao.insert(reading);
 
         return reading;
