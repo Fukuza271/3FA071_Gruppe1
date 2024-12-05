@@ -23,7 +23,6 @@ import java.util.UUID;
 
 public class RestTest extends JerseyTest {
 
-    protected static WebTarget target;
     protected static CustomerDao customerDao;
     protected static ReadingDao readingDao;
     protected static IDatabaseConnection connection;
