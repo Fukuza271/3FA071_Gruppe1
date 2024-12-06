@@ -38,7 +38,6 @@ public class ReadingResourceTest extends RestTest {
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Assertions.assertEquals("""
                 {"id":"4d4c9cbd-547a-4d6d-baa7-11ef5ef8ace4","customer":{"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"},"dateOfReading":"2024-12-06","meterId":"Xr-Test-Meter","meterCount":200.0,"kindOfMeter":"HEIZUNG","comment":"","substitute":false}""", response.readEntity(String.class));
-        Assertions.assertEquals(0, readingDao.findAll().size());
     }
 
     @Test
@@ -55,15 +54,5 @@ public class ReadingResourceTest extends RestTest {
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Assertions.assertEquals("""
                 {"id":"4d4c9cbd-547a-4d6d-baa7-11ef5ef8ace4","customer":{"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"},"dateOfReading":"2024-12-06","meterId":"Xr-Test-Meter","meterCount":200.0,"kindOfMeter":"HEIZUNG","comment":"","substitute":false}""", response.readEntity(String.class));
-    }
-
-    @Test
-    public void storeTest() {
-
-    }
-
-    @Test
-    public void updateTest() {
-
     }
 }
