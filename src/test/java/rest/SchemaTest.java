@@ -22,9 +22,11 @@ public class SchemaTest extends RestTest{
 
     @Test
     public void customerSchema() throws IOException {
+        Customer customer = createCustomer();
+        customerDao.insert(customer);
         Schema schema = createSchema("customerSchema.json");
         Response response = target().path("customers")
-                .path(customerUUID)
+                .path(customer.getId().toString())
                 .request(MediaType.APPLICATION_JSON).get();
         JSONObject jsonObject = new JSONObject(new JSONTokener(response.readEntity(String.class)));
         Assertions.assertDoesNotThrow(() -> schema.validate(jsonObject));
