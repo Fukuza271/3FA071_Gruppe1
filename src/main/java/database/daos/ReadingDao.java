@@ -64,7 +64,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
                 WHERE id = ?;
                 """, (PreparedStatement statement) -> {
             statement.setString(8, entity.getId().toString());
-            statement.setString(1, entity.getCustomer().getId().toString());
+            statement.setString(1, (entity.getCustomer().getId().toString()));
             statement.setDate(2, Date.valueOf(entity.getDateOfReading()));
             statement.setString(3, entity.getMeterId());
             statement.setDouble(4, entity.getMeterCount());
