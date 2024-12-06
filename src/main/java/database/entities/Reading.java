@@ -132,7 +132,7 @@ public class Reading implements IReading {
         this.id = id;
     }
 
-    @Override
+/*    @Override
     public boolean equals(Object obj) {
         return (obj instanceof Reading reading) &&
                reading.getId().equals(this.getId()) &&
@@ -144,5 +144,5 @@ public class Reading implements IReading {
                reading.getComment().equals(this.getComment()) &&
                ((reading.getCustomer() == null && this.getCustomer() == null) || (reading.getCustomer() != null && this.getCustomer() != null && reading.getCustomer().equals(this.getCustomer())));
 
-    }
+    }*/
 }
