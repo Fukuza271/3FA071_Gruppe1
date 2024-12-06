@@ -50,6 +50,10 @@ public class Reading implements IReading {
 
     @Override
     public ICustomer getCustomer() {
+        if (this.customer_id == null) {
+            return null;
+        }
+
         return new CustomerDao().findById(this.customer_id);
     }
 

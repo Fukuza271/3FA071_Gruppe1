@@ -3,7 +3,6 @@ package database.daos;
 import database.Condition;
 import database.entities.Reading;
 import interfaces.IReading;
-import jakarta.ws.rs.core.Response;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -20,17 +19,17 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public Reading findById(UUID id) {
         return this.findById("""
-                SELECT""" + sqlCustomerReadingsData + """
-                WHERE id = ?;
-                """, id, this::createReadingEntity);
+                                     SELECT""" + sqlCustomerReadingsData + """
+                                     WHERE id = ?;
+                                     """, id, this::createReadingEntity);
     }
 
     @Override
     public List<Reading> findAll() {
         return this.get("""
-                SELECT""" + sqlCustomerReadingsData + """
-                ;
-                """, this::createReadingEntity);
+                                SELECT""" + sqlCustomerReadingsData + """
+                                ;
+                                """, this::createReadingEntity);
     }
 
     @Override
@@ -85,9 +84,9 @@ public class ReadingDao extends DataAccessObject<Reading> {
         StringBuilder builder = new StringBuilder();
         List<String> valueList = new ArrayList<>();
         String baseSql = """
-                SELECT""" + sqlCustomerReadingsData + """
-                WHERE\s
-                """;
+                                 SELECT""" + sqlCustomerReadingsData + """
+                                 WHERE\s
+                                 """;
         for (Condition condition : argList) {
             builder.append(condition.getColumn()).
                     append(" ").
@@ -103,10 +102,13 @@ public class ReadingDao extends DataAccessObject<Reading> {
 
     private Reading createReadingEntity(ResultSet rs) {
         Reading reading = null;
+
         try {
+            String customerIdString = rs.getString("customer_id");
+
             reading = new Reading(
                     UUID.fromString(rs.getString("id")),
-                    UUID.fromString(rs.getString("customer_id")),
+                    customerIdString != null ? UUID.fromString(customerIdString) : null,
                     rs.getDate("date").toLocalDate(),
                     rs.getString("meter_ID"),
                     rs.getDouble("meter_count"),

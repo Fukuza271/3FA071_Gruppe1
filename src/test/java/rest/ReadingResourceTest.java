@@ -5,57 +5,57 @@ import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ReadingResourceTest extends RestTest{
-
+public class ReadingResourceTest extends RestTest {
 
     @Test
     public void indexTest() {
-        //Gibt Liste aller Customer aus
+        createCustomer();
+        createReading();
+
+        Response response = target()
+                .path("readings")
+                .request(MediaType.APPLICATION_JSON)
+                .get();
 
 
-        Response response = target().path("readings")
-                .path(readingUUID)
-                .request(MediaType.APPLICATION_JSON).get();
-
-        //UUID.fromString(readingUUID), UUID.fromString(customerUUID), LocalDate.now(), "Xr-Test-Meter", 200d, IReading.KindOfMeter.HEIZUNG, "", false
-
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Assertions.assertEquals("""
-                ]{"id":readingUUID,"customer":"ec617965-88b4-4721-8158-ee36c38e4db3","meterID":"Xr-Test-Meter","metercount":200d,"kindOfMeter":""}
-                """, response.readEntity(String.class));
+                [{"id":"4d4c9cbd-547a-4d6d-baa7-11ef5ef8ace4","customer":{"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"},"dateOfReading":"2024-12-06","meterId":"Xr-Test-Meter","meterCount":200.0,"kindOfMeter":"HEIZUNG","comment":"","substitute":false}]""", response.readEntity(String.class));
 
     }
 
-
     @Test
     public void showTest() {
+        createCustomer();
+        createReading();
 
-        Response response = target().path("customers").path(customerUUID).request(MediaType.
-                APPLICATION_JSON).get();
+        Response response = target()
+                .path("readings")
+                .path(readingUUID)
+                .request(MediaType.APPLICATION_JSON)
+                .get();
 
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Assertions.assertEquals("""
-        {"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"}""", response.readEntity(String.class));
-
+                {"id":"4d4c9cbd-547a-4d6d-baa7-11ef5ef8ace4","customer":{"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"},"dateOfReading":"2024-12-06","meterId":"Xr-Test-Meter","meterCount":200.0,"kindOfMeter":"HEIZUNG","comment":"","substitute":false}""", response.readEntity(String.class));
+        Assertions.assertEquals(0, readingDao.findAll().size());
     }
 
     @Test
     public void destroyTest() {
+        createCustomer();
+        createReading();
 
-        Response response = target().path("customers").path(customerUUID).request(MediaType.
-                APPLICATION_JSON).get();
+        Response response = target()
+                .path("readings")
+                .path(readingUUID)
+                .request(MediaType.APPLICATION_JSON)
+                .delete();
 
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Assertions.assertEquals("""
-        {"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"}""", response.readEntity(String.class));
-
-
-        response = target().path("customers").path(customerUUID).request(MediaType.
-                APPLICATION_JSON).delete();
-
-        Assertions.assertEquals("""
-        {"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"}""", response.readEntity(String.class));
-
-
+                {"id":"4d4c9cbd-547a-4d6d-baa7-11ef5ef8ace4","customer":{"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"},"dateOfReading":"2024-12-06","meterId":"Xr-Test-Meter","meterCount":200.0,"kindOfMeter":"HEIZUNG","comment":"","substitute":false}""", response.readEntity(String.class));
     }
-
 
     @Test
     public void storeTest() {

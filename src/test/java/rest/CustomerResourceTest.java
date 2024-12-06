@@ -38,16 +38,14 @@ public class CustomerResourceTest extends RestTest {
                 APPLICATION_JSON).get();
 
         Assertions.assertEquals("""
-        {"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"}""", response.readEntity(String.class));
+                {"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"}""", response.readEntity(String.class));
 
 
         response = target().path("customers").path(customerUUID).request(MediaType.
                 APPLICATION_JSON).delete();
 
         Assertions.assertEquals("""
-        {"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"}""", response.readEntity(String.class));
-
-
+                {"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"}""", response.readEntity(String.class));
     }
 
 
