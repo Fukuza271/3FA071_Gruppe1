@@ -1,6 +1,7 @@
 package rest;
 
 import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
+import database.entities.Customer;
 import database.entities.Reading;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -30,6 +31,8 @@ public class SchemaTest extends RestTest{
 
     @Test
     public void readingSchema() throws IOException {
+        Customer customer = createCustomer();
+        customerDao.insert(customer);
         Reading reading = createReading();
         readingDao.insert(reading);
         Schema schema = createSchema("readingSchema.json");

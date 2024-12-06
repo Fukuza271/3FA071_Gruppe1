@@ -13,7 +13,7 @@ public class CustomerResourceTest extends RestTest {
 
         Customer customer = createCustomer();
 
-        Response response = target.path("customers")
+        Response response = target().path("customers")
                 .request(MediaType.APPLICATION_JSON).get();
 
         Assertions.assertEquals(customer, response.readEntity(Customer.class));
@@ -24,7 +24,7 @@ public class CustomerResourceTest extends RestTest {
 
         Customer customer = createCustomer();
 
-        Response response = target.path("customers")
+        Response response = target().path("customers")
                 .path(customerUUID)
                 .request(MediaType.APPLICATION_JSON).get();
 
@@ -34,14 +34,14 @@ public class CustomerResourceTest extends RestTest {
     @Test
     public void destroyTest() {
 
-        Response response = target.path("customers").path(customerUUID).request(MediaType.
+        Response response = target().path("customers").path(customerUUID).request(MediaType.
                 APPLICATION_JSON).get();
 
         Assertions.assertEquals("""
         {"id":"ec617965-88b4-4721-8158-ee36c38e4db3","gender":"M","firstName":"Pumukel","lastName":"Kobold","birthDate":"1962-02-21"}""", response.readEntity(String.class));
 
 
-        response = target.path("customers").path(customerUUID).request(MediaType.
+        response = target().path("customers").path(customerUUID).request(MediaType.
                 APPLICATION_JSON).delete();
 
         Assertions.assertEquals("""
