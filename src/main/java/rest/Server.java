@@ -8,15 +8,16 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 
 import java.net.URI;
+import java.util.Properties;
 
 public class Server {
-    private static HttpServer server;
+    public static HttpServer server;
 
-    public static void startServer() {
-        (new DatabaseConnection()).openConnection(Property.readProperties());
+    public static void startServer(Properties properties) {
+        (new DatabaseConnection()).openConnection(properties);
 
         final String pack = "rest";
-        URI url = URI.create("http://localhost:8081/");
+        URI url = URI.create("http://localhost:8080/");
         final ResourceConfig rc = new ResourceConfig().packages(pack);
         rc.register(rest.KindOfMeterParamConverterProvider.class);
         rc.register(rest.LocalDateParamConverterProvider.class);
@@ -27,9 +28,10 @@ public class Server {
     public static void stopServer() {
         server.stop(0);
         (new DatabaseConnection()).closeConnection();
+        server = null;
     }
 
     public static void main(String[] args) {
-        startServer();
+        startServer(Property.readProperties());
     }
 }

@@ -20,6 +20,7 @@ public abstract class DatabaseTest {
 
     @BeforeEach
     public void setup() {
+        connection = (new DatabaseConnection()).openConnection(Property.readTestProperties());
         connection.createAllTables();
     }
 }

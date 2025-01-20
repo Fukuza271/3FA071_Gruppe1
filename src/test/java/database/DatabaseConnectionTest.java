@@ -13,7 +13,7 @@ public class DatabaseConnectionTest extends DatabaseTest {
     @Test
     public void openConnectionTest() {
         connection = new DatabaseConnection();
-        IDatabaseConnection result = connection.openConnection(Property.readProperties());
+        IDatabaseConnection result = connection.openConnection(Property.readTestProperties());
         Assertions.assertNotNull(result);
     }
 
