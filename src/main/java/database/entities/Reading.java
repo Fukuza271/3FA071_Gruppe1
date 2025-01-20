@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @JsonTypeName(value = "reading")
-public class Reading implements IReading {
+public class Reading implements IReading, Cloneable {
     private UUID id;
     private UUID customer_id;
     private LocalDate dateOfReading;
@@ -84,7 +84,7 @@ public class Reading implements IReading {
 
     @Override
     public String printDateOfReading() {
-        return "";
+        return this.dateOfReading.toString();
     }
 
     @Override
@@ -132,7 +132,7 @@ public class Reading implements IReading {
         this.id = id;
     }
 
-/*    @Override
+    @Override
     public boolean equals(Object obj) {
         return (obj instanceof Reading reading) &&
                reading.getId().equals(this.getId()) &&
@@ -140,9 +140,19 @@ public class Reading implements IReading {
                reading.getMeterId().equals(this.getMeterId()) &&
                reading.getKindOfMeter().equals(this.getKindOfMeter()) &&
                reading.getMeterCount().equals(this.getMeterCount()) &&
-               reading.getSubstitute().equals(this.getSubstitute()) &&
                reading.getComment().equals(this.getComment()) &&
+               reading.getSubstitute().equals(this.getSubstitute()) &&
                ((reading.getCustomer() == null && this.getCustomer() == null) || (reading.getCustomer() != null && this.getCustomer() != null && reading.getCustomer().equals(this.getCustomer())));
 
-    }*/
+    }
+
+    @Override
+    public Reading clone() {
+        try {
+            return (Reading) super.clone();
+        } catch (CloneNotSupportedException e) {
+
+            throw new AssertionError();
+        }
+    }
 }

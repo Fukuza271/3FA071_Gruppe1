@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @JsonTypeName(value = "customer")
-public class Customer implements ICustomer {
+public class Customer implements ICustomer, Cloneable {
     private UUID id;
     private ICustomer.Gender gender;
     private String firstName;
@@ -103,5 +103,15 @@ public class Customer implements ICustomer {
                customer.getLastName().equals(this.getLastName()) &&
                customer.getGender().equals(this.getGender()) &&
                ((customer.getBirthDate() == null && this.getBirthDate() == null) || (customer.getBirthDate() != null && this.getBirthDate() != null && customer.getBirthDate().equals(this.getBirthDate())));
+    }
+
+    @Override
+    public Customer clone() {
+        try {
+            return (Customer) super.clone();
+        } catch (CloneNotSupportedException e) {
+
+            throw new AssertionError();
+        }
     }
 }
