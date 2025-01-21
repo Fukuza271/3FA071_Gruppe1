@@ -86,7 +86,15 @@ public class CustomerResourceTest extends RestTest {
 
 
     @Test
-    public void updateTest(){
-
+    public void updateTest() {
+        createCustomer();
+        Customer customer = new Customer(UUID.fromString(customerUUID), ICustomer.Gender.M, "Pumu", "Kobold", LocalDate.of(1962, 02, 21));
+        Response response = target()
+                .path("customers")
+                .request(MediaType.TEXT_PLAIN)
+                .put(Entity.entity(customer, MediaType.APPLICATION_JSON));
+        response.readEntity(String.class);
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        Assertions.assertEquals(1, customerDao.findAll().size());
     }
 }

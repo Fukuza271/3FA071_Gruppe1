@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-@Path("/readings")
+@Path("readings")
 public class ReadingResource {
 
     ReadingDao readingDao = new ReadingDao();
@@ -56,6 +56,7 @@ public class ReadingResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response update(Reading reading) {
+        System.out.println(reading);
         if (readingDao.findById(reading.getId()) == null) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("No reading with ID " + reading.getId() + " found")

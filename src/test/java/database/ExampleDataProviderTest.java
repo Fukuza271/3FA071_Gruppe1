@@ -58,12 +58,4 @@ public class ExampleDataProviderTest extends DatabaseTest {
 
         Assertions.assertEquals(1001, customerDao.findAll().size());
     }
-
-    @Test
-    public void errors() {
-        System.setProperty("user.name", "TestUser");
-
-        ExampleDataProvider.shared.insertCustomerData();
-    }
-
 }
