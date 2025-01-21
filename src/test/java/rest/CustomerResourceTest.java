@@ -61,7 +61,7 @@ public class CustomerResourceTest extends RestTest {
     public void storeExistingCustomerTest(){
         createCustomer();
         Customer customerToBeStored = createCustomer();
-        String responseString = "Customer with ID " + customerToBeStored.getId() + " already exists";
+//        String responseString = "Customer with ID " + customerToBeStored.getId() + " already exists";
         Response response = target().path("customers")
                 .request(MediaType.APPLICATION_JSON).post(Entity.entity(customerToBeStored,
                         MediaType.APPLICATION_JSON));
