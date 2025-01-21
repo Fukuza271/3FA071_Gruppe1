@@ -3,6 +3,7 @@ package rest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import database.entities.Customer;
 import database.entities.Reading;
 import interfaces.IReading;
 import jakarta.ws.rs.client.Entity;

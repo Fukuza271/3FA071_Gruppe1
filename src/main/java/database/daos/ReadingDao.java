@@ -1,6 +1,7 @@
 package database.daos;
 
 import database.Condition;
+import database.entities.Customer;
 import database.entities.Reading;
 import interfaces.IReading;
 
@@ -105,10 +106,12 @@ public class ReadingDao extends DataAccessObject<Reading> {
 
         try {
             String customerIdString = rs.getString("customer_id");
+            CustomerDao customerDao = new CustomerDao();
+            Customer customer = customerDao.findById(UUID.fromString(customerIdString));
 
             reading = new Reading(
                     UUID.fromString(rs.getString("id")),
-                    customerIdString != null ? UUID.fromString(customerIdString) : null,
+                    customerIdString != null ? customer : null,
                     rs.getDate("date").toLocalDate(),
                     rs.getString("meter_ID"),
                     rs.getDouble("meter_count"),

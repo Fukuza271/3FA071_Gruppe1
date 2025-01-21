@@ -77,7 +77,10 @@ public class ExampleDataProvider {
                 }
             }
 
-            (new ReadingDao()).insert(new Reading(UUID.randomUUID(), customerId, date, meterId, meterCount, type, comment, substitute));
+            CustomerDao customerDao = new CustomerDao();
+            Customer customer = customerDao.findById(customerId);
+
+            (new ReadingDao()).insert(new Reading(UUID.randomUUID(), customer, date, meterId, meterCount, type, comment, substitute));
         }
     }
 

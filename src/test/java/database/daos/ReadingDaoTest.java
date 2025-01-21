@@ -24,7 +24,7 @@ public class ReadingDaoTest extends DatabaseTest {
     }
 
     private Reading createReading() {
-        Reading reading = new Reading(UUID.randomUUID(), createCustomer().getId(), LocalDate.now(), "", 5.0, IReading.KindOfMeter.STROM, "", false);
+        Reading reading = new Reading(UUID.randomUUID(), createCustomer(), LocalDate.now(), "", 5.0, IReading.KindOfMeter.STROM, "", false);
         readingDao.insert(reading);
 
         return reading;
@@ -38,7 +38,7 @@ public class ReadingDaoTest extends DatabaseTest {
 
     @Test
     public void insertTest() {
-        Reading reading = new Reading(UUID.randomUUID(), createCustomer().getId(), LocalDate.now(), "", 2.0, IReading.KindOfMeter.HEIZUNG, "", false);
+        Reading reading = new Reading(UUID.randomUUID(), createCustomer(), LocalDate.now(), "", 2.0, IReading.KindOfMeter.HEIZUNG, "", false);
 
         readingDao.insert(reading);
 
@@ -86,7 +86,7 @@ public class ReadingDaoTest extends DatabaseTest {
         Customer customer = new Customer(uuid, ICustomer.Gender.M, "Schnieder", "Schnieder", LocalDate.now());
         customerDao.insert(customer);
         Reading reading = new Reading(UUID.randomUUID(),
-                uuid,
+                customer,
                 LocalDate.now(),
                 "",
                 1.918,
@@ -94,7 +94,7 @@ public class ReadingDaoTest extends DatabaseTest {
                 "",
                 false);
         Reading reading2 = new Reading(UUID.randomUUID(),
-                uuid,
+                customer,
                 LocalDate.now(),
                 "",
                 0.918,
@@ -102,7 +102,7 @@ public class ReadingDaoTest extends DatabaseTest {
                 "",
                 false);
         Reading reading3 = new Reading(UUID.randomUUID(),
-                uuid,
+                customer,
                 LocalDate.now(),
                 "",
                 1.919,

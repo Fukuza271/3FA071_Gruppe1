@@ -28,7 +28,7 @@ public class EntityTest extends DatabaseTest {
 
         this.reading = new Reading(
                 UUID.fromString("b5afea1e-375c-4d3e-8124-007e5d3257d8"),
-                customer.getId(),
+                customer,
                 LocalDate.of(2024, 12, 6),
                 "123",
                 123.0,

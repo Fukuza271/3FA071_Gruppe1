@@ -14,7 +14,7 @@ import java.util.UUID;
 @JsonTypeName(value = "reading")
 public class Reading implements IReading, Cloneable {
     private UUID id;
-    private UUID customer_id;
+    private Customer customer;
     private LocalDate dateOfReading;
     private String meter_ID;
     private Double meterCount;
@@ -25,7 +25,7 @@ public class Reading implements IReading, Cloneable {
     @JsonCreator
     public Reading(
             @JsonProperty("id") UUID id,
-            @JsonProperty("customer") UUID customer_id,
+            @JsonProperty("customer") Customer customer,
             @JsonProperty("dateOfReading") @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") LocalDate date,
             @JsonProperty("meterId") String meter_ID,
             @JsonProperty("meterCount") Double meter_count,
@@ -34,7 +34,7 @@ public class Reading implements IReading, Cloneable {
             @JsonProperty("substitute") boolean substitute
     ) {
         this.id = id;
-        this.customer_id = customer_id;
+        this.customer = customer;
         this.dateOfReading = date;
         this.meter_ID = meter_ID;
         this.meterCount = meter_count;
@@ -50,11 +50,11 @@ public class Reading implements IReading, Cloneable {
 
     @Override
     public ICustomer getCustomer() {
-        if (this.customer_id == null) {
+        if (this.customer == null) {
             return null;
         }
 
-        return new CustomerDao().findById(this.customer_id);
+        return new CustomerDao().findById(customer.getId());
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Reading implements IReading, Cloneable {
 
     @Override
     public void setCustomer(ICustomer customer) {
-        this.customer_id = customer.getId();
+        this.customer = (Customer) customer;
     }
 
     @Override
