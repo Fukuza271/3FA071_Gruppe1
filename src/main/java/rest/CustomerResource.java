@@ -2,7 +2,6 @@ package rest;
 
 import database.daos.CustomerDao;
 import database.entities.Customer;
-import database.entities.Reading;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -20,7 +19,11 @@ public class CustomerResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response index() {
         List<Customer> customers = dao.findAll();
-        return Response.status(Response.Status.OK).entity(customers).build();
+        return Response
+                .status(Response.Status.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .entity(customers)
+                .build();
     }
 
     @GET
@@ -39,7 +42,11 @@ public class CustomerResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.status(Response.Status.OK).entity(customer).build();
+        return Response
+                .status(Response.Status.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .entity(customer)
+                .build();
     }
 
     @DELETE
