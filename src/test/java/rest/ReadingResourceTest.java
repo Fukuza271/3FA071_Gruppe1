@@ -83,17 +83,18 @@ public class ReadingResourceTest extends RestTest {
     }
 
 
-//    @Test
-//    public void storeNewReadingTest(){
-//        createReading();
-//        Reading readingToBeStored = new Reading(,UUID.fromString("c2368509-e0f4-44ab-9bc2-02406f09a0d0"),
-//                );
-//
-//        Response response = target().path("readings")
-//                .request(MediaType.APPLICATION_JSON).post(Entity.entity(readingToBeStored,
-//                        MediaType.APPLICATION_JSON));
-//
-//        Assertions.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
-//        Assertions.assertEquals(2, readingDao.findAll().size());
-//    }
+    @Test
+    public void storeNewReadingTest(){
+        createCustomer();
+        createReading();
+        Customer customer = customerDao.findById(UUID.fromString(customerUUID));
+        Reading readingToBeStored = new Reading(UUID.fromString(readingUUID),customer,LocalDate.parse("2024-12-20"),"MsTest-Meter",200.0,IReading.KindOfMeter.STROM,"",false);
+
+        Response response = target().path("readings")
+                .request(MediaType.APPLICATION_JSON).post(Entity.entity(readingToBeStored,
+                        MediaType.APPLICATION_JSON));
+
+        Assertions.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
+        Assertions.assertEquals(2, readingDao.findAll().size());
+    }
 }
