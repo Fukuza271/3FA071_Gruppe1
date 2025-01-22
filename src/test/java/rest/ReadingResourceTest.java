@@ -84,9 +84,8 @@ public class ReadingResourceTest extends RestTest {
 
 
     @Test
-    public void storeNewReadingTest(){
+    public void storeReadingTest(){
         createCustomer();
-        createReading();
         Customer customer = customerDao.findById(UUID.fromString(customerUUID));
         Reading readingToBeStored = new Reading(UUID.fromString(readingUUID),customer,LocalDate.parse("2024-12-20"),"MsTest-Meter",200.0,IReading.KindOfMeter.STROM,"",false);
 
@@ -95,6 +94,6 @@ public class ReadingResourceTest extends RestTest {
                         MediaType.APPLICATION_JSON));
 
         Assertions.assertEquals(Response.Status.CREATED.getStatusCode(), response.getStatus());
-        Assertions.assertEquals(2, readingDao.findAll().size());
+        Assertions.assertEquals(1, readingDao.findAll().size());
     }
 }
