@@ -71,12 +71,13 @@ public class ReadingResourceTest extends RestTest {
     @Test
     public void updateTest() {
         createCustomer();
-        Reading reading = new Reading(UUID.fromString(readingUUID),new Customer(UUID.fromString("ec617965-88b4-4721-8158-ee36c38e4db3"),ICustomer.Gender.M,"Pumukel","Kobold",LocalDate.of(1962,2,21)),LocalDate.parse("2024-12-06"),"Xr-Test-Meter",200.0, IReading.KindOfMeter.HEIZUNG,"",false);
+        createReading();
+        Customer customer = customerDao.findById(UUID.fromString(customerUUID));
+        Reading reading = new Reading(UUID.fromString(readingUUID),customer ,LocalDate.parse("2024-12-06"),"Xr-Test-Meter",200.0, IReading.KindOfMeter.HEIZUNG,"",false);
         Response response = target()
                 .path("readings")
                 .request(MediaType.TEXT_PLAIN)
                 .put(Entity.entity(reading, MediaType.APPLICATION_JSON));
-        response.readEntity(String.class);
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Assertions.assertEquals(1, readingDao.findAll().size());
     }
