@@ -23,7 +23,7 @@ public class Reading implements IReading, Cloneable {
     private boolean substitute;
 
     @JsonCreator
-    public Reading(
+    public Reading(     //Erzeugt das Reading aus der JSON datei
             @JsonProperty("id") UUID id,
             @JsonProperty("customer") Customer customer,
             @JsonProperty("dateOfReading") @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") LocalDate date,
@@ -46,7 +46,7 @@ public class Reading implements IReading, Cloneable {
     @Override
     public String getComment() {
         return this.comment;
-    }
+    }   //Getter / Setter
 
     @Override
     public ICustomer getCustomer() {
@@ -130,10 +130,10 @@ public class Reading implements IReading, Cloneable {
     @Override
     public void setId(UUID id) {
         this.id = id;
-    }
+    }   // Getter / Setter ende
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) { //Sieht ob das gegebene Objekt ein Reading ist und ob es das selbe reading ist
         return (obj instanceof Reading reading) &&
                reading.getId().equals(this.getId()) &&
                reading.getDateOfReading().equals(this.getDateOfReading()) &&
@@ -147,7 +147,7 @@ public class Reading implements IReading, Cloneable {
     }
 
     @Override
-    public Reading clone() {
+    public Reading clone() { //Klont das Reading
         try {
             return (Reading) super.clone();
         } catch (CloneNotSupportedException e) {

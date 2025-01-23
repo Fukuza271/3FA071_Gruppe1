@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.UUID;
 
 @JsonTypeName(value = "customer")
-public class Customer implements ICustomer, Cloneable {
-    private UUID id;
-    private ICustomer.Gender gender;
-    private String firstName;
-    private String lastName;
-    private LocalDate birthdate;
+public class Customer implements ICustomer, Cloneable { //implements ICustomer = es nimmt die objekte von ICustomer. Cloneable = Kann geklont werden
+    private UUID id;                    //jeder Kunde hat eine einmalige Identifikationsnummer
+    private ICustomer.Gender gender;    //Geschlecht
+    private String firstName;           //Vorname
+    private String lastName;            //Nachname
+    private LocalDate birthdate;        //Geburtstag
 
     @JsonCreator
-    public Customer(
+    public Customer(    //Erzeugt den Kunden aus einer JSON datei
             @JsonProperty("id") UUID id,
             @JsonProperty("gender") ICustomer.Gender gender,
             @JsonProperty("firstName") String firstName,
@@ -36,7 +36,7 @@ public class Customer implements ICustomer, Cloneable {
     @Override
     public LocalDate getBirthDate() {
         return this.birthdate;
-    }
+    } //Getter und setter
 
     @Override
     public String getFirstName() {
@@ -81,22 +81,22 @@ public class Customer implements ICustomer, Cloneable {
     @Override
     public void setId(UUID id) {
         this.id = id;
-    }
+    } //Getter und Setter ende
 
     @Override
-    public String toString() {
+    public String toString() {  //Gibt die Person als String zurück
         return this.gender.name() + ", " + this.firstName + ", " + this.lastName + ", " + (this.birthdate == null ? "" : this.birthdate.toString());
     }
 
     @JsonIgnore
-    public List<Reading> getReadings() {
+    public List<Reading> getReadings() {    //Holt die readings die mit diesem Kunden verbunden sind
         List<Condition> conditions = new ArrayList<>();
         conditions.add(new Condition("customer_id", "=", this.id.toString(), null));
         return (new ReadingDao()).where(conditions);
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) {     //sieht ob das gegebene Objekt dem aktuellen Gleicht
         return (obj instanceof Customer customer) &&
                customer.getId().equals(this.getId()) &&
                customer.getFirstName().equals(this.getFirstName()) &&
@@ -106,7 +106,7 @@ public class Customer implements ICustomer, Cloneable {
     }
 
     @Override
-    public Customer clone() {
+    public Customer clone() { //Klont den aktuellen Kunden
         try {
             return (Customer) super.clone();
         } catch (CloneNotSupportedException e) {
