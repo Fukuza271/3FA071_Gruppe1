@@ -8,6 +8,7 @@ import database.entities.Reading;
 import interfaces.AddParamsToStatement;
 import interfaces.CreateEntity;
 import interfaces.IDatabaseConnection;
+import rest.Paginator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -140,6 +141,35 @@ public abstract class DataAccessObject<T> {
         }
 
         return true;
+    }
+
+    protected Paginator<T> createPaginator(List<T> items, int pageSize, int page, int total) {
+        int lastPage = (int) Math.ceil(total / (double) pageSize);
+
+        if (pageSize > total) {
+            pageSize = total;
+        }
+
+        if (page > lastPage) {
+            page = lastPage;
+        }
+
+        if (page < 1) {
+            page = 1;
+        }
+
+        int startIndex = (page - 1) * pageSize;
+        int endIndex = startIndex + pageSize;
+
+        if (endIndex > total) {
+            endIndex = total;
+        }
+
+        if (pageSize > 0) {
+            startIndex += 1;
+        }
+
+        return new Paginator<T>(page, lastPage, startIndex, endIndex, total, items);
     }
 
     public abstract List<T> where(List<Condition> argList);

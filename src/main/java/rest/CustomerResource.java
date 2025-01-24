@@ -6,10 +6,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Path("customers")
 public class CustomerResource {
@@ -17,12 +14,11 @@ public class CustomerResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response index() {
-        List<Customer> customers = dao.findAll();
+    public Response index(@QueryParam("page") int page) {
         return Response
                 .status(Response.Status.OK)
                 .header("Access-Control-Allow-Origin", "*")
-                .entity(customers)
+                .entity(dao.getPage(12, page))
                 .build();
     }
 

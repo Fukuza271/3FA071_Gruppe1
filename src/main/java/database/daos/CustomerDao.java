@@ -4,6 +4,7 @@ import database.Condition;
 import database.entities.Customer;
 import database.entities.Reading;
 import interfaces.ICustomer;
+import rest.Paginator;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -29,6 +30,27 @@ public class CustomerDao extends DataAccessObject<Customer> {
         return this.get(sqlSelectCustomer + """
                 ;
                 """, this::createCustomerEntity);
+    }
+
+    public Paginator<Customer> getPage(int pageSize, int page) {
+        int offset = pageSize * (page - 1);
+        List<Customer> customers = this.get(sqlSelectCustomer + "LIMIT " + pageSize + " OFFSET " + offset + ";", this::createCustomerEntity);
+
+        int total;
+        try {
+            PreparedStatement statement = this.getPreparedStatement("SELECT count(id) FROM customers;");
+            ResultSet rs = statement.executeQuery();
+
+            rs.first();
+
+            total = rs.getInt(1);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            total = 0;
+            customers = new ArrayList<>();
+        }
+
+        return this.createPaginator(customers, pageSize, page, total);
     }
 
     @Override

@@ -4,6 +4,7 @@ import database.Condition;
 import database.entities.Customer;
 import database.entities.Reading;
 import interfaces.IReading;
+import rest.Paginator;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
