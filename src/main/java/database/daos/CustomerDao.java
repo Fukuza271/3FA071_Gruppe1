@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CustomerDao extends DataAccessObject<Customer> {
-    String sqlSelectCustomer = "SELECT id, gender, firstName, lastName, birthdate FROM customers ";
+public class CustomerDao extends DataAccessObject<Customer> { //Enthält alle Methoden in DataAccessObject
+    String sqlSelectCustomer = "SELECT id, gender, firstName, lastName, birthdate FROM customers "; //Simpler Select befehl der erweitert werden kann
 
     @Override
-    public Customer findById(UUID id) {
+    public Customer findById(UUID id) { //Erweitert sqlSelectCustomer um die kondition dass die ID die angegebene sein muss
         return this.findById(sqlSelectCustomer + """
                 WHERE id = ?;
                 """, id, this::createCustomerEntity);
@@ -25,14 +25,14 @@ public class CustomerDao extends DataAccessObject<Customer> {
     }
 
     @Override
-    public List<Customer> findAll() {
+    public List<Customer> findAll() {   //Sucht einfach nach allen kunden
         return this.get(sqlSelectCustomer + """
                 ;
                 """, this::createCustomerEntity);
     }
 
     @Override
-    public boolean insert(Customer entity) {
+    public boolean insert(Customer entity) {    //Fügt den angegebenen Kunden in
         return this.insert("""
                 INSERT INTO customers (id, gender, firstname, lastname, birthdate)
                 VALUES (?, ?, ?, ?, ?)
@@ -54,7 +54,7 @@ public class CustomerDao extends DataAccessObject<Customer> {
     }
 
     @Override
-    public boolean update(Customer entity) {
+    public boolean update(Customer entity) { //Updated den Kunden dessen ID angegeben ist
         return this.update("""
                 UPDATE customers
                 SET gender    = ?,
@@ -74,10 +74,10 @@ public class CustomerDao extends DataAccessObject<Customer> {
     @Override
     public boolean deleteById(UUID id) {
         return this.deleteById("DELETE FROM customers WHERE id = ?", id);
-    }
+    } // Löscht den kunden dessen ID angegeben ist
 
     @Override
-    public List<Customer> where(List<Condition> argList) {
+    public List<Customer> where(List<Condition> argList) {  // erweitert den select befehl um mindestens eine weitere Kondition
 
         StringBuilder builder = new StringBuilder();
         List<String> valueList = new ArrayList<>();
@@ -99,7 +99,7 @@ public class CustomerDao extends DataAccessObject<Customer> {
     }
 
 
-    private Customer createCustomerEntity(ResultSet rs) {
+    private Customer createCustomerEntity(ResultSet rs) {   // erzeugt die Entity des Kunden
         Customer customer = null;
         try {
             Date birthdate = rs.getDate("birthdate");

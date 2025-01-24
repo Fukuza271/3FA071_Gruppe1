@@ -16,14 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class DataAccessObject<T> {
+public abstract class DataAccessObject<T> { //Basis Dao Klasse
     private final IDatabaseConnection databaseConnection;
 
-    public DataAccessObject() {
+    public DataAccessObject() { // Erzeugt die DAO entity
         this.databaseConnection = new DatabaseConnection().openConnection(Property.readProperties());
     }
 
-    protected PreparedStatement getPreparedStatement(String sql) {
+    protected PreparedStatement getPreparedStatement(String sql) {  // Sendet das Statement an den Datenbankserver
         PreparedStatement statement = null;
         try {
             statement = this.databaseConnection.getConnection().prepareStatement(sql);
@@ -34,7 +34,7 @@ public abstract class DataAccessObject<T> {
         return statement;
     }
 
-    abstract T findById(UUID id);
+    abstract T findById(UUID id);   // Abstrakte methoden (Erklärt im relevanten Dao)
 
     abstract List<T> findAll();
 
@@ -42,9 +42,9 @@ public abstract class DataAccessObject<T> {
 
     abstract boolean update(T entity);
 
-    abstract boolean deleteById(UUID id);
+    abstract boolean deleteById(UUID id);   // Ende Abstrakte Methoden
 
-    protected boolean insert(String sql, AddParamsToStatement addParams) {
+    protected boolean insert(String sql, AddParamsToStatement addParams) {  // fügt neuen Eintrag in die Datenbank
         try {
             PreparedStatement statement = this.getPreparedStatement(sql);
             addParams.execute(statement);
@@ -58,7 +58,7 @@ public abstract class DataAccessObject<T> {
         return true;
     }
 
-    protected boolean update(String sql, AddParamsToStatement addParams) {
+    protected boolean update(String sql, AddParamsToStatement addParams) {  // updated
         try {
             PreparedStatement statement = this.getPreparedStatement(sql);
             addParams.execute(statement);

@@ -12,15 +12,15 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @JsonTypeName(value = "reading")
-public class Reading implements IReading, Cloneable {
-    private UUID id;
-    private Customer customer;
-    private LocalDate dateOfReading;
-    private String meter_ID;
-    private Double meterCount;
-    private KindOfMeter meter_type;
-    private String comment;
-    private boolean substitute;
+public class Reading implements IReading, Cloneable { //implements IReading = es nimmt die objekte von IReading. Cloneable = Kann geklont werden
+    private UUID id;                        // Id
+    private Customer customer;              // Nimmt einen Kunden
+    private LocalDate dateOfReading;        // Setzt das auslese datum des Zählers
+    private String meter_ID;                // die ID des Zählers
+    private Double meterCount;              // der Wert des Zählers am ausgewählten Zietpunkt
+    private KindOfMeter meter_type;         // Zählerart
+    private String comment;                 // Kommentar
+    private boolean substitute;             // Ob der Zähler getauscht wurde
 
     @JsonCreator
     public Reading(     //Erzeugt das Reading aus der JSON datei
