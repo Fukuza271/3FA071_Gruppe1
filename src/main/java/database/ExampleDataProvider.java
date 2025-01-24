@@ -31,19 +31,19 @@ public class ExampleDataProvider {
     private ExampleDataProvider() {
     }
 
-    public void insertHeizungReadingData() {
+    public void insertHeizungReadingData() {    //Fügt die daten in die Heizungszählertabelle aus der CSV datei
         insertReadingData(IReading.KindOfMeter.HEIZUNG, readCSV("heizung.csv", ';'));
     }
 
-    public void insertWasserReadingData() {
+    public void insertWasserReadingData() {     //Fügt die daten in die Wasserzählertabelle aus der CSV datei
         insertReadingData(IReading.KindOfMeter.WASSER, readCSV("wasser.csv", ';'));
     }
 
-    public void insertStromReadingData() {
+    public void insertStromReadingData() {      //Fügt die daten in die Stromzählertabelle aus der CSV datei
         insertReadingData(IReading.KindOfMeter.STROM, readCSV("strom.csv", ';'));
     }
 
-    private void insertReadingData(IReading.KindOfMeter type, List<List<String>> data) {
+    private void insertReadingData(IReading.KindOfMeter type, List<List<String>> data) {    //fügt die gegebenen reading daten in die Datenbank ein
         UUID customerId = null;
         String meterId = null;
 
@@ -84,7 +84,7 @@ public class ExampleDataProvider {
         }
     }
 
-    public void insertCustomerData() {
+    public void insertCustomerData() {  //Fügt die gegebenen Kundendaten in die Datenbank ein
         readCSV("kunden_utf8.csv", ',').forEach(row -> {
             if (row.getFirst().equals("UUID")) {
                 return;
@@ -104,7 +104,7 @@ public class ExampleDataProvider {
         });
     }
 
-    private List<List<String>> readCSV(String fileName, char separator) {
+    private List<List<String>> readCSV(String fileName, char separator) {   //Liest die beigefügten CSV dateien
 
         String dirToCsv = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator;
         List<List<String>> result = new ArrayList<>();

@@ -18,7 +18,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
     String sqlCustomerReadingsData = " id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute FROM readings ";
 
     @Override
-    public Reading findById(UUID id) {
+    public Reading findById(UUID id) {  //Sucht ein reading über die ID
         return this.findById("""
                                      SELECT""" + sqlCustomerReadingsData + """
                                      WHERE id = ?;
@@ -26,7 +26,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
     }
 
     @Override
-    public List<Reading> findAll() {
+    public List<Reading> findAll() {    //Gibt alle Readings aus
         return this.get("""
                                 SELECT""" + sqlCustomerReadingsData + """
                                 ;
@@ -34,7 +34,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
     }
 
     @Override
-    public boolean insert(Reading entity) {
+    public boolean insert(Reading entity) { //Fügt neues reading in die Datenbank hinzu
         return this.insert("""
                 INSERT INTO readings (id, customer_id, date, meter_ID, meter_count, meter_type, comment, substitute)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?);
@@ -51,7 +51,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
     }
 
     @Override
-    public boolean update(Reading entity) {
+    public boolean update(Reading entity) { //Updated ein Reading
         return this.update("""
                 UPDATE readings
                 SET customer_id = ?,
@@ -77,10 +77,10 @@ public class ReadingDao extends DataAccessObject<Reading> {
     @Override
     public boolean deleteById(UUID id) {
         return this.deleteById("DELETE FROM readings WHERE id = ?", id);
-    }
+    } //Löscht einen oder mehrere Einträge aus der Datenbank
 
     @Override
-    public List<Reading> where(List<Condition> argList) {
+    public List<Reading> where(List<Condition> argList) {   //Sucht einen eintrag aus der Datenbank
 
         StringBuilder builder = new StringBuilder();
         List<String> valueList = new ArrayList<>();
@@ -101,7 +101,7 @@ public class ReadingDao extends DataAccessObject<Reading> {
         return this.get(sql, this::createReadingEntity, valueList);
     }
 
-    private Reading createReadingEntity(ResultSet rs) {
+    private Reading createReadingEntity(ResultSet rs) { //erzeugt eine neue Reading Entity
         Reading reading = null;
 
         try {

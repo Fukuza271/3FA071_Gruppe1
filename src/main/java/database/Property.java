@@ -7,16 +7,16 @@ import java.util.Properties;
 
 public class Property {
 
-    public static Properties readProperties() {
+    public static Properties readProperties() { //Gibt die Eigenschaften zurück
 
         return getProperties(false);
     }
 
-    public static Properties readTestProperties() {
+    public static Properties readTestProperties() { //Gibt die Testeigenschaften zurück
         return getProperties(true);
     }
 
-    private static Properties getProperties(boolean useTestProperties) {
+    private static Properties getProperties(boolean useTestProperties) {    //Holt die Eigenschafen aus der CSV Datei ausser wenn useTestProperties wahr ist
         String homeDir = System.getProperty("user.dir");
         String fileName = "database.properties";
         String filePath = String.format("%s%ssrc%s%s%sresources%s%s", homeDir, File.separator, File.separator, useTestProperties ? "test" : "main", File.separator, File.separator, fileName);

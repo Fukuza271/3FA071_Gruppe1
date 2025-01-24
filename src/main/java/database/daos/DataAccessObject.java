@@ -58,7 +58,7 @@ public abstract class DataAccessObject<T> { //Basis Dao Klasse
         return true;
     }
 
-    protected boolean update(String sql, AddParamsToStatement addParams) {  // updated
+    protected boolean update(String sql, AddParamsToStatement addParams) {  // updated einen eintrag in der datenbank
         try {
             PreparedStatement statement = this.getPreparedStatement(sql);
             addParams.execute(statement);
@@ -70,7 +70,7 @@ public abstract class DataAccessObject<T> { //Basis Dao Klasse
         }
     }
 
-    protected T findById(String sql, UUID id, CreateEntity<T> createEntity) {
+    protected T findById(String sql, UUID id, CreateEntity<T> createEntity) { //sucht einen datenbank eintrag über die ID
         try {
             PreparedStatement statement = this.getPreparedStatement(sql);
 
@@ -87,7 +87,7 @@ public abstract class DataAccessObject<T> { //Basis Dao Klasse
         return null;
     }
 
-    protected List<T> get(String sql, CreateEntity<T> createEntity) {
+    protected List<T> get(String sql, CreateEntity<T> createEntity) {   // für die Where befehle
         List<T> results = new ArrayList<>();
 
         try {
@@ -106,7 +106,7 @@ public abstract class DataAccessObject<T> { //Basis Dao Klasse
         return results;
     }
 
-    protected List<T> get(String sql, CreateEntity<T> createEntity, List<String> arguments) {
+    protected List<T> get(String sql, CreateEntity<T> createEntity, List<String> arguments) { //für die Where befehle
 
         List<T> results = new ArrayList<>();
         try {
@@ -127,7 +127,7 @@ public abstract class DataAccessObject<T> { //Basis Dao Klasse
         return results;
     }
 
-    protected boolean deleteById(String sql, UUID id) {
+    protected boolean deleteById(String sql, UUID id) { //Löscht einen eintrag
         try {
             PreparedStatement statement = this.getPreparedStatement(sql);
 
@@ -142,6 +142,6 @@ public abstract class DataAccessObject<T> { //Basis Dao Klasse
         return true;
     }
 
-    public abstract List<T> where(List<Condition> argList);
+    public abstract List<T> where(List<Condition> argList); //Abstrakte form der Where einträge
     
 }

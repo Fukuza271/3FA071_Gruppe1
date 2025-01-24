@@ -8,16 +8,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-public class DatabaseConnection implements IDatabaseConnection {
+public class DatabaseConnection implements IDatabaseConnection {    //Nötig für die Datenbankverbindung
 
     private static Connection connection = null;
 
     public Connection getConnection() {
         return connection;
-    }
+    }   //Gibt die Aktuelle Verbindung zurück
 
     @Override
-    public IDatabaseConnection openConnection(Properties properties) {
+    public IDatabaseConnection openConnection(Properties properties) {  //Öffnet die verbindung, zur Datenbank
         if (connection == null) {
             try {
                 String systemUser = System.getProperty("user.name");
@@ -35,7 +35,7 @@ public class DatabaseConnection implements IDatabaseConnection {
     }
 
     @Override
-    public void createAllTables() {
+    public void createAllTables() { //Erzeugt alle Tabellen
         try {
             Statement statement = connection.createStatement();
             statement.execute("DROP TABLE IF EXISTS readings;");
@@ -76,7 +76,7 @@ public class DatabaseConnection implements IDatabaseConnection {
     }
 
     @Override
-    public void truncateAllTables() {
+    public void truncateAllTables() {   //Entfernt Leere Einträge
         try {
             Statement statement = connection.createStatement();
             statement.execute("ALTER TABLE readings DROP CONSTRAINT FK_CustomerReading;");
@@ -92,7 +92,7 @@ public class DatabaseConnection implements IDatabaseConnection {
     }
 
     @Override
-    public void removeAllTables() {
+    public void removeAllTables() { //Löscht alle Tabellen
         try {
             Statement statement = connection.createStatement();
             statement.execute("DROP TABLE IF EXISTS readings;");
@@ -103,7 +103,7 @@ public class DatabaseConnection implements IDatabaseConnection {
     }
 
     @Override
-    public void closeConnection() {
+    public void closeConnection() { //Schließt die Verbindung
         if (connection != null) {
             try {
                 connection.close();
