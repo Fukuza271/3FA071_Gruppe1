@@ -36,7 +36,11 @@ public class ReadingResource {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        return Response.status(Response.Status.OK).entity(reading).build();
+        return Response
+                .status(Response.Status.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .entity(reading)
+                .build();
     }
 
     @POST
@@ -104,6 +108,10 @@ public class ReadingResource {
 
         List<Reading> reading = readingDao.where(conditions);
 
-        return Response.status(Response.Status.OK).entity(reading).build();
+        return Response
+                .status(Response.Status.OK)
+                .header("Access-Control-Allow-Origin", "*")
+                .entity(reading)
+                .build();
     }
 }
