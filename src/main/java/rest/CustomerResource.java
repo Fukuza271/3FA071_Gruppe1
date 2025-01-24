@@ -21,7 +21,6 @@ public class CustomerResource {
         List<Customer> customers = dao.findAll();
         return Response
                 .status(Response.Status.OK)
-                .header("Access-Control-Allow-Origin", "*")
                 .entity(customers)
                 .build();
     }
@@ -44,7 +43,6 @@ public class CustomerResource {
 
         return Response
                 .status(Response.Status.OK)
-                .header("Access-Control-Allow-Origin", "*")
                 .entity(customer)
                 .build();
     }
@@ -79,14 +77,17 @@ public class CustomerResource {
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
     public Response store(Customer customer) {
         if (dao.findById(customer.getId()) != null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Customer with ID " + customer.getId() + " already exists")
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
                     .build();
         }
 
         dao.insert(customer);
 
-        return Response.status(Response.Status.CREATED).entity(customer).build();
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(customer)
+                .build();
     }
 
     @PUT
