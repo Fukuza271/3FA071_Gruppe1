@@ -33,6 +33,8 @@ public class CustomerDao extends DataAccessObject<Customer> { //Enthält alle Me
 
     @Override
     public boolean insert(Customer entity) {    //Fügt den angegebenen Kunden in
+        Date birthdate = entity.getBirthDate() != null ? Date.valueOf(entity.getBirthDate()) : null;
+
         return this.insert("""
                 INSERT INTO customers (id, gender, firstname, lastname, birthdate)
                 VALUES (?, ?, ?, ?, ?)
@@ -45,16 +47,18 @@ public class CustomerDao extends DataAccessObject<Customer> { //Enthält alle Me
             statement.setString(2, entity.getGender().toString());
             statement.setString(3, entity.getFirstName());
             statement.setString(4, entity.getLastName());
-            statement.setDate(5, entity.getBirthDate() == null ? null : Date.valueOf(entity.getBirthDate()));
+            statement.setDate(5, birthdate);
             statement.setString(6, entity.getGender().toString());
             statement.setString(7, entity.getFirstName());
             statement.setString(8, entity.getLastName());
-            statement.setDate(9, entity.getBirthDate() == null ? null : Date.valueOf(entity.getBirthDate()));
+            statement.setDate(9, birthdate);
         });
     }
 
     @Override
     public boolean update(Customer entity) { //Updated den Kunden dessen ID angegeben ist
+        Date birthdate = entity.getBirthDate() != null ? Date.valueOf(entity.getBirthDate()) : null;
+
         return this.update("""
                 UPDATE customers
                 SET gender    = ?,
@@ -67,7 +71,7 @@ public class CustomerDao extends DataAccessObject<Customer> { //Enthält alle Me
             statement.setString(1, entity.getGender().toString());
             statement.setString(2, entity.getFirstName());
             statement.setString(3, entity.getLastName());
-            statement.setDate(4, Date.valueOf(entity.getBirthDate()));
+            statement.setDate(4, birthdate);
         });
     }
 

@@ -58,7 +58,7 @@ public class CustomerResourceTest extends RestTest {
 
 
     @Test
-    public void storeExistingCustomerTest(){
+    public void storeExistingCustomerTest() {
         createCustomer();
         Customer customerToBeStored = createCustomer();
         Response response = target().path("customers")
@@ -69,7 +69,7 @@ public class CustomerResourceTest extends RestTest {
     }
 
     @Test
-    public void storeNewCustomerTest(){
+    public void storeNewCustomerTest() {
         createCustomer();
         Customer customerToBeStored = new Customer(UUID.fromString("c2368509-e0f4-44ab-9bc2-02406f09a0d0"),
                 ICustomer.Gender.W, "Mareen", "Gerloff",
@@ -83,7 +83,6 @@ public class CustomerResourceTest extends RestTest {
         Assertions.assertEquals(2, customerDao.findAll().size());
     }
 
-
     @Test
     public void updateTest() {
         createCustomer();
@@ -95,5 +94,28 @@ public class CustomerResourceTest extends RestTest {
         response.readEntity(String.class);
         Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Assertions.assertEquals(1, customerDao.findAll().size());
+    }
+
+    @Test
+    public void canUpdateCustomerWithoutBirthdateTest() {
+        createCustomer();
+
+        Customer customer = new Customer(
+                UUID.fromString(customerUUID),
+                ICustomer.Gender.M,
+                "Pumu",
+                "Kobold",
+                null
+        );
+
+        Response response = target()
+                .path("customers")
+                .request(MediaType.TEXT_PLAIN)
+                .put(Entity.entity(customer, MediaType.APPLICATION_JSON));
+
+        response.readEntity(String.class);
+
+        Assertions.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        Assertions.assertEquals(customer, customerDao.findAll().getFirst());
     }
 }
