@@ -38,7 +38,6 @@ public class ReadingResource {
 
         return Response
                 .status(Response.Status.OK)
-                .header("Access-Control-Allow-Origin", "*")
                 .entity(reading)
                 .build();
     }
@@ -110,7 +109,6 @@ public class ReadingResource {
 
         return Response
                 .status(Response.Status.OK)
-                .header("Access-Control-Allow-Origin", "*")
                 .entity(reading)
                 .build();
     }
