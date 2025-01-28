@@ -83,4 +83,24 @@ public class CustomerDaoTest extends DatabaseTest {
         List<Customer> readings = customerDao.where(conditions);
         Assertions.assertEquals(2, readings.size());
     }
+
+    @Test
+    public void canUpdateCustomerWithoutBirthdateTest() {
+        Customer customer = createCustomer();
+
+        Customer editedCustomer = new Customer(
+                customer.getId(),
+                ICustomer.Gender.D,
+                "First Name",
+                "Last Name",
+                null
+        );
+
+        customerDao.update(editedCustomer);
+
+        Customer updatedCustomer = customerDao.findById(customer.getId());
+
+        Assertions.assertEquals(editedCustomer, updatedCustomer);
+
+    }
 }

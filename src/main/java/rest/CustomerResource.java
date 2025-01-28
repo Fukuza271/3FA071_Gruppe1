@@ -33,12 +33,16 @@ public class CustomerResource {
         try {
             uuid = UUID.fromString(id);
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
         }
 
         Customer customer = dao.findById(uuid);
         if (customer == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
         }
 
         return Response
@@ -55,12 +59,16 @@ public class CustomerResource {
         try {
             uuid = UUID.fromString(id);
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
         }
 
         Customer customer = dao.findById(uuid);
         if (customer == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
         }
 
         Map<String, Object> result = new HashMap<>();
@@ -69,7 +77,10 @@ public class CustomerResource {
 
         dao.deleteById(customer.getId());
 
-        return Response.status(Response.Status.OK).entity(result).build();
+        return Response
+                .status(Response.Status.OK)
+                .entity(result)
+                .build();
     }
 
     @POST
@@ -102,6 +113,8 @@ public class CustomerResource {
 
         dao.update(customer);
 
-        return Response.status(Response.Status.OK).build();
+        return Response
+                .status(Response.Status.OK)
+                .build();
     }
 }
