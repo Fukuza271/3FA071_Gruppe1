@@ -9,7 +9,7 @@ import jakarta.ws.rs.core.Response;
 @Path("setupDB")
 public class DatabaseSetup {
     @DELETE
-    public Response dbSetup() {
+    public Response dbSetup() { //setzt die Datenbank auf
         (new DatabaseConnection()).createAllTables();
 
         ExampleDataProvider.shared.insertCustomerData();

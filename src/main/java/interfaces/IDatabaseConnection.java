@@ -15,6 +15,5 @@ public interface IDatabaseConnection {
 
     public void closeConnection();
 
-    //Todo: Fragen ob wir das hier hinzufügen dürfen
     public Connection getConnection();
 }

@@ -9,7 +9,7 @@ import jakarta.ws.rs.ext.Provider;
 public class CorsFilter implements ContainerResponseFilter {
 
     @Override
-    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) {
+    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) { //Filtert die inhalte von einem Container
         responseContext.getHeaders().add("Access-Control-Allow-Origin", "*");
         responseContext.getHeaders().add("Access-Control-Allow-Credentials", "true");
         responseContext.getHeaders().add("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");

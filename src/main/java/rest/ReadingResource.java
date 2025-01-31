@@ -22,7 +22,7 @@ public class ReadingResource {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response show(@PathParam("id") String id) {
+    public Response show(@PathParam("id") String id) {  //Sucht ein spezifisches Reading
         UUID uuid;
         try {
             uuid = UUID.fromString(id);
@@ -45,7 +45,7 @@ public class ReadingResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response store(Reading reading) {
+    public Response store(Reading reading) {    //Speichert ein Reading
         if (readingDao.findById(reading.getId()) != null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Reading with ID " + reading.getId() + " already exists")
@@ -58,7 +58,7 @@ public class ReadingResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response update(Reading reading) {
+    public Response update(Reading reading) {   //Updated ein Reading
         System.out.println(reading);
         if (readingDao.findById(reading.getId()) == null) {
             return Response.status(Response.Status.NOT_FOUND)
@@ -72,7 +72,7 @@ public class ReadingResource {
     @DELETE
     @Path("{uuid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response destroy(@PathParam("uuid") UUID uuid) {
+    public Response destroy(@PathParam("uuid") UUID uuid) { //Löscht/Zerstört ein reading
         Reading reading = readingDao.findById(uuid);
         if (reading == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -83,7 +83,7 @@ public class ReadingResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response index(
+    public Response index(  //Baut alle Readings
             @QueryParam("customer") UUID customerId,
             @QueryParam("start") LocalDate start,
             @QueryParam("end") LocalDate end,

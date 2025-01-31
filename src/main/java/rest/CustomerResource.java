@@ -17,7 +17,7 @@ public class CustomerResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response index() {
+    public Response index() {   //Baut alle Kunden
         List<Customer> customers = dao.findAll();
         return Response
                 .status(Response.Status.OK)
@@ -28,7 +28,7 @@ public class CustomerResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response show(@PathParam("id") String id) {
+    public Response show(@PathParam("id") String id) {  //Zeigt einen spezifischen Kunden
         UUID uuid;
         try {
             uuid = UUID.fromString(id);
@@ -54,7 +54,7 @@ public class CustomerResource {
     @DELETE
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response destroy(@PathParam("id") String id) {
+    public Response destroy(@PathParam("id") String id) {   //Löscht/Zerstört einen Kunden
         UUID uuid;
         try {
             uuid = UUID.fromString(id);
@@ -86,7 +86,7 @@ public class CustomerResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
-    public Response store(Customer customer) {
+    public Response store(Customer customer) {  //Speichert einen Kunden
         if (dao.findById(customer.getId()) != null) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
@@ -104,7 +104,7 @@ public class CustomerResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response update(Customer customer) {
+    public Response update(Customer customer) { //updated einen Kunden
         if (dao.findById(customer.getId()) == null) {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("No customer with ID " + customer.getId() + " found")

@@ -13,7 +13,7 @@ import java.util.Properties;
 public class Server {
     public static HttpServer server;
 
-    public static void startServer(Properties properties) {
+    public static void startServer(Properties properties) { //Startet den server
         (new DatabaseConnection()).openConnection(properties);
 
         final String pack = "rest";
@@ -25,13 +25,13 @@ public class Server {
         server = JdkHttpServerFactory.createHttpServer(url, rc);
     }
 
-    public static void stopServer() {
+    public static void stopServer() {   //Beendet den Server
         server.stop(0);
         (new DatabaseConnection()).closeConnection();
         server = null;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {    //Bloß zum testen. könnte eiglt entfernt werden
         startServer(Property.readProperties());
     }
 }
