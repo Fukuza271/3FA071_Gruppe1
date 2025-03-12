@@ -52,7 +52,7 @@ public class ReadingResource {
                     .build();
         }
         readingDao.insert(reading);
-        return Response.status(Response.Status.CREATED).build();
+        return Response.status(Response.Status.CREATED).entity(reading).build();
     }
 
     @PUT
