@@ -19,7 +19,7 @@ public class KindOfMeterParamConverterProvider implements ParamConverterProvider
                     return value != null ? aClass.cast(IReading.KindOfMeter.valueOf(value)) : null;
                 }
                 @Override
-                public String toString(T value) {
+                public String toString(T value) {   //gibt den wert als String zurück
                     return value != null ? value.toString() : null;
                 }
             };

@@ -70,6 +70,14 @@ public class DatabaseConnection implements IDatabaseConnection {    //Nötig fü
                                 ON DELETE SET NULL
                     );
                     """);
+            statement.execute("""
+                    CREATE OR REPLACE TABLE users (
+                        id          UUID                    NOT NULL DEFAULT(UUID()),
+                        username    VARCHAR(30)             NOT NULL,
+                        password    VARCHAR(200)            NOT NULL
+                        );
+                    """);
+
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
