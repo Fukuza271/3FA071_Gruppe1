@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class UserDao extends DataAccessObject<User>{
-    String sqlSelectUser = "SELECT id, gender, firstName, lastName, birthdate FROM customers ";
+    String sqlSelectUser = "SELECT id, username, password FROM user ";
 
     @Override
     User findById(UUID id) {
@@ -21,8 +21,10 @@ public class UserDao extends DataAccessObject<User>{
     }
 
     @Override
-    List<User> findAll() {
-        return List.of();
+    public List<User> findAll() {
+        return this.get(sqlSelectUser + """
+                ;
+                """, this::createUserEntity);
     }
 
     @Override
@@ -76,6 +78,8 @@ public class UserDao extends DataAccessObject<User>{
         return this.get(sql, this::createUserEntity, valueList);
     }
 
+
+
     private User createUserEntity(ResultSet rs){
         User user = null;
         try{
@@ -89,4 +93,5 @@ public class UserDao extends DataAccessObject<User>{
         }
         return user;
     }
+
 }
