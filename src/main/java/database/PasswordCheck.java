@@ -11,7 +11,6 @@ import java.util.List;
 
 public class PasswordCheck {
     IDatabaseConnection dbcon = new DatabaseConnection().openConnection(Property.readProperties());
-    String passwordClear = "";
     String passwordSubmitted = "";
     String usernameSubmitted = "";
     String passwordEnc = "";
@@ -27,12 +26,19 @@ public class PasswordCheck {
             User user = (User) res.getFirst();
             passwordEnc = user.getPassword();
 
-            //if()
+            if(passwordEnc.equals(encrypt(passwordSubmitted))){
+
+            }
         }
         return false;
     }
 
-    private void decryptPW(){
-        //passwordClear = ;
+    private String encrypt(String pw){
+        String bcryptHashString = BCrypt.withDefaults().hashToString(12,pw.toCharArray());
+        // $2a$12$US00g/uMhoSBm.HiuieBjeMtoN69SN.GE25fCpldebzkryUyopws6
+
+        BCrypt.Result result = BCrypt.verifyer().verify(pw.toCharArray(), bcryptHashString);
+        System.out.print(result.verified);
+        return result.toString();
     }
 }
