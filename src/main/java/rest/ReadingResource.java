@@ -16,7 +16,6 @@ import java.util.UUID;
 
 @Path("readings")
 public class ReadingResource {
-
     ReadingDao readingDao = new ReadingDao();
 
     @GET
@@ -84,10 +83,10 @@ public class ReadingResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response index(  //Baut alle Readings
-            @QueryParam("customer") UUID customerId,
-            @QueryParam("start") LocalDate start,
-            @QueryParam("end") LocalDate end,
-            @QueryParam("kindOfMeter") IReading.KindOfMeter kind
+                            @QueryParam("customer") UUID customerId,
+                            @QueryParam("start") LocalDate start,
+                            @QueryParam("end") LocalDate end,
+                            @QueryParam("kindOfMeter") IReading.KindOfMeter kind
     ) {
         LocalDate startDate = Objects.requireNonNullElseGet(start, () -> LocalDate.of(1000, 12, 31));
         LocalDate endDate = Objects.requireNonNullElseGet(end, LocalDate::now);

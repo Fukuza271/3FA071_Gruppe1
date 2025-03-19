@@ -1,22 +1,41 @@
 package rest;
 
+import database.Condition;
 import database.daos.CustomerDao;
+import database.daos.UserDao;
 import database.entities.Customer;
+import database.entities.User;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Path("users")
 public class UserResource {
+    UserDao userDao = new UserDao();
+
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("authenticate")
-    public void authenticate() {
-        return;
+    public Response authenticate(@Context HttpHeaders httpHeaders) {
+        String authHeader = httpHeaders.getRequestHeader("Authorization").getFirst();
+        String credentials = authHeader.substring("Basic ".length()).trim();
+        byte[] decodedCredentials = Base64.getDecoder().decode(credentials);
+        String decodedString = new String(decodedCredentials);
+        StringTokenizer tokenizer = new StringTokenizer(decodedString, ":");
+        String username = tokenizer.nextToken();
+
+        List<Condition> conditions = new ArrayList<>();
+        conditions.add(new Condition("username", "=", username, ""));
+        User user = userDao.where(conditions).getFirst();
+
+        return Response.
+                status(Response.Status.OK)
+                .entity(user)
+                .build();
     }
 
     private static final CustomerDao dao = new CustomerDao();
