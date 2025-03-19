@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class UserDao extends DataAccessObject<User>{
-    String sqlSelectUser = "SELECT id, username, password FROM user ";
+    String sqlSelectUser = "SELECT id, username, password FROM users ";
 
     @Override
     User findById(UUID id) {
@@ -30,7 +30,7 @@ public class UserDao extends DataAccessObject<User>{
     @Override
     boolean insert(User entity) {
         return this.insert("""
-                INSERT INTO User (id, username, password)
+                INSERT INTO users (id, username, password)
                 values(?,?,?)
                 ON DUPLICATE KEY UPDATE username = ?
                                         password = ?;""", (PreparedStatement statement) -> {
@@ -43,7 +43,7 @@ public class UserDao extends DataAccessObject<User>{
     @Override
     boolean update(User entity) {
         return this.update("""
-                UPDATE User
+                UPDATE users
                 SET username = ?,
                 password = ?""", (PreparedStatement statement) -> {
             statement.setString(1,entity.getUsername());
@@ -54,7 +54,7 @@ public class UserDao extends DataAccessObject<User>{
 
     @Override
     boolean deleteById(UUID id) {
-        return this.deleteById("DELETE FROM user WHERE id = ?", id);
+        return this.deleteById("DELETE FROM users WHERE id = ?", id);
     }
 
     @Override

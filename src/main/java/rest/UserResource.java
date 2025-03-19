@@ -13,6 +13,12 @@ import java.util.UUID;
 
 @Path("users")
 public class UserResource {
+    @GET
+    @Path("authenticate")
+    public void authenticate() {
+        return;
+    }
+
     private static final CustomerDao dao = new CustomerDao();
 
     @GET
