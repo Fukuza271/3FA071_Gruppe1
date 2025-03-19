@@ -15,7 +15,7 @@ public class PasswordCheck {
     String usernameSubmitted = "";
     String passwordEnc = "";
 
-    public boolean PasswordCheck(String usernameSubmitted, String passwordSubmitted){
+    public boolean login(String usernameSubmitted, String passwordSubmitted){
         this.usernameSubmitted = usernameSubmitted;
         this.passwordSubmitted = passwordSubmitted;
         List<Condition> conditions = new ArrayList<>();
@@ -27,7 +27,7 @@ public class PasswordCheck {
             passwordEnc = user.getPassword();
 
             if(passwordEnc.equals(encrypt(passwordSubmitted))){
-
+                return true;
             }
         }
         return false;
