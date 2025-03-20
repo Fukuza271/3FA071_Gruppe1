@@ -9,6 +9,7 @@ import org.glassfish.jersey.server.ServerProperties;
 
 import java.net.URI;
 import java.util.Properties;
+import java.util.UUID;
 
 public class Server {
     public static HttpServer server;
