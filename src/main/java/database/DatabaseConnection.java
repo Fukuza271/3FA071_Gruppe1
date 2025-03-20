@@ -40,6 +40,7 @@ public class DatabaseConnection implements IDatabaseConnection {    //Nötig fü
             Statement statement = connection.createStatement();
             statement.execute("DROP TABLE IF EXISTS readings;");
             statement.execute("DROP TABLE IF EXISTS customers;");
+            statement.execute("DROP TABLE IF EXISTS users;");
             statement.execute("""
                     CREATE OR REPLACE TABLE customers
                     (
@@ -72,9 +73,15 @@ public class DatabaseConnection implements IDatabaseConnection {    //Nötig fü
                     """);
             statement.execute("""
                     CREATE OR REPLACE TABLE users (
-                        id          UUID                    NOT NULL DEFAULT(UUID()),
-                        username    VARCHAR(30)             NOT NULL,
-                        password    VARCHAR(200)            NOT NULL
+                        id          UUID                        NOT NULL DEFAULT(UUID()),
+                        username    VARCHAR(100)                NOT NULL UNIQUE,
+                        password    VARCHAR(200)                NOT NULL,
+                        role        VarChar(15)                 NOT NULL,
+                        customer_id  UUID,
+                        CONSTRAINT FK_CustomerReading
+                            FOREIGN KEY (customer_id) REFERENCES customers (id)
+                                ON UPDATE CASCADE
+                                ON DELETE SET NULL
                         );
                     """);
 
@@ -90,6 +97,7 @@ public class DatabaseConnection implements IDatabaseConnection {    //Nötig fü
             statement.execute("ALTER TABLE readings DROP CONSTRAINT FK_CustomerReading;");
             statement.execute("TRUNCATE TABLE readings;");
             statement.execute("TRUNCATE TABLE customers;");
+            statement.execute("TRUNCATE TABLE users;");
             statement.execute("""
                     ALTER TABLE readings
                         ADD CONSTRAINT FK_CustomerReading FOREIGN KEY (customer_id) REFERENCES customers (id);
@@ -105,6 +113,7 @@ public class DatabaseConnection implements IDatabaseConnection {    //Nötig fü
             Statement statement = connection.createStatement();
             statement.execute("DROP TABLE IF EXISTS readings;");
             statement.execute("DROP TABLE IF EXISTS customers;");
+            statement.execute("DROP TABLE IF EXISTS users");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }

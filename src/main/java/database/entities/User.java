@@ -3,6 +3,7 @@ package database.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @JsonTypeName(value = "user")
@@ -10,11 +11,13 @@ public class User {
     private UUID id;
     private String username;
     private String password;
+    private String role;
 
-    public User(UUID id, String username, String password) {
+    public User(UUID id, String username, String password, String role) {
         this.id = id;
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     public UUID getId() {
@@ -42,4 +45,11 @@ public class User {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
