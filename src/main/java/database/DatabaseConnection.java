@@ -77,11 +77,7 @@ public class DatabaseConnection implements IDatabaseConnection {    //Nötig fü
                         username    VARCHAR(100)                NOT NULL UNIQUE,
                         password    VARCHAR(200)                NOT NULL,
                         role        VarChar(15)                 NOT NULL,
-                        customer_id  UUID,
-                        CONSTRAINT FK_CustomerReading
-                            FOREIGN KEY (customer_id) REFERENCES customers (id)
-                                ON UPDATE CASCADE
-                                ON DELETE SET NULL
+                        customer_id  UUID
                         );
                     """);
 

@@ -6,10 +6,13 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 import database.daos.CustomerDao;
 import database.daos.ReadingDao;
+import database.daos.UserDao;
 import database.entities.Customer;
 import database.entities.Reading;
+import database.entities.User;
 import interfaces.ICustomer;
 import interfaces.IReading;
+import interfaces.IUser;
 
 import java.io.File;
 import java.io.FileReader;
@@ -101,6 +104,23 @@ public class ExampleDataProvider {
             LocalDate birthdate = row.get(4).isEmpty() ? null : LocalDate.parse(row.get(4), DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
             (new CustomerDao()).insert(new Customer(id, gender, firstName, lastName, birthdate));
+        });
+    }
+
+    public void insertUserData() {
+        readCSV("userPW.csv",',').forEach(row ->{
+            if (row.getFirst().equals("UUID")){
+                return;
+            }
+            UUID id = UUID.fromString(row.getFirst());
+
+            String username = row.get(1);
+            String password = row.get(2);
+            IUser.Role role = switch(row.get(3)) {
+                case "Admin" -> IUser.Role.Admin;
+                default -> IUser.Role.Customer;
+            };
+            (new UserDao()).insert(new User(id,username,password,role));
         });
     }
 

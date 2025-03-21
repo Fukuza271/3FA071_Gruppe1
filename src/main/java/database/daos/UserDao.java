@@ -2,6 +2,7 @@ package database.daos;
 
 import database.Condition;
 import database.entities.User;
+import interfaces.IUser;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +29,7 @@ public class UserDao extends DataAccessObject<User>{
     }
 
     @Override
-    boolean insert(User entity) {
+    public boolean insert(User entity) {
         return this.insert("""
                 INSERT INTO users (id, username, password, role)
                 values(?,?,?,?)
@@ -39,7 +40,7 @@ public class UserDao extends DataAccessObject<User>{
             statement.setString(1, entity.getId().toString());
             statement.setString(2,entity.getUsername());
             statement.setString(3,entity.getPassword());
-            statement.setString(4,entity.getRole());
+            statement.setString(4,entity.getRole().toString());
         });
     }
 
@@ -88,7 +89,7 @@ public class UserDao extends DataAccessObject<User>{
         try{
             user = new User(
                     UUID.fromString(rs.getString("id")),
-                    rs.getString("username"), rs.getString("password"), rs.getString("role")
+                    rs.getString("username"), rs.getString("password"), IUser.Role.valueOf(rs.getString("role"))
                     );
 
         } catch (SQLException e) {

@@ -2,18 +2,21 @@ package database.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import interfaces.ICustomer;
+import interfaces.IUser;
 
+import javax.management.relation.Role;
 import java.util.ArrayList;
 import java.util.UUID;
 
 @JsonTypeName(value = "user")
-public class User {
+public class User implements IUser, Cloneable{
     private UUID id;
     private String username;
     private String password;
-    private String role;
+    private Role role;
 
-    public User(UUID id, String username, String password, String role) {
+    public User(UUID id, String username, String password,Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -45,11 +48,21 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public User clone() {
+        try {
+            User clone = (User) super.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

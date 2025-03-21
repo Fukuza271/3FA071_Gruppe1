@@ -16,6 +16,7 @@ public class DatabaseSetup {
         ExampleDataProvider.shared.insertHeizungReadingData();
         ExampleDataProvider.shared.insertWasserReadingData();
         ExampleDataProvider.shared.insertStromReadingData();
+        ExampleDataProvider.shared.insertUserData();
 
         return Response.status(Response.Status.OK).build();
     }
