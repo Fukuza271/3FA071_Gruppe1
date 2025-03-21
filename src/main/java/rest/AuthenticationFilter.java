@@ -16,7 +16,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) {
-        if (requestContext.getMethod().equals("OPTIONS")) {
+        if (requestContext.getMethod().equals("OPTIONS") || requestContext.getUriInfo().getPath().equals("setupDB/")) {
             return;
         }
 

@@ -89,7 +89,8 @@ public class ExampleDataProvider {
 
     public void insertCustomerData() {  //Fügt die gegebenen Kundendaten in die Datenbank ein
         readCSV("kunden_utf8.csv", ',').forEach(row -> {
-            if (row.getFirst().equals("UUID")) {
+            String first = row.getFirst();
+            if (first.equals("UUID")) {
                 return;
             }
 
@@ -108,19 +109,21 @@ public class ExampleDataProvider {
     }
 
     public void insertUserData() {
-        readCSV("userPW.csv",',').forEach(row ->{
-            if (row.getFirst().equals("UUID")){
+        readCSV("users.csv", ',').forEach(row -> {
+            String first = row.getFirst();
+            if (first.equals("UUID")) {
                 return;
             }
-            UUID id = UUID.fromString(row.getFirst());
+
+            UUID id = UUID.fromString(first);
 
             String username = row.get(1);
             String password = row.get(2);
-            IUser.Role role = switch(row.get(3)) {
-                case "Admin" -> IUser.Role.Admin;
-                default -> IUser.Role.Customer;
-            };
-            (new UserDao()).insert(new User(id,username,password,role));
+            IUser.Role role = row.get(3).equals("Admin") ? IUser.Role.Admin : IUser.Role.Customer;
+            String customerId = row.get(4);
+            Customer customer = !customerId.equals("null") ? new CustomerDao().findById(UUID.fromString(customerId)) : null;
+
+            (new UserDao()).insert(new User(id, username, password, role, customer));
         });
     }
 

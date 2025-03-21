@@ -1,16 +1,10 @@
 package interfaces;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.UUID;
-
 public interface IUser extends IId {
-
     enum Role {
         Admin,
         Customer;
     }
-
 
     String getUsername();
 

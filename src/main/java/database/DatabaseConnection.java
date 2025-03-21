@@ -39,8 +39,8 @@ public class DatabaseConnection implements IDatabaseConnection {    //Nötig fü
         try {
             Statement statement = connection.createStatement();
             statement.execute("DROP TABLE IF EXISTS readings;");
-            statement.execute("DROP TABLE IF EXISTS customers;");
             statement.execute("DROP TABLE IF EXISTS users;");
+            statement.execute("DROP TABLE IF EXISTS customers;");
             statement.execute("""
                     CREATE OR REPLACE TABLE customers
                     (
