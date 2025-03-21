@@ -43,6 +43,11 @@ public class ReadingResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response store(Reading reading) {
+        //TODO Customer anlegen wenn ein reading ohne customer angelegt wird
+        /*if(){
+
+        }*/
+
         if (readingDao.findById(reading.getId()) != null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Reading with ID " + reading.getId() + " already exists")
