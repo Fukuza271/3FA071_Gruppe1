@@ -33,7 +33,7 @@ public class Reading implements IReading, Cloneable { //implements IReading = es
             @JsonProperty("comment") String comment,
             @JsonProperty("substitute") boolean substitute
     ) {
-        this.id = id;
+        this.id = id != null ? id : UUID.randomUUID();
         this.customer = customer;
         this.dateOfReading = date;
         this.meter_ID = meter_ID;

@@ -107,11 +107,15 @@ public class ReadingDao extends DataAccessObject<Reading> {
         try {
             String customerIdString = rs.getString("customer_id");
             CustomerDao customerDao = new CustomerDao();
-            Customer customer = customerDao.findById(UUID.fromString(customerIdString));
+            Customer customer = null;
+
+            if (customerIdString != null) {
+                customer = customerDao.findById(UUID.fromString(customerIdString));
+            }
 
             reading = new Reading(
                     UUID.fromString(rs.getString("id")),
-                    customerIdString != null ? customer : null,
+                    customer,
                     rs.getDate("date").toLocalDate(),
                     rs.getString("meter_ID"),
                     rs.getDouble("meter_count"),
