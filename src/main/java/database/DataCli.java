@@ -29,9 +29,9 @@ public class DataCli implements Callable<Integer> {
                           @CommandLine.Option(names = {"-t", "--type"}, description = "Specify Reading or Customer",
                                   required = true) EntityType type) {
         return switch (format) {
-            case JSON -> exportType(type, JSON);
-            case XML -> exportType(type, XML);
-            case CSV -> exportType(type, CSV);
+            case JSON -> exportType(type, JSON, outputFile);
+            case XML -> exportType(type, XML, outputFile);
+            case CSV -> exportType(type, CSV, outputFile);
             default -> {
                 System.out.println("Invalid format");
                 yield 1;
@@ -39,10 +39,10 @@ public class DataCli implements Callable<Integer> {
         };
     }
 
-    private Integer exportType(EntityType type, ExportFormat format) {
+    private Integer exportType(EntityType type, ExportFormat format, File outputfile) {
         return switch (type) {
-            case CUSTOMER -> exportCustomer(format);
-            case READING -> exportReading(format);
+            case CUSTOMER -> exportCustomer(format, outputfile);
+            case READING -> exportReading(format, outputfile);
             default -> {
                 System.out.println("Invalid type");
                 yield 1;
@@ -51,10 +51,10 @@ public class DataCli implements Callable<Integer> {
     }
 
 
-    private Integer exportCustomer(ExportFormat format) {
+    private Integer exportCustomer(ExportFormat format, File outputfile) {
         return switch (format) {
             case JSON -> {
-                ImportExportParser.exportJSONCustomer();
+                ImportExportParser.exportJSONCustomer(outputfile);
                 yield 0;
             }
             case XML -> {
@@ -72,7 +72,7 @@ public class DataCli implements Callable<Integer> {
         };
     }
 
-    private Integer exportReading(ExportFormat format) {
+    private Integer exportReading(ExportFormat format, File outputfile) {
         return switch (format) {
             case JSON -> {
                 ImportExportParser.exportJSONReading();
