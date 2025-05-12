@@ -29,7 +29,6 @@ public class ImportExportParser {
         for (Customer customer: customers) {
             formatList.add(gson.toJson(customer));
         }
-        @CommandLine.Command()
     }
 
     public static void exportJSONReading() {
