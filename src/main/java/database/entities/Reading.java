@@ -24,14 +24,14 @@ public class Reading implements IReading, Cloneable { //implements IReading = es
 
     @JsonCreator
     public Reading(     //Erzeugt das Reading aus der JSON datei
-            @JsonProperty("id") UUID id,
-            @JsonProperty("customer") Customer customer,
-            @JsonProperty("dateOfReading") @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") LocalDate date,
-            @JsonProperty("meterId") String meter_ID,
-            @JsonProperty("meterCount") Double meter_count,
-            @JsonProperty("kindOfMeter") KindOfMeter meter_type,
-            @JsonProperty("comment") String comment,
-            @JsonProperty("substitute") boolean substitute
+                        @JsonProperty("id") UUID id,
+                        @JsonProperty("customer") Customer customer,
+                        @JsonProperty("dateOfReading") @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") LocalDate date,
+                        @JsonProperty("meterId") String meter_ID,
+                        @JsonProperty("meterCount") Double meter_count,
+                        @JsonProperty("kindOfMeter") KindOfMeter meter_type,
+                        @JsonProperty("comment") String comment,
+                        @JsonProperty("substitute") boolean substitute
     ) {
         this.id = id != null ? id : UUID.randomUUID();
         this.customer = customer;
@@ -41,6 +41,11 @@ public class Reading implements IReading, Cloneable { //implements IReading = es
         this.meter_type = meter_type;
         this.comment = comment;
         this.substitute = substitute;
+
+        CustomerDao customerDao = new CustomerDao();
+        if (customer != null && customerDao.findById(customer.getId()) == null) {
+            customerDao.insert(customer);
+        }
     }
 
     @Override
