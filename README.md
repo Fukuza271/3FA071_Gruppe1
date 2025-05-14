@@ -15,9 +15,9 @@ Zum erstmaligen Einrichten der Software muss die Datenbank aufgebaut werden:
 Installieren Sie MariaDB.  
 Erstellen Sie eine neue MariaDB-Datenbank mit dem Namen *"HausFix"*.
 Tragen Sie den angemeldeten User, den Datenbankuser und das Datenbankpasswort in die Propertiesdatei unter *"src/main/resources/database.properties"* ein.  
-<User>.db.url=jdbc:mariadb://localhost:3307/HausFix  
-<User>.db.user=<user>  
-<User>.db.pw=<password>  
+\<User\>.db.url=jdbc:mariadb://localhost:3306/HausFix  
+\<User\>.db.user=\<user\>  
+\<User\>.db.pw=\<password\>  
 
 ![image](https://github.com/user-attachments/assets/afa99ec8-202c-439a-8e41-9aefd50f086e)  
 *Abbildung 1: Beispieluser in der Propertiesdatei*
