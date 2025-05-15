@@ -24,7 +24,7 @@ public class Property {
         try {
             FileInputStream input = new FileInputStream(filePath);
             properties.load(input);
-
+            input.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

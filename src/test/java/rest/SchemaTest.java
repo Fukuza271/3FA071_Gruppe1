@@ -1,6 +1,5 @@
 package rest;
 
-import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
 import database.entities.Customer;
 import database.entities.Reading;
 import jakarta.ws.rs.core.MediaType;
