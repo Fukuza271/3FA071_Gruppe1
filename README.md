@@ -112,3 +112,9 @@ Klicken Sie auf <img src="https://github.com/user-attachments/assets/73face5f-85
 
 ![image](https://github.com/user-attachments/assets/88a5b819-db01-49b2-ab59-854df33f14a3)  
 *Abbildung 13: Anlage einer neuen Ablesung*  
+
+**Datenbankschema**  
+![image](https://github.com/user-attachments/assets/baa641de-3b11-458a-9c8a-16ae78cd17c2)  
+*Abbildung 14: Datenbankschema*
+
+
